@@ -14,7 +14,7 @@
     <ui:composition template="/Template/template.xhtml">
         <ui:define name="content">
             <b:column span="8" offset="2">
-                <h1>News</h1>
+                <h1>Users</h1>
                 <h:form id="searchForm">
                     <h:panelGrid columns="3" style="margin:10px;" cellpadding="5">
                         <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
@@ -23,21 +23,21 @@
                         </h:panelGrid>
                         <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
                             <h3 style="margin-top:0px">Country</h3>
-                            <p:selectOneMenu id="countryId" value="#{allUsersBean.countryId}" style="width:125px">
+                            <b:selectOneMenu id="countryId" value="#{allUsersBean.countryId}" style="width:125px">
                                 <f:selectItems value="#{allUsersBean.countries}" var="country" itemLabel="#{country.name}"
                                                itemValue="#{country.id}"/>
                                 <p:ajax listener="#{allUsersBean.updateCities}" render="cityId" update="cityId" />
-                            </p:selectOneMenu>
+                            </b:selectOneMenu>
                         </h:panelGrid>
                         <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
                             <h3 style="margin-top:0px">City</h3>
-                            <p:selectOneMenu id="cityId" value="#{allUsersBean.cityId}" style="width:125px">
+                            <b:selectOneMenu id="cityId" value="#{allUsersBean.cityId}" style="width:125px">
                                 <f:selectItems value="#{allUsersBean.cities}" var="city" itemLabel="#{city.name}"
                                                itemValue="#{city.id}"/>
-                            </p:selectOneMenu>
+                            </b:selectOneMenu>
                         </h:panelGrid>
                     </h:panelGrid>
-                    <b:commandButton value="Search" update="dataForm" icon="ui-icon-check"
+                    <b:commandButton value="Search" styleClass="btn btn-primary" update="dataForm" icon="ui-icon-check"
                                      actionListener="#{allUsersBean.search}"/>
                 </h:form>
                 <h:form id="dataForm">
@@ -47,7 +47,7 @@
                         </f:facet>
 
                         <h:panelGrid columns="2" styleClass="newsItem">
-                            <p:graphicImage value="#{user.avatarUrl}" style="width:45%; height: 50%;"/>
+                            <p:graphicImage value="#{user.avatarUrl}" style="width:70px; height: 70 px;"/>
 
                             <h:link outcome="profile" value="#{user.login}" includeViewParams="true">
                                 <f:param value="#{user.id}" name="userId"/>

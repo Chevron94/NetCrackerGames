@@ -13,7 +13,10 @@
             <h:outputStylesheet name="theme.css"/>
             <b:row>
                 <b:column span="8" offset="2">
-
+                    <h:form>
+                        <b:commandButton class="btn btn-info" value="Write" ajax="false"
+                                         action="#{messageBean.goToMessage}"/>
+                    </h:form>
                     <b:tabView id="tabView">
                         <b:tab title="Received Messages" id="tabReceived">
                             <h:form id="receivedMessages">

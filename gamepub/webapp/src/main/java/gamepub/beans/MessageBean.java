@@ -79,4 +79,7 @@ public class MessageBean {
         }
         return receiverId == 0;
     }
+    public String goToMessage(){
+        return "message";
+    }
 }
