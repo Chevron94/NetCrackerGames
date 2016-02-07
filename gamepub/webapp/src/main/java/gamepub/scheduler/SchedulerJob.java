@@ -92,6 +92,7 @@ public class SchedulerJob implements Job {
                             news.setLink(jsonArray.getJSONObject(j).getString("url"));
                             news.setDate(new Date(jsonArray.getJSONObject(j).getLong("date") * 1000));
                             newsService.create(news);
+                            j++;
                         }
                     }
                 }
