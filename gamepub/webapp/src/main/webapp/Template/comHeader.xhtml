@@ -23,9 +23,70 @@
                     <p:growl id="msgs3" showDetail="true"/>
                     <h:panelGrid columns="6" cellpadding="5">
 
-                        <b:inputText onkeypress="_openedPage(search)" styleClass="water" id="search"/>
+                        <b:inputText value="#{lifeSearchBean.request}"
+                                     styleClass="water" id="search">
+                            <p:ajax event="keyup" update="lifeoverlayNews lifeoverlayGames lifeoverlayUsers" listener="#{lifeSearchBean.lifeSearch}"/>
+                        </b:inputText>
+
 
                         <p:watermark for="search" value="Search..."/>
+
+                        <p:overlayPanel id="moviePanel" for="search" hideEffect="fade" dynamic="true"
+                                        style="width:300px; ">
+                            <b:tabView >
+                                <b:tab title="Games" id="tabMyGames">
+                                    <p:dataScroller value="#{lifeSearchBean.games}" mode="inline" scrollHeight="200"
+                                                    var="game" id="lifeoverlayGames"
+                                                    chunkSize="5">
+
+                                        <h:panelGrid columns="2" styleClass="newsItem">
+                                            <p:graphicImage value="#{game.poster}"
+                                                            style="width:50px; height: 50px;"/>
+
+                                            <h:link outcome="aboutGame" value="#{game.name}" includeViewParams="true">
+                                                <f:param value="#{game.id}" name="gameId"/>
+                                            </h:link>
+                                        </h:panelGrid>
+                                    </p:dataScroller>
+                                </b:tab>
+                                <b:tab title="News" id="tabMyNews">
+                                    <p:dataScroller value="#{lifeSearchBean.newses}" mode="inline" scrollHeight="200"
+                                                    id="lifeoverlayNews" var="news"
+                                                    chunkSize="5">
+                                        <f:facet name="header">
+
+                                        </f:facet>
+
+                                        <h:panelGrid columns="2" styleClass="newsItem">
+                                            <p:graphicImage value="#{news.game.poster}"
+                                                            style="width:50px; height: 50px;"/>
+
+                                            <h:link outcome="news" value="#{news.name}" includeViewParams="true">
+                                                <f:param value="#{news.id}" name="newsId"/>
+                                            </h:link>
+                                        </h:panelGrid>
+                                    </p:dataScroller>
+                                </b:tab>
+                                <b:tab title="Users" id="tabMyUsers">
+                                    <p:dataScroller value="#{lifeSearchBean.users}" mode="inline" scrollHeight="200"
+                                                    id="lifeoverlayUsers" var="user"
+                                                    chunkSize="5">
+                                        <f:facet name="header">
+
+                                        </f:facet>
+
+                                        <h:panelGrid columns="2" styleClass="newsItem">
+                                            <p:graphicImage value="#{user.avatarUrl}"
+                                                            style="width:50px; height: 50px;"/>
+
+                                            <h:link outcome="news" value="#{user.login}" includeViewParams="true">
+                                                <f:param value="#{user.id}" name="newsId"/>
+                                            </h:link>
+                                        </h:panelGrid>
+                                    </p:dataScroller>
+                                </b:tab>
+                            </b:tabView>
+                        </p:overlayPanel>
 
                         <b:button styleClass="gBut" outcome="allNews" value="Last News" icon="ui-icon-star"/>
 
