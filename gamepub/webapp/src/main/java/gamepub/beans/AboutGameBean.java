@@ -174,8 +174,13 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        
-        int gameStatusId=userGame.getGameStatus().getId();
+
+        int gameStatusId = 0;
+        try {
+            gameStatusId = userGame.getGameStatus().getId();
+        } catch (Exception e) {
+
+        }
 
         if (!exist) {
             userGame.setGameStatus(gameStatusService.getGameStatusById(1));
@@ -211,8 +216,13 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        
-        int gameStatusId=userGame.getGameStatus().getId();
+
+        int gameStatusId = 0;
+        try {
+            gameStatusId = userGame.getGameStatus().getId();
+        } catch (Exception e) {
+
+        }
 
         if (!exist) {
             userGame.setGameStatus(gameStatusService.getGameStatusById(1));
@@ -253,8 +263,13 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        
-        int gameStatusId=userGame.getGameStatus().getId();
+
+        int gameStatusId = 0;
+        try {
+            gameStatusId = userGame.getGameStatus().getId();
+        } catch (Exception e) {
+
+        }
 
         if (!exist) {
             userGame.setGameStatus(gameStatusService.getGameStatusById(1));
@@ -280,7 +295,7 @@ public class AboutGameBean {
         disableStatusButtons(userGame);
     }
 
-    public void addStatus(int statusId) {  
+    public void addStatus(int statusId) {
         UserGame userGame = userGameService.getUserGameByUserIdAndGameId(SessionBean.getUserId(), SessionBean.getGameId());
         userGame.setGameStatus(gameStatusService.getGameStatusById(statusId));
         userGameService.update(userGame);
@@ -359,8 +374,8 @@ public class AboutGameBean {
         b3.setDisabled(false);
         b4.setDisabled(false);
     }
-    
-    private void drawStatusButtons(boolean drawStatus){
+
+    private void drawStatusButtons(boolean drawStatus) {
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = context.getViewRoot();
         CommandButton b1, b2, b3, b4;
