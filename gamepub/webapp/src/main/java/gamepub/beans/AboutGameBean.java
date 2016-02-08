@@ -40,6 +40,7 @@ import javax.servlet.http.HttpSession;
 import net.bootsfaces.component.commandButton.CommandButton;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.rating.Rating;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -72,15 +73,7 @@ public class AboutGameBean {
     Game game;
     List<Mark> marksAndReviews;
 
-    String myStatus;
-
-    public String getMyStatus() {
-        return myStatus;
-    }
-
-    public void setMyStatus(String myStatus) {
-        this.myStatus = myStatus;
-    }
+    boolean drawStatus = false;
 
     public List<GameStatus> getStatus() {
         return gameStatusService.findAll();
@@ -93,7 +86,11 @@ public class AboutGameBean {
         UserGame userGame = getUserGame();
         if (userGame != null) {
             disableButtons(userGame);
+            drawStatus = true;
+            notStatusButton();
+            disableStatusButtons(userGame);
         }
+        drawStatusButtons(drawStatus);
         return g;
     }
 
@@ -169,7 +166,6 @@ public class AboutGameBean {
 
     public void addToFavourite() {
 
-        FacesContext context = FacesContext.getCurrentInstance();
         boolean exist = true;
         UserGame userGame = userGameService.getUserGameByUserIdAndGameId(SessionBean.getUserId(), SessionBean.getGameId());
         if (userGame == null) {
@@ -178,23 +174,30 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        userGame.setGameStatus(gameStatusService.getGameStatusById(Integer.valueOf(myStatus)));
         
+        int gameStatusId=userGame.getGameStatus().getId();
+
         if (!exist) {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(1));
             userGame.setCanExchange(false);
             userGame.setWanted(false);
             userGame.setFavorite(true);
             userGameService.create(userGame);
         } else {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(gameStatusId));
             userGame.setFavorite(true);
             userGameService.delete(userGame.getId());
             userGameService.update(userGame);
         }
+
+        notStatusButton();
         disableButtons(userGame);
+        drawStatus = true;
+        disableStatusButtons(userGame);
     }
 
     public void addToWanted() {
-        FacesContext context = FacesContext.getCurrentInstance();
+
         boolean exist = true;
         UserGame userGame = null;
         try {
@@ -208,9 +211,11 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        userGame.setGameStatus(gameStatusService.getGameStatusById(Integer.valueOf(myStatus)));
+        
+        int gameStatusId=userGame.getGameStatus().getId();
 
         if (!exist) {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(1));
             userGame.setCanExchange(false);
             userGame.setWanted(true);
             userGame.setFavorite(false);
@@ -221,11 +226,16 @@ public class AboutGameBean {
                 RequestContext.getCurrentInstance().showMessageInDialog(errMes);
                 return;
             }
+            userGame.setGameStatus(gameStatusService.getGameStatusById(gameStatusId));
             userGame.setWanted(true);
             userGameService.delete(userGame.getId());
             userGameService.update(userGame);
         }
+
+        notStatusButton();
         disableButtons(userGame);
+        drawStatus = true;
+        disableStatusButtons(userGame);
     }
 
     public void addToExchange() {
@@ -243,9 +253,11 @@ public class AboutGameBean {
         }
         userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
         userGame.setUser(userService.getUserById(SessionBean.getUserId()));
-        userGame.setGameStatus(gameStatusService.getGameStatusById(Integer.valueOf(myStatus)));
+        
+        int gameStatusId=userGame.getGameStatus().getId();
 
         if (!exist) {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(1));
             userGame.setCanExchange(true);
             userGame.setWanted(false);
             userGame.setFavorite(false);
@@ -256,11 +268,22 @@ public class AboutGameBean {
                 RequestContext.getCurrentInstance().showMessageInDialog(errMes);
                 return;
             }
+            userGame.setGameStatus(gameStatusService.getGameStatusById(gameStatusId));
             userGame.setCanExchange(true);
             userGameService.delete(userGame.getId());
             userGameService.update(userGame);
         }
+
         disableButtons(userGame);
+        drawStatus = true;
+        notStatusButton();
+        disableStatusButtons(userGame);
+    }
+
+    public void addStatus(int statusId) {  
+        UserGame userGame = userGameService.getUserGameByUserIdAndGameId(SessionBean.getUserId(), SessionBean.getGameId());
+        userGame.setGameStatus(gameStatusService.getGameStatusById(statusId));
+        userGameService.update(userGame);
     }
 
     public int getId() {
@@ -299,5 +322,55 @@ public class AboutGameBean {
             commandButton.setDisabled(true);
         }
 
+    }
+
+    private void disableStatusButtons(UserGame userGame) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot uiViewRoot = context.getViewRoot();
+        CommandButton commandButton;
+        if (userGame.getGameStatus().getId() == 1) {
+            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:notstarted");
+            commandButton.setDisabled(true);
+        }
+        if (userGame.getGameStatus().getId() == 2) {
+            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:passed");
+            commandButton.setDisabled(true);
+        }
+        if (userGame.getGameStatus().getId() == 3) {
+            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:duringpassage");
+            commandButton.setDisabled(true);
+        }
+        if (userGame.getGameStatus().getId() == 4) {
+            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:abandoned");
+            commandButton.setDisabled(true);
+        }
+    }
+
+    private void notStatusButton() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot uiViewRoot = context.getViewRoot();
+        CommandButton b1, b2, b3, b4;
+        b1 = (CommandButton) uiViewRoot.findComponent("statusForm:notstarted");
+        b2 = (CommandButton) uiViewRoot.findComponent("statusForm:passed");
+        b3 = (CommandButton) uiViewRoot.findComponent("statusForm:duringpassage");
+        b4 = (CommandButton) uiViewRoot.findComponent("statusForm:abandoned");
+        b1.setDisabled(false);
+        b2.setDisabled(false);
+        b3.setDisabled(false);
+        b4.setDisabled(false);
+    }
+    
+    private void drawStatusButtons(boolean drawStatus){
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot uiViewRoot = context.getViewRoot();
+        CommandButton b1, b2, b3, b4;
+        b1 = (CommandButton) uiViewRoot.findComponent("statusForm:notstarted");
+        b2 = (CommandButton) uiViewRoot.findComponent("statusForm:passed");
+        b3 = (CommandButton) uiViewRoot.findComponent("statusForm:duringpassage");
+        b4 = (CommandButton) uiViewRoot.findComponent("statusForm:abandoned");
+        b1.setRendered(drawStatus);
+        b2.setRendered(drawStatus);
+        b3.setRendered(drawStatus);
+        b4.setRendered(drawStatus);
     }
 }
