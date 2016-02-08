@@ -7553,6 +7553,11 @@ input[type="checkbox"]:disabled:checked:after,
   float: right;
 }
 
+.statusIcon{
+  margin:30px;
+  padding: 1px;
+}
+
 .dataList .ui-datalist-data{
 border: none;
 background: transparent;
