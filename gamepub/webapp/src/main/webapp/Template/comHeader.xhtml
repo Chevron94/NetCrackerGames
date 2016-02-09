@@ -101,7 +101,7 @@
             </b:column>
 
 
-            <c:if test="#{!loginBean.logged}">
+            <c:if test="#{!loginBean.logged &amp;&amp; !vKAuthorization.logged}">
                 <b:column offset="3" span="4" style="align:right">
                     <h:form>
                         <p:growl id="msgs1" showDetail="true"/>
@@ -127,14 +127,14 @@
                 </b:column>
             </c:if>
 
-            <c:if test="#{loginBean.logged}">
+            <c:if test="#{loginBean.logged || vKAuthorization.logged}">
                 <b:column offset="4" span="3" style="align:right">
                     <h:form>
                         <p:growl id="msgs2" showDetail="true"/>
 
                         <h:panelGrid columns="3" cellpadding="5">
                             <b:button outcome="allUsers" styleClass="gBut btn" value="Users"/>
-                            <b:button styleClass="gBut btn btn-info" outcome="profile" value="#{loginBean.name}"
+                            <b:button styleClass="gBut btn btn-info" outcome="profile" value="#{sessionBean.getUserName()}"
                                       icon="ui-icon-star">
                                 <f:param value="my" name="userId"/>
                             </b:button>

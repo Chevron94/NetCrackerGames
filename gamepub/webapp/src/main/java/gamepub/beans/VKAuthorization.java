@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -50,6 +51,7 @@ import org.json.simple.parser.ParseException;
  * @author Иван
  */
 @ManagedBean
+@SessionScoped
 public class VKAuthorization implements Serializable {
 
     @EJB
@@ -66,33 +68,44 @@ public class VKAuthorization implements Serializable {
     protected String redirectUri;
     protected String userInfoUrl;
     protected boolean isError;
-    //private final int PASSWORD_LENGTH = 20;
+    public String login;
+    boolean logged=false;
+    
+    public boolean getLogged(){
+        return logged;
+    }
 
-    /*public abstract String fetchPersonalInfo() throws IOException, ParseException;
-
-    public abstract User createUser() throws IOException, ParseException;
-
-    public abstract void buildUserUrl();*/
     public void doRegistration() throws IOException, ParseException, ServletException, NoSuchAlgorithmException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         User user = createUser();
         if (user != null) {
-            userService.create(user);
-            userService.update(user);
 
-            //String hashPass = shaCode.code(shaCode.code(user.getLogin()) + user.getPassword());
-            HttpSession ses = SessionBean.getSession();
+            login = user.getLogin();
+            User userInBase = null;
+            try {
+                userInBase = userService.getUserByLogin(user.getLogin());
+            } catch (Exception e) {
 
-            //if (userService.getUserByLoginAndPassword(name, hashPass) != null) {
-                //user = userService.getUserByLoginAndPassword(name, hashPass);
-                //setLogged(true);
-                ses.setAttribute("userid", user.getId());
-                ses.setAttribute("username", user.getLogin());
-                context.redirect("http://localhost:8080/gamepub/");
-            //}
+            }
+            if (userInBase != null) {
+                userInBase.setAvatarUrl(user.getAvatarUrl());
+                userService.update(userInBase);
+            } else {
+                userService.create(user);
+            }
         } else {
             context.redirect("/");
         }
+    }
+
+    public void doLogin() throws IOException {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = SessionBean.getSession();
+        User user = userService.getUserByLogin(login);
+        session.setAttribute("userid", user.getId());
+        session.setAttribute("username", user.getLogin());
+        context.redirect("http://localhost:8080/gamepub/");
+        logged=true;
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
@@ -204,7 +217,7 @@ public class VKAuthorization implements Serializable {
             City city = cityService.getCityById(1);
 
             user.setAvatarUrl(photo);
-            user.setPassword(/*shaCode.code(shaCode.code(name) + id)*/"123");
+            user.setPassword(shaCode.code(shaCode.code(name) + id));
             user.setEmail("default email");
             user.setLogin(nickname);
             user.setCity(city);
