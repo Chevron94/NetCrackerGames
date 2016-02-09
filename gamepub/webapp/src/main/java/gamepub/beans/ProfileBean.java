@@ -201,7 +201,7 @@ public class ProfileBean {
     public String goToMessage() {
         HttpSession session = SessionBean.getSession();
         session.setAttribute("receiverId", id);
-        return "message";
+        return "mesDialog";
     }
 
     //Games

@@ -4,10 +4,13 @@ import gamepub.db.entity.PrivateMessage;
 import gamepub.db.entity.User;
 import gamepub.db.service.PrivateMessageService;
 import gamepub.db.service.UserService;
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.rating.Rating;
 
 import javax.ejb.*;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -59,13 +62,6 @@ public class MessageBean {
         receiverId = user.getId();
     }
 
-    public int getMyReceiver() {
-        return receiverId;
-    }
-
-    public void setMyReceiver(int id) {
-        receiverId = id;
-    }
 
     public User getReceiver() {
         return receiver;
@@ -113,5 +109,24 @@ public class MessageBean {
     }
     public String goToMessage(){
         return "message";
+    }
+
+    //dialog
+    public List<PrivateMessage> getDialog(){
+        return privateMessageService.getPrivateMessagesBySenderIdAndReceiverId(SessionBean.getUserId(),receiverId);
+    }
+
+    public void sendDialog() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot uiViewRoot = context.getViewRoot();
+        InputTextarea inputText = (InputTextarea) uiViewRoot.findComponent("messageForm:inputMes");
+        String message = (String) inputText.getValue();
+        PrivateMessage privateMessage = new PrivateMessage();
+        privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
+        privateMessage.setReceiver(userService.getUserById(receiverId));
+        privateMessage.setDate(new Date());
+        privateMessage.setText(message);
+        privateMessageService.create(privateMessage);
+
     }
 }
