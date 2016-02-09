@@ -25,7 +25,8 @@
 
                         <b:inputText value="#{lifeSearchBean.request}"
                                      styleClass="water" id="search">
-                            <p:ajax event="keyup" update="lifeoverlayNews lifeoverlayGames lifeoverlayUsers" listener="#{lifeSearchBean.lifeSearch}"/>
+                            <p:ajax event="keyup" update="lifeoverlayNews lifeoverlayGames lifeoverlayUsers"
+                                    listener="#{lifeSearchBean.lifeSearch}"/>
                         </b:inputText>
 
 
@@ -33,7 +34,7 @@
 
                         <p:overlayPanel id="moviePanel" for="search" hideEffect="fade" dynamic="true"
                                         style="width:300px; ">
-                            <b:tabView >
+                            <b:tabView>
                                 <b:tab title="Games" id="tabMyGames">
                                     <p:dataScroller value="#{lifeSearchBean.games}" mode="inline" scrollHeight="200"
                                                     var="game" id="lifeoverlayGames"
@@ -44,7 +45,7 @@
                                                             style="width:50px; height: 50px;"/>
 
                                             <h:link outcome="aboutGame" value="#{game.name}" includeViewParams="true">
-                                                <f:param value="#{game.id}" name="gameId"/>
+                                                <f:param value="#{game.id}" name="id"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:dataScroller>
@@ -79,8 +80,8 @@
                                             <p:graphicImage value="#{user.avatarUrl}"
                                                             style="width:50px; height: 50px;"/>
 
-                                            <h:link outcome="news" value="#{user.login}" includeViewParams="true">
-                                                <f:param value="#{user.id}" name="newsId"/>
+                                            <h:link outcome="profile" value="#{user.login}" includeViewParams="true">
+                                                <f:param value="#{user.id}" name="userId"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:dataScroller>

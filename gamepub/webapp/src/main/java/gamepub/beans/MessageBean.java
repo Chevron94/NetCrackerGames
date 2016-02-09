@@ -8,9 +8,9 @@ import gamepub.db.service.UserService;
 import javax.ejb.*;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Анатолий on 03.02.2016.
@@ -18,6 +18,8 @@ import java.util.List;
 @ManagedBean
 @SessionScoped
 public class MessageBean {
+
+    String userLogin;
 
     @EJB
     PrivateMessageService privateMessageService;
@@ -27,6 +29,35 @@ public class MessageBean {
     int receiverId;
     String message;
     User receiver;
+    public String getUserLogin(){
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin){
+        this.userLogin  = userLogin;
+    }
+
+    public void lifeSearch() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if(userLogin != null){
+            facesContext.getExternalContext().getSessionMap().put("userMes", userLogin);
+        }
+    }
+    public List<User> getUsers() {
+        List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
+        Map.Entry<String, Object> param;
+        if (userLogin != null && userLogin.length()>0) {
+            param = new HashMap.SimpleEntry<String, Object>("login", userLogin);
+            parametersList.add(param);
+            return userService.getUsersByCustomParams(parametersList);
+        }
+        return null;
+    }
+
+    public void findUser(User user){
+        userLogin = user.getLogin();
+        receiverId = user.getId();
+    }
 
     public int getMyReceiver() {
         return receiverId;
@@ -64,6 +95,7 @@ public class MessageBean {
         privateMessage.setText(message);
         privateMessageService.create(privateMessage);
         receiverId = 0;
+        userLogin="";
         message = "";
         return "allMessages";
     }

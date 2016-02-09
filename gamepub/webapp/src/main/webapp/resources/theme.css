@@ -7565,7 +7565,9 @@ border: none;
 background: transparent;
 background-image: none;
 }
-
+.percent_33 {
+  width: 33%;
+}
 .game_link{
   font-size: 14px;
   font-weight: 600;
