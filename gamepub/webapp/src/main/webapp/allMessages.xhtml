@@ -22,7 +22,7 @@
                             <h:form id="receivedMessages">
                                 <p:dataScroller value="#{messageBean.receivedMessages}" var="message" chunkSize="10"
                                                 style="max-height: 300px">
-                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem">
+                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem"  columnClasses="percent_33, percent_33, percent_33">
                                         <h:link outcome="profile" value="#{message.sender.login}"
                                                 includeViewParams="true">
                                             <f:param value="#{message.sender.id}" name="userId"/>
@@ -39,7 +39,7 @@
                             <h:form id="sendedMessages">
                                 <p:dataScroller value="#{messageBean.sendedMessages}" var="message" chunkSize="10"
                                                 style="max-height: 300px">
-                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem">
+                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem" columnClasses="percent_33, percent_33, percent_33">
                                         <h:link outcome="profile" value="#{message.receiver.login}"
                                                 includeViewParams="true">
                                             <f:param value="#{message.receiver.id}" name="userId"/>

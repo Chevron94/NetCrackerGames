@@ -80,7 +80,7 @@
                 <!-- Buttons and games-->
                 <b:column span="10" offset="1">
                     <b:button class="btn btn-primary" outcome="gallery" value="My gallery" rendered="#{profileBean.isMy}"/>
-                    <b:button outcome="tradingPage" value="Trading page" rendered="#{profileBean.isMy}"/>
+                    <b:button outcome="tradingPage" value="#{profileBean.exchangeNotification()}" rendered="#{profileBean.isMy}"/>
                     <b:button class="btn btn-info" outcome="allMessages" value="Messages" rendered="#{profileBean.isMy}"/>
                     <!-- Follow -->
                     <h:form id="follow" rendered="#{!profileBean.isMy}">
