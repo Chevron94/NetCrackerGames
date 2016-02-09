@@ -235,6 +235,14 @@ public class ProfileBean {
             
         }
     }
+    public String exchangeNotification(){
+        int quantity=0;
+        List<UserGame> myWantedGames = userGameService.getWantedUserGamesByUserId(SessionBean.getUserId());
+            for(UserGame ug:myWantedGames){
+                if(!userGameService.getCanExchangeUserGamesByGameId(ug.getGame().getId()).isEmpty()) quantity++;
+                    }
+                if (quantity==0) return "Trading page";else return "[+"+Integer.toString(quantity)+"]TradingPage";
+
+            }
     
-    
-}
+        }
