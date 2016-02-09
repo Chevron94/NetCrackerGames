@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
-<link rel="stylesheet" href="style.css" type="text/css"/>
-<h:body>
-    <ui:composition template="/Template/template.xhtml">
-        <ui:define name="content">
-            <b:column span="12">
-                <h:form>
-                    <b:panel id="panel" title="Registration">
-                     <p:messages id="msgs" /> 
-                     <h:panelGrid columns="3" cellpadding="5">
-                            <p:outputLabel for="name" value="Name:" />
-                            <p:inputText id="name" value="#{registrBean.name}" required="true" label="Name"
-                                         requiredMessage="Please enter your name">
-                                <f:validateLength minimum="2" />                                
-                            </p:inputText>
-                            <p:message for="name" style ="color:red" /> 
-                            
-                            <p:outputLabel for="password" value="Password:" />
-                            <p:password id="password" value="#{registrBean.password}" label="Password" match ="confirm" required="true" 
-                                        requiredMessage = "Please enter your password">
-                                <f:validateLength minimum="2" />                                
-                            </p:password>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <h:body>
+        <ui:composition template="/Template/template.xhtml">
+            <ui:define name="content">
+                <b:column span="12">
+                    <h:form>
+
+                        <a href="#{vKAuthorization.userUrl}" title="Зайти через ВКонтакте">Зайти через ВКонтакте</a>
+
+                        <b:panel id="panel" title="Registration">
+                            <p:messages id="msgs" /> 
+                            <h:panelGrid columns="3" cellpadding="5">
+                                <p:outputLabel for="name" value="Name:" />
+                                <p:inputText id="name" value="#{registrBean.name}" required="true" label="Name"
+                                             requiredMessage="Please enter your name">
+                                    <f:validateLength minimum="2" />                                
+                                </p:inputText>
+                                <p:message for="name" style ="color:red" /> 
+
+                                <p:outputLabel for="password" value="Password:" />
+                                <p:password id="password" value="#{registrBean.password}" label="Password" match ="confirm" required="true" 
+                                            requiredMessage = "Please enter your password">
+                                    <f:validateLength minimum="2" />                                
+                                </p:password>
                                 <p:message for="password" style="color: red" /> 
-                               
+
                                 <p:outputLabel for="confirm" value="Confirm:" />
-                            <p:password id="confirm" value="#{registrBean.password}" label="Confirm" required="true" 
-                                        requiredMessage = "Please confirm your password">
-                                <f:validateLength minimum="2" />                                
-                            </p:password>
+                                <p:password id="confirm" value="#{registrBean.password}" label="Confirm" required="true" 
+                                            requiredMessage = "Please confirm your password">
+                                    <f:validateLength minimum="2" />                                
+                                </p:password>
                                 <p:message for="confirm" style="color: red" /> 
-                                
-                                 <p:outputLabel for="email" value="Email:" />
-                                 <p:inputText id="email" value="#{registrBean.email}" label="Email" required="true"
-                                         requiredMessage="Please enter your email">
-                                <f:validateLength minimum="5" />                                
-                                 </p:inputText>
+
+                                <p:outputLabel for="email" value="Email:" />
+                                <p:inputText id="email" value="#{registrBean.email}" label="Email" required="true"
+                                             requiredMessage="Please enter your email">
+                                    <f:validateLength minimum="5" />                                
+                                </p:inputText>
                                 <p:message for="email" style="color:red" />
-                                
-                            <p:outputLabel for="console" value="City:" />
-                            <p:selectOneMenu  id="console" value="#{registrBean.city}">
-                                <f:selectItems value="#{registrBean.cities}" var="city" itemLabel="#{city.name}"
-                                       itemValue="#{city.id}"/>
-                                
-                            </p:selectOneMenu>
-                    </h:panelGrid>
-                    <p:captcha label="Captcha" />
-                     <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save}" icon="ui-icon-check" update="panel"/>                        
-                        
-                    </b:panel>
-                     
-                </h:form>
-            </b:column>
-        </ui:define>
-    </ui:composition>
-</h:body>
+
+                                <p:outputLabel for="console" value="City:" />
+                                <p:selectOneMenu  id="console" value="#{registrBean.city}">
+                                    <f:selectItems value="#{registrBean.cities}" var="city" itemLabel="#{city.name}"
+                                                   itemValue="#{city.id}"/>
+
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:captcha label="Captcha" />
+                            <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save}" icon="ui-icon-check" update="panel"/>                        
+
+                        </b:panel>
+
+                    </h:form>
+                </b:column>
+            </ui:define>
+        </ui:composition>
+    </h:body>
 </html>
