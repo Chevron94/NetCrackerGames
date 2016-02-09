@@ -7552,7 +7552,9 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 5px;
   float: right;
 }
-
+.margin10{
+  margin:10px;
+}
 .statusIcon{
   margin:30px;
   padding: 1px;
@@ -7562,4 +7564,9 @@ input[type="checkbox"]:disabled:checked:after,
 border: none;
 background: transparent;
 background-image: none;
+}
+
+.game_link{
+  font-size: 14px;
+  font-weight: 600;
 }
