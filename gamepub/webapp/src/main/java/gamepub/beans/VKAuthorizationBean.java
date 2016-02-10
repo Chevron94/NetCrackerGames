@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package gamepub.beans;
-
 import gamepub.db.entity.City;
 import gamepub.db.entity.User;
 import gamepub.db.entity.UserRole;
@@ -48,7 +47,7 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author Иван
+ * @author Ivan
  */
 @ManagedBean
 @SessionScoped
