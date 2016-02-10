@@ -11,22 +11,24 @@
     <ui:composition template="/Template/template.xhtml">
 
         <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="receiverId" value="#{messageBean.receiverId}"/>
+            </f:metadata>
             <h:outputStylesheet name="theme.css"/>
             <b:row>
-                <b:column span="8" offset="2">
+                <b:column span="6" offset="3">
 
-                    <h:panelGrid columns="1" style="width: 100%;" styleClass="newsItem"
-                                 rendered="#{!messageBean.receiverIsNull}">
+                    <h:panelGrid columns="1" style="width: 100%;" styleClass="newsItem">
                         <h:form id="messageForm">
                             <p:growl id="commentsMessage" showDetail="true" life="1000"/>
-                            <h:panelGrid columns="3">
+                            <h:panelGrid columns="3" cellpadding="10">
                                 <h:panelGrid columns="1">
                                     <p:graphicImage value="#{loginBean.user.avatarUrl}"
                                                     style="width:50px; height: 50px;"/>
                                     <b:label severity="info" text="#{loginBean.name}"/>
                                 </h:panelGrid>
 
-                                <p:inputTextarea id="inputMes" rows="4" cols="20"/>
+                                <p:inputTextarea id="inputMes" rows="2" cols="40"/>
                                 <h:panelGrid columns="1">
                                     <p:graphicImage value="#{messageBean.receiver.avatarUrl}"
                                                     style="width:50px; height: 50px;"/>
@@ -38,19 +40,18 @@
                                              actionListener="#{messageBean.sendDialog}"/>
                         </h:form>
 
-                        <h:form id="sendForm">
-
-                        </h:form>
                         <h:form id="dialogForm">
-                            <p:dataScroller value="#{messageBean.dialog}"  scrollHeight="400"
+                            <p:dataScroller value="#{messageBean.dialog}" scrollHeight="400"
                                             id="dialog" var="message"
                                             chunkSize="10">
 
-                                <h:panelGrid columns="3" styleClass="newsItem">
-                                    <p:graphicImage value="#{message.sender.avatarUrl}"
-                                                    style="width:50px; height: 50px;"/>
-                                    <b:label text="#{message.sender.login}"/>
-                                    <b:label text="#{message.text}"/>
+                                <h:panelGrid columns="2" styleClass="newsItem" cellpadding="10" columnClasses="percent_33, percent_33">
+                                    <h:panelGrid columns="1" styleClass="newsItem">
+                                        <p:graphicImage value="#{message.sender.avatarUrl}"
+                                                        style="width:30px; height: 30px;"/>
+                                        <b:label text="#{message.sender.login}" severity="primary"/>
+                                    </h:panelGrid>
+                                    #{message.text}
                                 </h:panelGrid>
                             </p:dataScroller>
                         </h:form>

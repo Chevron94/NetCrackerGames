@@ -20,15 +20,23 @@
                     <b:tabView id="tabView">
                         <b:tab title="Received Messages" id="tabReceived">
                             <h:form id="receivedMessages">
-                                <p:dataScroller value="#{messageBean.receivedMessages}" var="message" chunkSize="10"
+                                <p:dataScroller value="#{messageBean.receivedMessages}" var="message"
                                                 style="max-height: 300px">
-                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem"  columnClasses="percent_33, percent_33, percent_33">
-                                        <h:link outcome="profile" value="#{message.sender.login}"
-                                                includeViewParams="true">
-                                            <f:param value="#{message.sender.id}" name="userId"/>
-                                        </h:link>
-                                        <h:link outcome="profile" value="#{message.text}" includeViewParams="true">
-                                            <f:param value="#{message.sender.id}" name="userId"/>
+                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem"
+                                                 columnClasses="percent_33, percent_33, percent_33">
+                                        <h:panelGrid columns="2">
+                                            <h:link outcome="profile" includeViewParams="true">
+                                                <f:param value="#{message.sender.id}" name="userId"/>
+                                                <p:graphicImage value="#{message.sender.avatarUrl}"
+                                                                style="width:30px; height: 30px;"/>
+                                            </h:link>
+                                            <h:link outcome="profile" value="#{message.sender.login}"
+                                                    includeViewParams="true">
+                                                <f:param value="#{message.sender.id}" name="userId"/>
+                                            </h:link>
+                                        </h:panelGrid>
+                                        <h:link outcome="mesDialog" value="#{message.text}" includeViewParams="true">
+                                            <f:param value="#{message.receiver.id}" name="receiverId"/>
                                         </h:link>
                                         <b:label text="#{message.date}"/>
                                     </h:panelGrid>
@@ -37,15 +45,24 @@
                         </b:tab>
                         <b:tab title="Sended Messages" id="tabSended">
                             <h:form id="sendedMessages">
-                                <p:dataScroller value="#{messageBean.sendedMessages}" var="message" chunkSize="10"
+                                <p:dataScroller value="#{messageBean.sendedMessages}" var="message"
                                                 style="max-height: 300px">
-                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem" columnClasses="percent_33, percent_33, percent_33">
-                                        <h:link outcome="profile" value="#{message.receiver.login}"
-                                                includeViewParams="true">
-                                            <f:param value="#{message.receiver.id}" name="userId"/>
-                                        </h:link>
-                                        <h:link outcome="profile" value="#{message.text}" includeViewParams="true">
-                                            <f:param value="#{message.receiver.id}" name="userId"/>
+                                    <h:panelGrid columns="3" style="width: 100%;" styleClass="newsItem"
+                                                 columnClasses="percent_33, percent_33, percent_33">
+                                        <h:panelGrid columns="2">
+                                            <h:link outcome="profile" includeViewParams="true">
+                                                <f:param value="#{message.receiver.id}" name="userId"/>
+                                                <p:graphicImage value="#{message.receiver.avatarUrl}"
+                                                                style="width:30px; height: 30px;"/>
+                                            </h:link>
+                                            <h:link outcome="profile" value="#{message.receiver.login}"
+                                                    includeViewParams="true">
+                                                <f:param value="#{message.receiver.id}" name="userId"/>
+                                            </h:link>
+                                        </h:panelGrid>
+
+                                        <h:link outcome="mesDialog" value="#{message.text}" includeViewParams="true">
+                                            <f:param value="#{message.receiver.id}" name="receiverId"/>
                                         </h:link>
                                         <b:label text="#{message.date}"/>
                                     </h:panelGrid>

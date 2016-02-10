@@ -35,7 +35,7 @@ public class ProfileBean {
     private boolean isEdit;
     private boolean isMy;
     private int cityId;
-    private String email, fbInfo, name, password;
+    private String email, fbInfo, login, password;
 
     @EJB
     UserService userService;
@@ -100,6 +100,13 @@ public class ProfileBean {
         email = uemail;
     }
 
+    public String getLogin(){
+        return login;
+    }
+
+    public void setLogin(String login){
+        this.login = login;
+    }
     public String getFbInfo() {
         User user = userService.getUserById(id);
         if (user.getFbInfo() == null) {
@@ -147,9 +154,6 @@ public class ProfileBean {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().remove("edit");
         context.getExternalContext().getSessionMap().put("edit", true);
-        /*Country country = countryService.getCountryById(7);
-        country.setName("12");
-        countryService.update(country);*/
     }
 
     public void confirmEdit() {
@@ -165,13 +169,17 @@ public class ProfileBean {
             user.setFbInfo(fbInfo);
             System.out.println(fbInfo);
         }
-        //user.setFbInfo("11111111");
+        if(login != null && userService.getUserByLogin(login) == null){
+            user.setLogin(login);
+        }
+        else{
+            FacesMessage failMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Error",
+                    "Failed to login!");
+            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+        }
 
-        //userService.delete(user.getId());
         userService.update(user);
-        /*Country country = countryService.getCountryById(7);
-        country.setName("22");
-        countryService.update(country);*/
 
     }
 
@@ -198,10 +206,8 @@ public class ProfileBean {
     }
 
 
-    public String goToMessage() {
-        HttpSession session = SessionBean.getSession();
-        session.setAttribute("receiverId", id);
-        return "mesDialog";
+    public boolean getHaveFbInfo(){
+        return  userService.getUserById(id).getFbInfo().length() > 0;
     }
 
     //Games

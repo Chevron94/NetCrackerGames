@@ -40,6 +40,15 @@ public class MessageBean {
         this.userLogin  = userLogin;
     }
 
+    public int getReceiverId(){
+        return receiverId;
+    }
+
+    public void setReceiverId(int receiverId){
+        this.receiverId = receiverId;
+        receiver = userService.getUserById(receiverId);
+    }
+
     public void lifeSearch() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if(userLogin != null){
@@ -102,18 +111,25 @@ public class MessageBean {
             receiverId = (Integer) session.getAttribute("receiverId");
             receiver = userService.getUserById(receiverId);
             session.removeAttribute("receiverId");
+
         } catch (Exception e) {
 
         }
         return receiverId == 0;
     }
+
     public String goToMessage(){
         return "message";
     }
 
+    public boolean getsReceiverIsNull(){
+        receiverId=0;
+        return true;
+    }
+
     //dialog
     public List<PrivateMessage> getDialog(){
-        return privateMessageService.getPrivateMessagesBySenderIdAndReceiverId(SessionBean.getUserId(),receiverId);
+        return privateMessageService.getAllPrivateMessagesBySenderIdAndReceiverId(SessionBean.getUserId(),receiverId);
     }
 
     public void sendDialog() {
@@ -127,6 +143,8 @@ public class MessageBean {
         privateMessage.setDate(new Date());
         privateMessage.setText(message);
         privateMessageService.create(privateMessage);
+        inputText.resetValue();
+        receiverId = 0;
 
     }
 }
