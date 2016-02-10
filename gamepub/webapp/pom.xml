@@ -18,6 +18,10 @@
             <url>http://repository.primefaces.org</url>
         </repository>
         <repository>
+            <id>google-api-services</id>
+            <url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
+        </repository>
+        <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Repository Group</name>
             <url>http://repository.jboss.org/nexus/content/groups/public/</url>
@@ -40,13 +44,27 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         
-        
-        
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client</artifactId>
+                <version>1.13.1-beta</version>
+        </dependency>
+        <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client-jackson</artifactId>
+                <version>1.13.1-beta</version>
+        </dependency>
+        <dependency>
+                <groupId>com.google.apis</groupId>
+                <artifactId>google-api-services-oauth2</artifactId>
+                <version>v2-rev29-1.13.2-beta</version>
+        </dependency>
+        
 
         <dependency>
             <groupId>org.primefaces</groupId>
