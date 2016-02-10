@@ -207,7 +207,7 @@ public class ProfileBean {
 
 
     public boolean getHaveFbInfo(){
-        return  userService.getUserById(id).getFbInfo().length() > 0;
+        return  userService.getUserById(id).getFbInfo() != null;
     }
 
     //Games

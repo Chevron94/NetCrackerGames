@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.RequestScoped;
+
 import org.primefaces.context.RequestContext;
 
 /**
@@ -35,74 +36,83 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @RequestScoped
 public class RegistrBean {
-private User user;
-private City city;
-private String name,password,email;
-private int cityId;
+    private User user;
+    private City city;
+    private String name, password, email;
+    private int cityId;
 
     @EJB
-    UserService userService; 
+    UserService userService;
     @EJB
     CityService cityService;
     @EJB
     UserRoleService userRoleService;
-    
-    public String getName(){
-       return name;
+
+    public String getName() {
+        return name;
     }
-    public void setName(String uname){
-        name=uname;
+
+    public void setName(String uname) {
+        name = uname;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
-    public void setPassword(String upass){
-        password=upass;
+
+    public void setPassword(String upass) {
+        password = upass;
     }
-    public String getEmail(){
+
+    public String getEmail() {
         return email;
     }
-    public void setEmail(String uemail){
+
+    public void setEmail(String uemail) {
         email = uemail;
     }
-    public int getCity(){
+
+    public int getCity() {
         return cityId;
     }
-    public void setCity(int ucityId){
+
+    public void setCity(int ucityId) {
         cityId = ucityId;
     }
-    
-    
-    public List<City> getCities(){
+
+
+    public List<City> getCities() {
         return cityService.findAll();
     }
-    
-    public void save() throws NoSuchAlgorithmException, UnsupportedEncodingException{
-        user=new User();
+
+    public void save() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        user = new User();
         UserRole ur = userRoleService.getUserRoleById(1);
-        city = cityService.getCityById(cityId);    
-       
-        
-        if(userService.getUserByLogin(name)==null){
-        user.setAvatarUrl("http://dializa.md/wp-content/uploads/2015/06/no-avatar-ff.png");
-        
-        user.setPassword(shaCode.code(shaCode.code(name)+password));            
-        user.setEmail(email);
-        user.setLogin(name);
-        user.setCity(city); 
-        user.setUserRole(ur);
-        userService.create(user);
-        
-       FacesMessage regMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Success",
-                    "Welcome "+name+"! Login now.");
-               RequestContext.getCurrentInstance().showMessageInDialog(regMes);
-        
+        city = cityService.getCityById(cityId);
+
+
+        if (userService.getUserByLogin(name) == null) {
+            user.setAvatarUrl("http://dializa.md/wp-content/uploads/2015/06/no-avatar-ff.png");
+
+            user.setPassword(shaCode.code(shaCode.code(name) + password));
+            user.setEmail(email);
+            user.setLogin(name);
+            user.setCity(city);
+            user.setUserRole(ur);
+            user.setActive(true);
+            userService.create(user);
+
+            FacesMessage regMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Success",
+                    "Welcome " + name + "! Login now.");
+            RequestContext.getCurrentInstance().showMessageInDialog(regMes);
+
+        } else {
+            FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Error",
+                    "User " + name + " already exists!Try another name.");
+            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+        }
+
     }
-        else {FacesMessage failMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Error",
-                    "User "+name+" already exists!Try another name.");
-               RequestContext.getCurrentInstance().showMessageInDialog(failMes);}
-        
-}
 }

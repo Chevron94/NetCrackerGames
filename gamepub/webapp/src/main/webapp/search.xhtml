@@ -59,21 +59,14 @@
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <h:link outcome="aboutGame" includeViewParams="true">
                                         <f:param value="#{game.id}" name="id"/>
-                                        <p:graphicImage  value="#{game.poster}" style="width:100%; height: 100%;"/>
+                                        <p:graphicImage  value="#{game.poster}" style="width:300px; height: 200px;"/>
                                     </h:link>
 
                                     <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
                                         <h:link styleClass="game_link" outcome="aboutGame" value="#{game.name} " includeViewParams="true">
                                             <f:param value="#{game.id}" name="id"/>
                                         </h:link>
-                                        <h:panelGrid columns="2" cellpadding="10">
-                                            <strong class="margin10"> Released  </strong>
-                                            <b:label severity="primary"  text="#{game.releaseDate}"/>
-                                        </h:panelGrid>
-                                        <h:panelGrid columns="2" cellpadding="10">
-                                            <strong class="margin10">Metacritic  </strong>
-                                            <b:label severity="success" text="#{game.metacritic}"/>
-                                        </h:panelGrid>
+
                                     </h:panelGrid>
                                 </h:panelGrid>
                             </p:outputPanel>
