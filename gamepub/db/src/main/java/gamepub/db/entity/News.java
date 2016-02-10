@@ -21,6 +21,9 @@ public class News {
     @Column(name = "LINK", nullable = false)
     String link;
 
+    @Column(name="UID",nullable = true)
+    String uid;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GAME_ID", nullable = false)
     Game game;
@@ -29,6 +32,14 @@ public class News {
     List<Comment> comments;
 
     public News() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public int getId() {

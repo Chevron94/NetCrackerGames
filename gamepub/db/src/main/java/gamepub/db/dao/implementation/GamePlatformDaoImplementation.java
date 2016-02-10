@@ -37,6 +37,24 @@ public class GamePlatformDaoImplementation extends BaseDaoImplementation<GamePla
         return result;
     }
 
+    public GamePlatform getGamePlatformByGameIdAndPlatformId(Integer gameId, Integer platformId) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<GamePlatform> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<Game>get("game").<Integer>get("id"), gameId),
+                cb.equal(root.<Game>get("platform").<Integer>get("id"), platformId));
+        GamePlatform result;
+        try {
+            result = (GamePlatform)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
     public List<GamePlatform> getGamePlatformsByGameId(Integer id) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -49,7 +67,7 @@ public class GamePlatformDaoImplementation extends BaseDaoImplementation<GamePla
 
     }
 
-    public List<GamePlatform> getGamePlatformByPlatformId(Integer id) {
+    public List<GamePlatform> getGamePlatformsByPlatformId(Integer id) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<GamePlatform> root = cq.from(instance);

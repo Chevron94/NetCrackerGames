@@ -3,6 +3,7 @@ package gamepub.db.dao.implementation;
 import gamepub.db.dao.NewsDao;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.News;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.omg.CORBA.DATA_CONVERSION;
 
 import javax.persistence.NoResultException;
@@ -29,6 +30,23 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         Root<News> root = cq.from(instance);
         cq.select(root);
         cq.where(cb.equal(root.<Integer>get("id"), id));
+        News result;
+        try {
+            result = (News)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
+    public News getNewsByUid(String uid) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<News> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("uid"), uid));
         News result;
         try {
             result = (News)getEntityManager().createQuery(cq).getSingleResult();
@@ -114,5 +132,11 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;
+    }
+    @Override
+    public News create(News news) {
+        News tmp = super.create(news);
+        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
+        return update(tmp);
     }
 }

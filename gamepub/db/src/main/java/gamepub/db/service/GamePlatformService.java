@@ -41,8 +41,14 @@ public class GamePlatformService extends GamePlatformDaoImplementation {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<GamePlatform> getGamePlatformByPlatformId(Integer id) {
-        return super.getGamePlatformByPlatformId(id);
+    public List<GamePlatform> getGamePlatformsByPlatformId(Integer id) {
+        return super.getGamePlatformsByPlatformId(id);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public GamePlatform getGamePlatformByGameIdAndPlatformId(Integer gameId, Integer platformId) {
+        return super.getGamePlatformByGameIdAndPlatformId(gameId, platformId);
     }
 
     @Override

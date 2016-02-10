@@ -3,6 +3,7 @@ package gamepub.db.dao.implementation;
 import gamepub.db.dao.GameDao;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.Platform;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,7 +12,6 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by roman on 06.12.15.
@@ -38,6 +38,23 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         return result;
     }
 
+    public Game getGameByUid(String uid) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Game> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("uid"), uid));
+        Game result;
+        try {
+            result = (Game)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
     public List<Game> getGamesByName(String name) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -53,7 +70,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
     public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
         String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game";
         if (parameterList.size() == 0) {
-            return this.ExecuteQuery(jpa);
+            return this.executeQuery(jpa);
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         for (HashMap.Entry<String, Object> param : parameterList) {
@@ -79,27 +96,29 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
                 } else {
                     if (param.getKey().equals("genre")) {
                         jpa += " AND g.genre= :genre";
-                    } else jpa += " AND g.game.releaseDate<= :dateGame";
+                    } else jpa += " AND gp.releaseDate<= :dateGame";
                     parameters.put(param.getKey(), param.getValue());
                 }
 
             }
         }
-        return this.ExecuteQuery(jpa, parameters);
+        return this.executeQuery(jpa, parameters);
     }
 
     public List<Game> getGamesOrderByMarks(int maxValue){
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery();
-        Root<Game> root = cq.from(instance);
-        cq.select(root);
-        cq.orderBy(cb.desc(root.<Integer>get("metacritic")), cb.desc(root.<Integer>get("releaseDate")));
-        List<Game> queryResult = getEntityManager().createQuery(cq).setMaxResults(maxValue).getResultList();
+        String jpa = "Select gp.game from GamePlatform gp Order by gp.metacritic desc, gp.game.name";
+        List<Game> queryResult = this.executeQuery(jpa);
         List<Game> result = new ArrayList<Game>();
-        result = queryResult;
-        closeEntityManager();
-    /*    for(int i = 1; i<=10 && queryResult.size()<maxValue+i; i++)
-            result.add(queryResult.get(maxValue+i));*/
+        for(int i = 0; i<Math.min(maxValue,queryResult.size()); i++){
+            result.add(queryResult.get(i));
+        }
         return result;
+    }
+
+    @Override
+    public Game create(Game game) {
+        Game tmp = super.create(game);
+        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
+        return update(tmp);
     }
 }

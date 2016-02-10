@@ -29,8 +29,9 @@ public class GenreDaoImplementation extends BaseDaoImplementation<Genre,Integer>
         }catch (NoResultException e){
             result = null;
         }finally {
-            closeEntityManager();
+
         }
+        closeEntityManager();
         return result;
     }
 

@@ -22,13 +22,13 @@
                         <br/>
                         <p:dataList value="#{aboutGameBean.gamePlatforms}" var="gameplatform" styleClass="dataList">
                             <b>#{gameplatform.platform.name}:</b> #{gameplatform.systemRequirements}
+                            <b>Release date:</b> #{aboutGameBean.game.releaseDate}
                         </p:dataList>
                         <b>Genres:</b>
                         <br/>
                         <p:dataList value="#{aboutGameBean.gameGenres}" var="gamegenre" styleClass="dataList">
                             #{gamegenre.genre.name}
                         </p:dataList>
-                        <b>Release date:</b> #{aboutGameBean.game.releaseDate}                      
                     </b:column>
                 </b:row>
                 <b:row>

@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,6 +57,18 @@ public class NewsService extends NewsDaoImplementation {
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<News> getNewsOrderByDate() {
         return super.getNewsOrderByDate();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public News getNewsByUid(String uid) {
+        return super.getNewsByUid(uid);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
+        return super.getNewsByCustomParams(parameterList);
     }
 
     @Override

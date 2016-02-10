@@ -5,6 +5,7 @@ import gamepub.db.entity.City;
 import gamepub.db.entity.Country;
 import gamepub.db.entity.User;
 import gamepub.db.entity.UserRole;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -30,6 +31,40 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
         Root<User> root = cq.from(instance);
         cq.select(root);
         cq.where(cb.equal(root.<Integer>get("id"), id));
+        User result;
+        try {
+            result = (User)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
+    public User getUserByUid(String uid) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<User> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String >get("uid"), uid));
+        User result;
+        try {
+            result = (User)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
+    public User getUserByToken(String token) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<User> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String >get("token"), token));
         User result;
         try {
             result = (User)getEntityManager().createQuery(cq).getSingleResult();
@@ -205,5 +240,12 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;
+    }
+
+    @Override
+    public User create(User user) {
+        User tmp = super.create(user);
+        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
+        return update(tmp);
     }
 }

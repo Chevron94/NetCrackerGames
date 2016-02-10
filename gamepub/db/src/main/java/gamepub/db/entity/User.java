@@ -13,6 +13,9 @@ public class User {
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(name="UID",nullable = true)
+    String uid;
+
     @Column(name = "LOGIN", nullable = false)
     String login;
     @Column(name = "PASSWORD", nullable = false)
@@ -27,6 +30,10 @@ public class User {
     String steamInfo;
     @Column(name = "FB_INFO", nullable = true)
     String fbInfo;
+    @Column(name = "TOKEN", nullable = true)
+    String token;
+    @Column(name = "ACTIVE")
+    Boolean active;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ROLE_ID", nullable = false)
@@ -197,6 +204,30 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override

@@ -22,15 +22,19 @@ public class BaseDaoImplementation<T,PK> extends AbstractDaoImplementation<T,PK>
 
     @Override
     protected EntityManager getEntityManager() {
-        em = EntityManagerCreator.CreateEntityManager();
-        em.getTransaction().begin();
+        if (em==null || !em.isOpen())
+            em = EntityManagerCreator.CreateEntityManager();
+        if (em.getTransaction() == null || !em.getTransaction().isActive())
+            em.getTransaction().begin();
         return em;
     }
 
     @Override
     protected void closeEntityManager() {
-        if (em.getTransaction().isActive()) em.getTransaction().commit();
-        if (em != null && em.isOpen()) em.close();
+        if (em.getTransaction().isActive())
+            em.getTransaction().commit();
+        if (em != null && em.isOpen())
+            em.close();
     }
 
     public T create(T t) {
