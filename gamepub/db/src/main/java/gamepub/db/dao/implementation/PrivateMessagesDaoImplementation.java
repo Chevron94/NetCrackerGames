@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * Created by roman on 05.12.15.
  */
-public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<PrivateMessage,Integer> implements PrivateMessageDao {
-    public PrivateMessagesDaoImplementation(){
+public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<PrivateMessage, Integer> implements PrivateMessageDao {
+    public PrivateMessagesDaoImplementation() {
         super(PrivateMessage.class);
     }
 
@@ -28,10 +28,10 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
         cq.where(cb.equal(root.<Integer>get("id"), id));
         PrivateMessage result;
         try {
-            result = (PrivateMessage)getEntityManager().createQuery(cq).getSingleResult();
-        }catch (NoResultException e){
+            result = (PrivateMessage) getEntityManager().createQuery(cq).getSingleResult();
+        } catch (NoResultException e) {
             result = null;
-        }finally {
+        } finally {
             closeEntityManager();
         }
         return result;
@@ -47,10 +47,10 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
                 cb.equal(root.<Date>get("date"), date));
         PrivateMessage result;
         try {
-            result = (PrivateMessage)getEntityManager().createQuery(cq).getSingleResult();
-        }catch (NoResultException e){
+            result = (PrivateMessage) getEntityManager().createQuery(cq).getSingleResult();
+        } catch (NoResultException e) {
             result = null;
-        }finally {
+        } finally {
             closeEntityManager();
         }
         return result;
@@ -85,6 +85,22 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
         cq.select(root);
         cq.where(cb.equal(root.<User>get("sender").<Integer>get("id"), senderId),
                 cb.equal(root.<User>get("receiver").<Integer>get("id"), receiverId));
+        cq.orderBy(cb.desc(root.<Date>get("date")));
+        List result = getEntityManager().createQuery(cq).getResultList();
+        closeEntityManager();
+        return result;
+    }
+
+    public List<PrivateMessage> getAllPrivateMessagesBySenderIdAndReceiverId(Integer senderId, Integer receiverId) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<PrivateMessage> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.or(cb.and(cb.equal(root.<User>get("sender").<Integer>get("id"), senderId),
+                cb.equal(root.<User>get("receiver").<Integer>get("id"), receiverId)),
+                cb.and(cb.equal(root.<User>get("sender").<Integer>get("id"), receiverId),
+                        cb.equal(root.<User>get("receiver").<Integer>get("id"), senderId))));
+        cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;

@@ -43,6 +43,8 @@ private boolean logged;
         return name;
     }
 
+    public User getUser(){return user;}
+
     /**
      * @param name the name to set
      */

@@ -222,7 +222,7 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
         List<Predicate> predicates = new ArrayList<Predicate>();
         if(parameterList!=null && parameterList.size()>0) {
             for (HashMap.Entry<String, Object> entry : parameterList) {
-                if (entry.getKey().equals("name")) {
+                if (entry.getKey().equals("login")) {
                     predicates.add(cb.like(root.<String>get("login"), "%" + entry.getValue() + "%"));
                 } else if (entry.getKey().equals("country")) {
                     predicates.add(cb.equal(root.<City>get("city").<Country>get("country"), entry.getValue()));

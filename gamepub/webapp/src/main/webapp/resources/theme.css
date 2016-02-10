@@ -7552,9 +7552,23 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 5px;
   float: right;
 }
+.margin10{
+  margin:10px;
+}
+.statusIcon{
+  margin:30px;
+  padding: 1px;
+}
 
 .dataList .ui-datalist-data{
 border: none;
 background: transparent;
 background-image: none;
+}
+.percent_33 {
+  width: 33%;
+}
+.game_link{
+  font-size: 14px;
+  font-weight: 600;
 }
