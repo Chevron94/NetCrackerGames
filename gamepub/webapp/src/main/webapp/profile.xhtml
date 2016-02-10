@@ -15,7 +15,7 @@
                 <f:viewParam name="userId" value="#{profileBean.userId}"/>
             </f:metadata>
 
-            <h2 align="center">#{profileBean.name}</h2>
+            <h2 align="center" id="userName">#{profileBean.name}</h2>
             <b:row>
                 <b:column span="4" offset="1">
                     <p:graphicImage value="#{profileBean.image}" style="width:50%; height: 50%;"/>
@@ -40,7 +40,7 @@
                             <p:outputLabel for="up" value="Choose image:"/>
                             <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
                                           skinSimple="true"/>
-                            <b:commandButton class="btn btn-danger" value="Submit" ajax="false"
+                            <p:commandButton class="btn btn-danger" value="Submit" update="info infoedit"
                                              actionListener="#{profileBean.confirmEdit()}"/>
                         </h:panelGrid>
 
@@ -83,7 +83,7 @@
                 <!-- Buttons and games-->
                 <b:column span="10" offset="1">
                     <h:form>
-                        <b:commandButton class="btn btn-warning" value="Edit" ajax="false"
+                        <p:commandButton class="btn btn-warning" value="Edit" update="info infoedit"
                                          actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
                     </h:form>
                     <b:button class="btn btn-primary" outcome="gallery" value="My gallery"
