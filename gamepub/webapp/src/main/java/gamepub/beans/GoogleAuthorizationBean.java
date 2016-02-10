@@ -9,6 +9,6 @@ package gamepub.beans;
  *
  * @author Иван
  */
-public class FaceBookAuthorization {
+public class GoogleAuthorizationBean {
     
 }

@@ -52,7 +52,7 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 @SessionScoped
-public class VKAuthorization implements Serializable {
+public class VKAuthorizationBean implements Serializable {
 
     @EJB
     private UserService userService;
@@ -94,7 +94,7 @@ public class VKAuthorization implements Serializable {
                 userService.create(user);
             }
         } else {
-            context.redirect("/");
+            context.redirect("http://localhost:8080/gamepub/registr.xhtml");
         }
     }
 
@@ -131,7 +131,7 @@ public class VKAuthorization implements Serializable {
     private static final String VK_AUTHORIZATION_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
 
-    public VKAuthorization() {
+    public VKAuthorizationBean() {
         clientId = "5282358";
         clientSecret = "0zKP5VC4jAfbq7w7gYsI";
         redirectUri = "http://localhost:8080/gamepub/vk.xhtml";
