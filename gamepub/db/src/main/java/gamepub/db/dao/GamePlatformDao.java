@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface GamePlatformDao extends BaseDao<GamePlatform,Integer> {
     public GamePlatform getGamePlatformById(Integer id);
+    public GamePlatform getGamePlatformByGameIdAndPlatformId(Integer gameId, Integer platformId);
     public List<GamePlatform> getGamePlatformsByGameId(Integer id);
-    public List<GamePlatform> getGamePlatformByPlatformId(Integer id);
+    public List<GamePlatform> getGamePlatformsByPlatformId(Integer id);
 }

@@ -14,6 +14,8 @@ public class Game {
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(name="UID",nullable = true)
+    String uid;
     @Column(name = "NAME", nullable = false)
     String name;
     @Column(name = "LINK_TO_STEAM", nullable = true)
@@ -24,11 +26,6 @@ public class Game {
     String description;
     @Column(name = "POSTER", nullable = false)
     String poster;
-    @Column(name = "METACRITIC")
-    int metacritic;
-
-    @Column(name = "RELEASE_DATE")
-    Date releaseDate;
 
     @Column(name = "STEAM_ID", nullable = true)
     int steamId;
@@ -48,6 +45,14 @@ public class Game {
 
 
     public Game() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public int getId() {
@@ -154,14 +159,6 @@ public class Game {
         this.steamId = steamId;
     }
 
-    public int getMetacritic() {
-        return metacritic;
-    }
-
-    public void setMetacritic(int metacritic) {
-        this.metacritic = metacritic;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -178,14 +175,6 @@ public class Game {
         return id;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
     @Override
     public String toString() {
         return "Game{" +
@@ -195,7 +184,6 @@ public class Game {
                 ", linkToSonyPlaystationStore='" + linkToSonyPlaystationStore + '\'' +
                 ", description='" + description + '\'' +
                 ", poster='" + poster + '\'' +
-                ", releaseDate=" + releaseDate +
                 ", steamId=" + steamId +
                 '}';
     }

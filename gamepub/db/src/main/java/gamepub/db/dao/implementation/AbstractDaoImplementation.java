@@ -13,7 +13,7 @@ public abstract class AbstractDaoImplementation<T, PK> {
     protected abstract EntityManager getEntityManager();
     protected abstract void closeEntityManager();
 
-    protected List<T> ExecuteQuery(String jpql, Map<String, Object> parameters){
+    protected List<T> executeQuery(String jpql, Map<String, Object> parameters){
         em = getEntityManager();
         Query query = em.createQuery(jpql);
         for(Map.Entry<String,Object> entry : parameters.entrySet()){
@@ -24,14 +24,14 @@ public abstract class AbstractDaoImplementation<T, PK> {
         return result;
     }
 
-    protected List<T> ExecuteQuery(String jpql){
+    protected List<T> executeQuery(String jpql){
         em = getEntityManager();
         List<T> result = em.createQuery(jpql).getResultList();
         closeEntityManager();
         return result;
     }
 
-    protected List<T> ExecuteQuery(String jpql, int maxResult){
+    protected List<T> executeQuery(String jpql, int maxResult){
         em = getEntityManager();
         List<T> result = em.createQuery(jpql).setMaxResults(maxResult).getResultList();
         closeEntityManager();

@@ -21,7 +21,7 @@
                 <job-name>Job</job-name>
                 <job-group>Group</job-group>
                 <!-- It will run every day at 4:00 -->
-                <cron-expression>0 0 20 * * ?</cron-expression>
+                <cron-expression>0 32 22 * * ?</cron-expression>
             </cron>
         </trigger>
     </schedule>

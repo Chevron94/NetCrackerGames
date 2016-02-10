@@ -1,6 +1,7 @@
 package gamepub.db.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by roman on 30.11.15.
@@ -21,6 +22,12 @@ public class GamePlatform {
 
     @Column(name="SYSTEM_REQUIREMENTS", columnDefinition = "TEXT", nullable = true)
     String systemRequirements;
+
+    @Column(name = "RELEASE_DATE")
+    Date releaseDate;
+
+    @Column(name = "METACRITIC")
+    int metacritic;
 
     public GamePlatform() {
     }
@@ -55,6 +62,22 @@ public class GamePlatform {
 
     public void setSystemRequirements(String systemRequirements) {
         this.systemRequirements = systemRequirements;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public int getMetacritic() {
+        return metacritic;
+    }
+
+    public void setMetacritic(int metacritic) {
+        this.metacritic = metacritic;
     }
 
     @Override

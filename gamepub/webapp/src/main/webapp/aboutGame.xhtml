@@ -15,20 +15,20 @@
                 <h1 align="center">#{aboutGameBean.game.name}</h1>
                 <b:row>
                     <b:column span="3" offset="2">
-                        <p:graphicImage value="#{aboutGameBean.game.poster}"/>
+                        <p:graphicImage value="#{aboutGameBean.game.poster}" style="height: 400px; width: 600px;"/>
                     </b:column>
                     <b:column span="4" offset="1">
                         <b>Platform and system requirements:</b>
                         <br/>
                         <p:dataList value="#{aboutGameBean.gamePlatforms}" var="gameplatform" styleClass="dataList">
                             <b>#{gameplatform.platform.name}:</b> #{gameplatform.systemRequirements}
+                            <b>Release date:</b> #{gameplatform.releaseDate}
                         </p:dataList>
                         <b>Genres:</b>
                         <br/>
                         <p:dataList value="#{aboutGameBean.gameGenres}" var="gamegenre" styleClass="dataList">
                             #{gamegenre.genre.name}
                         </p:dataList>
-                        <b>Release date:</b> #{aboutGameBean.game.releaseDate}                      
                     </b:column>
                 </b:row>
                 <b:row>

@@ -8,6 +8,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -85,6 +86,24 @@ public class UserService extends UserDaoImplementation {
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<User> getUsersByCountryId(Integer id) {
         return super.getUsersByCountryId(id);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public User getUserByUid(String uid) {
+        return super.getUserByUid(uid);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public User getUserByToken(String token) {
+        return super.getUserByToken(token);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<User> getUsersByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
+        return super.getUsersByCustomParams(parameterList);
     }
 
     @Override

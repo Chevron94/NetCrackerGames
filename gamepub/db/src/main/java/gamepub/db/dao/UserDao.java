@@ -10,10 +10,11 @@ import java.util.List;
  */
 public interface UserDao extends BaseDao<User, Integer> {
     public User getUserById(Integer id);
+    public User getUserByUid(String uid);
     public User getUserByLogin(String login);
     public User getUserByLoginAndPassword(String login, String password);
     public User getUserByEmail(String email);
-
+    public User getUserByToken(String token);
     public User getUserByVkInfo(String vkInfo);
     public User getUserBySteamInfo(String steamInfo);
     public User getUserByFbInfo(String fbInfo);
