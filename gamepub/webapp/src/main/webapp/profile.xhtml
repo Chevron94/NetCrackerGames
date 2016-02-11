@@ -76,7 +76,7 @@
                             <p:graphicImage value="#{sub.subscribedTo.avatarUrl}" style="width:50px; height: 50px;"/>
 
                             <h:link outcome="profile" value="#{sub.subscribedTo.login}" includeViewParams="true">
-                                <f:param value="#{sub.subscribedTo.id}" name="userId"/>
+                                <f:param value="#{sub.subscribedTo.uid}" name="userId"/>
                             </h:link>
                         </h:panelGrid>
                     </p:dataScroller>
@@ -133,7 +133,7 @@
                                             <p:graphicImage width="100%" height="90%" value="#{mygame.game.poster}"/>
                                             <h:link outcome="aboutGame" value="#{mygame.game.name} "
                                                     includeViewParams="true">
-                                                <f:param value="#{mygame.game.id}" name="id"/>
+                                                <f:param value="#{mygame.game.uid}" name="id"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:panel>
@@ -162,7 +162,7 @@
                                                             value="#{favouritegame.game.poster}"/>
                                             <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
                                                     includeViewParams="true">
-                                                <f:param value="#{favouritegame.game.id}" name="id"/>
+                                                <f:param value="#{favouritegame.game.uid}" name="id"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:panel>
@@ -191,7 +191,7 @@
                                                             value="#{exchangegame.game.poster}"/>
                                             <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
                                                     includeViewParams="true">
-                                                <f:param value="#{exchangegame.game.id}" name="id"/>
+                                                <f:param value="#{exchangegame.game.uid}" name="id"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:panel>
@@ -212,7 +212,7 @@
                                             <p:graphicImage width="100%" height="90%" value="#{recomendGame.poster}"/>
                                             <h:link outcome="aboutGame" value="#{recomendGame.name} "
                                                     includeViewParams="true">
-                                                <f:param value="#{recomendGame.id}" name="id"/>
+                                                <f:param value="#{recomendGame.uid}" name="id"/>
                                             </h:link>
                                         </h:panelGrid>
                                     </p:panel>

@@ -21,7 +21,7 @@ import java.util.*;
 public class AllNewsBean {
 
     String newsName;
-    Integer gameId;
+    String gameId;
     Date date;
 
     @EJB
@@ -37,8 +37,8 @@ public class AllNewsBean {
             param = new HashMap.SimpleEntry<String, Object>("name", newsName);
             parametersList.add(param);
         }
-        if(gameId != null && gameId>0) {
-            param = new HashMap.SimpleEntry<String, Object>("game", gameService.getGameById(gameId));
+        if(gameId != null && gameId.length()>0) {
+            param = new HashMap.SimpleEntry<String, Object>("game", gameService.getGameByUid(gameId));
             parametersList.add(param);
         }
         if(date != null) {
@@ -85,11 +85,11 @@ public class AllNewsBean {
         this.newsName = newsName;
     }
 
-    public Integer getGameId() {
+    public String getGameId() {
         return gameId;
     }
 
-    public void setGameId(Integer gameId) {
+    public void setGameId(String gameId) {
         this.gameId = gameId;
     }
 

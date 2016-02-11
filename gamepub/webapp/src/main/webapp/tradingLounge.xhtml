@@ -39,7 +39,7 @@ and open the template in the editor.
                         
                         <h:panelGrid columns="2" >
                         <h:link outcome="profile" includeViewParams="true"  >
-                            <f:param value="#{user.id}" name="userId"/>
+                            <f:param value="#{user.uid}" name="userId"/>
                             <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}" style="width:100px; height: 100 px;"/>
                         </h:link>                         
                     </h:panelGrid>
@@ -50,7 +50,7 @@ and open the template in the editor.
                                     rows="12"> 
                                                                       
                              <h:link outcome="aboutGame" includeViewParams="true">
-                                            <f:param value="#{wantedgame.game.id}" name="id"/>
+                                            <f:param value="#{wantedgame.game.uid}" name="id"/>
                                             <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"
                                                             value="#{wantedgame.game.poster}" />
                                             
@@ -65,7 +65,7 @@ and open the template in the editor.
                         rows="12" > 
                                                                       
                              <h:link outcome="aboutGame" includeViewParams="true">
-                                            <f:param value="#{exchangegame.game.id}" name="id"/>
+                                            <f:param value="#{exchangegame.game.uid}" name="id"/>
                                             <b:image name="game" tooltip="#{exchangegame.game.name}" width="100%" height="100%"
                                                      value="#{exchangegame.game.poster}" />
                                             

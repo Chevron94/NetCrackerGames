@@ -31,7 +31,7 @@ and open the template in the editor.
                                 <p:graphicImage value="#{game.poster}" style="width:45%; height: 50%;"/>
                                                                     
                                 <h:link style="margin-right: 30px" outcome="aboutGame" value="#{game.name} " includeViewParams="true">
-                                <f:param value="#{game.id}" name="id"/>
+                                <f:param value="#{game.uid}" name="id"/>
                                 </h:link> 
                                 
                         <p:tieredMenu   model="#{menuModelBean.getMenubar(tradeBean.getUserNames(game))}"

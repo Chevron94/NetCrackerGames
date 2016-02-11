@@ -29,7 +29,7 @@ import org.primefaces.event.FileUploadEvent;
 @SessionScoped
 public class ProfileBean {
 
-    private int id;
+    private Integer id;
     List<Game> myGames;
     List<UserGame> userGame;
     private boolean isEdit;
@@ -73,16 +73,16 @@ public class ProfileBean {
         catch (NullPointerException e){
 
         }
-        if (!userId.equals("my")) {
-            id = Integer.parseInt(userId);
-        }
         FacesContext context = FacesContext.getCurrentInstance();
         if (!context.getExternalContext().getSessionMap().containsKey("edit")) //context.getExternalContext().getSessionMap().remove("edit");
         {
             context.getExternalContext().getSessionMap().put("edit", false);
         }
-
-        User user = userService.getUserById(id);
+        User user;
+        if (!userId.equals("my")) {
+            user = userService.getUserByUid(userId);
+            id = user.getId();
+        }else user = userService.getUserById(id);
 
         return user.getLogin();
     }
