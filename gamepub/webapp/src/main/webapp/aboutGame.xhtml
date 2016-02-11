@@ -15,7 +15,7 @@
                 <h1 align="center">#{aboutGameBean.game.name}</h1>
                 <b:row>
                     <b:column span="3" offset="2">
-                        <p:graphicImage value="#{aboutGameBean.game.poster}" style="height: 400px; width: 600px;"/>
+                        <p:graphicImage value="#{aboutGameBean.game.poster}" style="max-height: 400px; max-width: 600px;"/>
                     </b:column>
                     <b:column span="4" offset="1">
                         <b>Platform and system requirements:</b>
@@ -62,15 +62,15 @@
                         <h:form id="tableReviews">
                             <p:growl id="commentsMessage" showDetail="true" life="1000" />
 
-                            <p:panel styleClass="comments-container" header="Reviews">
+                            <p:panel styleClass="comments-container">
                                 <p:dataGrid var="mark"
                                             id="marks"
                                             value="#{aboutGameBean.marksAndReviews}"
                                             emptyMessage="No reviews"
                                             columns="1"
                                             rows = "10"
-                                            paginator="true"
-                                            paginatorTemplate="{CurrentPageReport} {PageLinks}">
+                                            paginator="false"
+                                            paginatorTemplate="{PageLinks}">
                                     <p:panel id="mark" 
                                              header="#{mark.user.login}"
                                              style="text-align: left; ">

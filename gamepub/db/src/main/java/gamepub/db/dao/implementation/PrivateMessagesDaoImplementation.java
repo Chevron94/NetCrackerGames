@@ -62,6 +62,7 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
         Root<PrivateMessage> root = cq.from(instance);
         cq.select(root);
         cq.where(cb.equal(root.<User>get("sender").<Integer>get("id"), id));
+        cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;
@@ -73,6 +74,7 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
         Root<PrivateMessage> root = cq.from(instance);
         cq.select(root);
         cq.where(cb.equal(root.<User>get("receiver").<Integer>get("id"), id));
+        cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;

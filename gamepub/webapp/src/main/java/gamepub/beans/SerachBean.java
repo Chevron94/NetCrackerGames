@@ -1,14 +1,8 @@
 package gamepub.beans;
 
 import com.sun.faces.context.SessionMap;
-import gamepub.db.entity.Game;
-import gamepub.db.entity.Genre;
-import gamepub.db.entity.Platform;
-import gamepub.db.entity.UserGame;
-import gamepub.db.service.GameService;
-import gamepub.db.service.GenreService;
-import gamepub.db.service.PlatformService;
-import gamepub.db.service.UserGameService;
+import gamepub.db.entity.*;
+import gamepub.db.service.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.primefaces.component.autocomplete.AutoComplete;
@@ -39,7 +33,8 @@ public class SerachBean {
 
     @EJB
     GameService gameService;
-
+    @EJB
+    GamePlatformService gamePlatformService;
     @EJB
     GenreService genreService;
     @EJB
@@ -133,6 +128,7 @@ public class SerachBean {
         return genre;
     }
 
+
     public String goToConcreteGame() {
         return "game?faces-redirect=true";
     }
@@ -167,6 +163,11 @@ public class SerachBean {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<GamePlatform> getPlatformsFromGame(Game game){
+        List<GamePlatform> gamePlatforms = gamePlatformService.getGamePlatformsByGameId(game.getId());
+        return gamePlatforms;
     }
 }
 

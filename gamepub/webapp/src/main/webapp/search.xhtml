@@ -59,14 +59,19 @@
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <h:link outcome="aboutGame" includeViewParams="true">
                                         <f:param value="#{game.id}" name="id"/>
-                                        <p:graphicImage  value="#{game.poster}" style="width:300px; height: 200px;"/>
+                                        <p:graphicImage  value="#{game.poster}" style="width:400px; height: 200px;"/>
                                     </h:link>
 
                                     <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
                                         <h:link styleClass="game_link" outcome="aboutGame" value="#{game.name} " includeViewParams="true">
                                             <f:param value="#{game.id}" name="id"/>
                                         </h:link>
-
+                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}" var="gameplatform" styleClass="dataList">
+                                            <b>Release date:</b> <b:label severity="primary"  text="#{gameplatform.releaseDate}"/>
+                                        </p:dataList>
+                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}" var="gameplatform" styleClass="dataList">
+                                            <b>Metacritic:</b> <b:label severity="success"  text="#{gameplatform.metacritic}"/>
+                                        </p:dataList>
                                     </h:panelGrid>
                                 </h:panelGrid>
                             </p:outputPanel>
