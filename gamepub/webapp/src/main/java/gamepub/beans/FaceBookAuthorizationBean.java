@@ -12,47 +12,37 @@ import gamepub.db.service.CityService;
 import gamepub.db.service.UserRoleService;
 import gamepub.db.service.UserService;
 import gamepub.encode.shaCode;
-import java.io.IOException;
-import java.io.Serializable;
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.ClientParamsStack;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author Иван
+ * @author Ivan
  */
 @ManagedBean
 @SessionScoped
-public class VKAuthorization implements Serializable {
+public class FaceBookAuthorizationBean implements Serializable {
 
     @EJB
     private UserService userService;
@@ -69,9 +59,9 @@ public class VKAuthorization implements Serializable {
     protected String userInfoUrl;
     protected boolean isError;
     public String login;
-    boolean logged=false;
-    
-    public boolean getLogged(){
+    boolean logged = false;
+
+    public boolean getLogged() {
         return logged;
     }
 
@@ -94,7 +84,7 @@ public class VKAuthorization implements Serializable {
                 userService.create(user);
             }
         } else {
-            context.redirect("/");
+            context.redirect("http://localhost:8080/gamepub/registr.xhtml");
         }
     }
 
@@ -105,7 +95,7 @@ public class VKAuthorization implements Serializable {
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
         context.redirect("http://localhost:8080/gamepub/");
-        logged=true;
+        logged = true;
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
@@ -128,14 +118,14 @@ public class VKAuthorization implements Serializable {
         return json;
     }
 
-    private static final String VK_AUTHORIZATION_URL = "https://oauth.vk.com/authorize";
-    private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
+    private static final String FACEBOOK_AUTHORIZATION_URL = "https://www.facebook.com/dialog/oauth";
+    private static final String ACCESS_TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
 
-    public VKAuthorization() {
-        clientId = "5282358";
-        clientSecret = "0zKP5VC4jAfbq7w7gYsI";
-        redirectUri = "http://localhost:8080/gamepub/vk.xhtml";
-        userInfoUrl = "https://api.vk.com/method/users.get";
+    public FaceBookAuthorizationBean() {
+        clientId = "1689596507984950";
+        clientSecret = "e5b0079865e552362437c361aeea01b7";
+        redirectUri = "http://localhost:8080/gamepub/facebook.xhtml";
+        userInfoUrl = "https://graph.facebook.com/me";
         isError = false;
     }
 
@@ -153,7 +143,7 @@ public class VKAuthorization implements Serializable {
 
     @PostConstruct
     public void buildUserUrl() {
-        String url = VK_AUTHORIZATION_URL + "?client_id=" + clientId
+        String url = FACEBOOK_AUTHORIZATION_URL + "?client_id=" + clientId
                 + "&redirect_uri=" + redirectUri
                 + "&response_type=code";
         userUrl = url;
@@ -165,23 +155,34 @@ public class VKAuthorization implements Serializable {
                 + "&client_secret=" + clientSecret
                 + "&code=" + authCode
                 + "&redirect_uri=" + redirectUri;
-        String json = getResponseJson(urlAccessToken);
-        if (getJsonValue(json, "error") != null) {
-            isError = true;
-        } else {
-            String accessToken = getJsonValue(json, "access_token");
-            String userId = getJsonValue(json, "user_id");
+        String response = getResponseString(urlAccessToken);
+        try {
+            if (getJsonValue(response, "error") != null) {
+                isError = true;
+            }
+        } catch (ParseException e) {
+        }
+        if (!isError) {
+            String accessToken = getAccessToken(response);
+            //        String userId=getAccessToken();
             String urlUserInfo = userInfoUrl
-                    + "?uids=" + userId
-                    + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
-                    + "&access_token=" + accessToken;
-            json = getResponseJson(urlUserInfo);
+                    + "?access_token=" + accessToken;
+            String json = getResponseString(urlUserInfo);
+            String personalFacebookId = getJsonValue(json, "id");
+            String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?type=large";
+            json = addPictureUrl(json, pictureUrl);
             return json;
         }
         return "";
     }
 
-    private String getResponseJson(String url) throws IOException {
+    private String getAccessToken(String response) {
+        int first = response.indexOf("=") + 1;
+        int last = response.indexOf("&expires");
+        return response.substring(first, last);
+    }
+
+    private String getResponseString(String url) throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
         HttpResponse response = client.execute(request);
@@ -195,22 +196,30 @@ public class VKAuthorization implements Serializable {
         return result.toString();
     }
 
+    private String addPictureUrl(String json, String pictureUrl) {
+        JSONParser jsonParser = new JSONParser();
+        String result = "";
+        try {
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+            jsonObject.put("picture", pictureUrl);
+            result = jsonObject.toJSONString();
+//            String jsonComponent=array.get(index).toString();
+        } catch (ParseException ex) {
+        }
+        return result;
+    }
+
     public User createUser() throws IOException, ParseException, NoSuchAlgorithmException {
         String startJson = fetchPersonalInfo();
         if (!startJson.equals("")) {
-
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(startJson);
-            JSONArray jsonArray = (JSONArray) jsonObject.get("response");
-            JSONObject json = (JSONObject) jsonArray.get(0);
-            String id = getJsonValue(json, "uid");
-            //        return id;
-            String nickname = "VK" + id;
-            String firstName = getJsonValue(json, "first_name");
-            String lastName = getJsonValue(json, "last_name");
-            String name = firstName + " " + lastName;
-            String photo = getJsonValue(json, "photo_max");
-            String bDate = getJsonValue(json, "bdate");
+            JSONObject json = (JSONObject) jsonParser.parse(startJson);
+//        String error=getJsonValue(json, "error");
+            String id = getJsonValue(json, "id");
+//        return id;
+            String nickname = "Facebook" + id;
+            String name = getJsonValue(json, "name");
+            String photo = getJsonValue(json, "picture");
 
             User user = new User();
             UserRole ur = userRoleService.getUserRoleById(1);
@@ -222,6 +231,7 @@ public class VKAuthorization implements Serializable {
             user.setLogin(nickname);
             user.setCity(city);
             user.setUserRole(ur);
+
             return user;
         }
         return null;

@@ -11,14 +11,14 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui" >
     <head>
         <f:metadata>
-            <f:viewParam name="code" value="#{vKAuthorizationBean.authCode}"/>
+            <f:viewParam name="code" value="#{googleAuthorizationBean.authCode}"/>
         </f:metadata>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
         <div>
-            #{vKAuthorizationBean.doRegistration()}
-            #{vKAuthorizationBean.doLogin()}
+            #{googleAuthorizationBean.doRegistration()}
+            #{googleAuthorizationBean.doLogin()}
         </div>
     </body>
 </html>
