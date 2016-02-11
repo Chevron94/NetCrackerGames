@@ -147,4 +147,8 @@ public class MessageBean {
         receiverId = 0;
 
     }
+
+    public User getUser(){
+        return userService.getUserById( SessionBean.getUserId());
+    }
 }
