@@ -45,7 +45,7 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 @SessionScoped
-public class GoogleAuthorizationBean {
+public class GoogleAuthorizationBean implements Serializable{
     
     @EJB
     private UserService userService;

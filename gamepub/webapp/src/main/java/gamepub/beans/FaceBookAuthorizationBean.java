@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -58,7 +56,7 @@ public class FaceBookAuthorizationBean implements Serializable {
     protected String redirectUri;
     protected String userInfoUrl;
     protected boolean isError;
-    public String login;
+    public String fBInfo;
     boolean logged = false;
 
     public boolean getLogged() {
@@ -70,10 +68,10 @@ public class FaceBookAuthorizationBean implements Serializable {
         User user = createUser();
         if (user != null) {
 
-            login = user.getLogin();
+            fBInfo = user.getFbInfo();
             User userInBase = null;
             try {
-                userInBase = userService.getUserByLogin(user.getLogin());
+                userInBase = userService.getUserByFbInfo(user.getFbInfo());
             } catch (Exception e) {
 
             }
@@ -91,7 +89,7 @@ public class FaceBookAuthorizationBean implements Serializable {
     public void doLogin() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
-        User user = userService.getUserByLogin(login);
+        User user = userService.getUserByFbInfo(fBInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
         context.redirect("http://localhost:8080/gamepub/");
@@ -227,6 +225,7 @@ public class FaceBookAuthorizationBean implements Serializable {
 
             user.setAvatarUrl(photo);
             user.setPassword(shaCode.code(shaCode.code(name) + id));
+            user.setFbInfo(id);
             user.setEmail("default email");
             user.setLogin(nickname);
             user.setCity(city);

@@ -11,24 +11,13 @@ import gamepub.db.service.CityService;
 import gamepub.db.service.UserRoleService;
 import gamepub.db.service.UserService;
 import gamepub.encode.shaCode;
-import java.io.IOException;
-import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -67,7 +56,7 @@ public class VKAuthorizationBean implements Serializable {
     protected String redirectUri;
     protected String userInfoUrl;
     protected boolean isError;
-    public String login;
+    public String vKInfo;
     boolean logged=false;
     
     public boolean getLogged(){
@@ -79,10 +68,11 @@ public class VKAuthorizationBean implements Serializable {
         User user = createUser();
         if (user != null) {
 
-            login = user.getLogin();
+            vKInfo = user.getVkInfo();
+            
             User userInBase = null;
             try {
-                userInBase = userService.getUserByLogin(user.getLogin());
+                userInBase = userService.getUserByVkInfo(user.getVkInfo());
             } catch (Exception e) {
 
             }
@@ -100,7 +90,7 @@ public class VKAuthorizationBean implements Serializable {
     public void doLogin() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
-        User user = userService.getUserByLogin(login);
+        User user = userService.getUserByVkInfo(vKInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
         context.redirect("http://localhost:8080/gamepub/");
@@ -218,6 +208,7 @@ public class VKAuthorizationBean implements Serializable {
             user.setAvatarUrl(photo);
             user.setPassword(shaCode.code(shaCode.code(name) + id));
             user.setEmail("default email");
+            user.setVkInfo(id);
             user.setLogin(nickname);
             user.setCity(city);
             user.setUserRole(ur);
