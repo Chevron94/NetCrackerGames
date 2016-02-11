@@ -2,6 +2,9 @@ package gamepub.beans;
 
 import gamepub.db.entity.Game;
 import gamepub.db.service.GameService;
+import gamepub.parse.Match;
+import gamepub.parse.Tournament;
+import java.io.IOException;
 import sun.util.resources.cldr.es.CalendarData_es_GQ;
 
 import javax.ejb.EJB;
@@ -11,14 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Анатолий on 17.12.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ on 17.12.2015.
  */
 @ManagedBean
 @SessionScoped
 public class MainPageBean {
-
     List<Game> myGames;
-
     @EJB
     GameService gameService;
 
@@ -34,5 +35,13 @@ public class MainPageBean {
 
     public String goToConcreteGame() {
         return "game?faces-redirect=true";
+    }
+
+    /**
+     * @return the matches
+     */
+    public List<Match> getMatches() throws IOException {
+        Tournament tournament = new Tournament();
+        return tournament.getMatches();        
     }
 }
