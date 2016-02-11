@@ -66,11 +66,11 @@
                 <div class="right-sidebar">
                     <h3 align="center">Tournaments</h3>
                     <h:form id="formRight">
-                        <p:dataList value="#{dataListView.cars1}" var="car" type="ordered">
+                        <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered" emptyMessage="No matches today">
                             <f:facet name="header">
-                                Basic
+                                Dota2
                             </f:facet>
-                            #{car.brand}, #{car.year}
+                          #{match.status}: #{match.setTournament(tournament)} - #{match.team1} - #{match.dataScore} - #{match.team2} 
                         </p:dataList>
                     </h:form>
                 </div><!-- .right-sidebar -->
