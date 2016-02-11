@@ -50,7 +50,7 @@
                             <p:graphicImage value="#{user.avatarUrl}" style="width:70px; height: 70 px;"/>
 
                             <h:link outcome="profile" value="#{user.login}" includeViewParams="true">
-                                <f:param value="#{user.id}" name="userId"/>
+                                <f:param value="#{user.uid}" name="userId"/>
                             </h:link>
                         </h:panelGrid>
                     </p:dataScroller>

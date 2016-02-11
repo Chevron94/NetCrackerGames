@@ -53,7 +53,7 @@ import org.primefaces.context.RequestContext;
 public class AboutGameBean {
 
     @ManagedProperty(value = "#{param.id}")
-    private int id;
+    private String id;
 
     @EJB
     GameService gameService;
@@ -81,8 +81,8 @@ public class AboutGameBean {
 
     public Game getGame() {
         HttpSession ses = SessionBean.getSession();
-        ses.setAttribute("gameid", id);
-        Game g = gameService.getGameById(id);
+        Game g = gameService.getGameByUid(id);
+        ses.setAttribute("gameid", g.getId());
         UserGame userGame = getUserGame();
         if (userGame != null) {
             disableButtons(userGame);
@@ -95,7 +95,7 @@ public class AboutGameBean {
     }
 
     public List<Mark> getMarksAndReviews() {
-        id = SessionBean.getGameId();
+        Integer id = SessionBean.getGameId();
         marksAndReviews = markService.getMarksByGameId(id);
         return marksAndReviews;
     }
@@ -301,11 +301,11 @@ public class AboutGameBean {
         userGameService.update(userGame);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

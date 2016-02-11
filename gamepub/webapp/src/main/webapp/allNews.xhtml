@@ -25,7 +25,7 @@
                             <h3 style="margin-top:0px">Game</h3>
                             <b:selectOneMenu id="gameId" value="#{allNewsBean.gameId}" style="width:125px">
                                 <f:selectItems value="#{allNewsBean.games}" var="game" itemLabel="#{game.name}"
-                                               itemValue="#{game.id}"/>
+                                               itemValue="#{game.uid}"/>
                             </b:selectOneMenu>
                         </h:panelGrid>
                         <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
@@ -46,7 +46,7 @@
                             <p:graphicImage value="#{news.game.poster}" style="width:45%; height: 50%;"/>
 
                             <h:link outcome="news" value="#{news.name}" includeViewParams="true">
-                                <f:param value="#{news.id}" name="newsId"/>
+                                <f:param value="#{news.uid}" name="newsId"/>
                             </h:link>
                         </h:panelGrid>
                     </p:dataScroller>

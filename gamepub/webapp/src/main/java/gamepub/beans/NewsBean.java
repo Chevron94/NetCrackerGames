@@ -33,7 +33,7 @@ import org.primefaces.context.RequestContext;
 public class NewsBean {
 
     @ManagedProperty(value = "#{param.newsId}")
-    private int newsId;
+    private String newsId;
 
     @EJB
     NewsService newsService;
@@ -47,13 +47,12 @@ public class NewsBean {
     public News getNews() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().put("newsId", newsId);
-        return newsService.getNewsById(newsId);
+        return newsService.getNewsByUid(newsId);
     }
 
     public List<Comment> getComments() {
         FacesContext context = FacesContext.getCurrentInstance();
-        newsId = Integer.parseInt(context.getExternalContext().getSessionMap().get("newsId").toString());
-        comments = commentService.getCommentsByNewsId(newsId);
+        comments = commentService.getCommentsByNewsId(newsService.getNewsByUid(context.getExternalContext().getSessionMap().get("newsId").toString()).getId());
         return comments;
     }
 
@@ -77,7 +76,7 @@ public class NewsBean {
         comm.setDate(new java.util.Date());
         comm.setText(comment);
         comm.setUser(userService.getUserById(SessionBean.getUserId()));
-        comm.setNews(newsService.getNewsById(Integer.valueOf(context.getExternalContext().getSessionMap().get("newsId").toString())));
+        comm.setNews(newsService.getNewsByUid(context.getExternalContext().getSessionMap().get("newsId").toString()));
         //context.getExternalContext().getSessionMap().remove("newsId");
         commentService.create(comm);
 
@@ -86,7 +85,7 @@ public class NewsBean {
     }
 
     public void deleteComment(Comment comment) {
-        if (comment.getUser().getId() == SessionBean.getUserId()) { //тут пользователя проверять потом
+        if (comment.getUser().getId() == SessionBean.getUserId()) { //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             commentService.delete(comment.getId());
         }
         else{
@@ -95,11 +94,11 @@ public class NewsBean {
         }
     }
 
-    public int getNewsId() {
+    public String getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(String newsId) {
         this.newsId = newsId;
     }
 }
