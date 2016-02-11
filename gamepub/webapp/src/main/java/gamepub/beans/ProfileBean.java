@@ -178,12 +178,6 @@ public class ProfileBean {
         if(login != null && userService.getUserByLogin(login) == null){
             user.setLogin(login);
         }
-        else{
-            FacesMessage failMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Error",
-                    "Failed to login!");
-            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
-        }
 
         userService.update(user);
 
