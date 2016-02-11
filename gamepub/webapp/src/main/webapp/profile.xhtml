@@ -15,7 +15,7 @@
                 <f:viewParam name="userId" value="#{profileBean.userId}"/>
             </f:metadata>
 
-            <h2 align="center">#{profileBean.name}</h2>
+            <h2 align="center" id="userName">#{profileBean.name}</h2>
             <b:row>
                 <b:column span="4" offset="1">
                     <p:graphicImage value="#{profileBean.image}" style="width:50%; height: 50%;"/>
@@ -40,18 +40,22 @@
                             <p:outputLabel for="up" value="Choose image:"/>
                             <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
                                           skinSimple="true"/>
-                            <b:commandButton class="btn btn-danger" value="Submit" ajax="false"
+                            <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
                                              actionListener="#{profileBean.confirmEdit()}"/>
                         </h:panelGrid>
 
                     </h:form>
                     <h:form id="info">
                         <h:panelGrid columns="1" cellpadding="5" rendered="#{!profileBean.isEdit}">
+                            City:
                             <b:label text="#{profileBean.city}"/>
+                            Country:
                             <b:label text="#{profileBean.country}"/>
+                            Email:
                             <b:label text="#{profileBean.email}"/>
 
                             <p:layout style="max-width:100px; max-height:100px; min-height: 50px; position: relative;" rendered="#{profileBean.haveFbInfo}">
+                                About me:
                                 <p:layoutUnit position="center">
                                     #{profileBean.fbInfo}
                                 </p:layoutUnit>
@@ -83,7 +87,7 @@
                 <!-- Buttons and games-->
                 <b:column span="10" offset="1">
                     <h:form>
-                        <b:commandButton class="btn btn-warning" value="Edit" ajax="false"
+                        <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
                                          actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
                     </h:form>
                     <b:button class="btn btn-primary" outcome="gallery" value="My gallery"
@@ -101,7 +105,7 @@
                         <b:commandButton class="btn btn-danger" value="UnFollow" ajax="false"
                                          actionListener="#{profileBean.unfollow()}"
                                          rendered="#{profileBean.isSubscribedTo}"/>
-                        <b:button outcome="mesDialog" class="btn btn-info" value="Write" ajax="false"
+                        <b:button outcome="mesDialog" class="btn btn-info" value="Dialog" ajax="false"
                                   rendered="#{profileBean.isSubscribedTo}">
                             <f:param value="#{profileBean.userId}" name="receiverId"/>
                         </b:button>

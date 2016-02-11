@@ -22,7 +22,7 @@ import java.util.*;
 @SessionScoped
 public class MessageBean {
 
-    String userLogin;
+
 
     @EJB
     PrivateMessageService privateMessageService;
@@ -32,13 +32,7 @@ public class MessageBean {
     int receiverId;
     String message;
     User receiver;
-    public String getUserLogin(){
-        return userLogin;
-    }
 
-    public void setUserLogin(String userLogin){
-        this.userLogin  = userLogin;
-    }
 
     public int getReceiverId(){
         return receiverId;
@@ -49,27 +43,7 @@ public class MessageBean {
         receiver = userService.getUserById(receiverId);
     }
 
-    public void lifeSearch() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if(userLogin != null){
-            facesContext.getExternalContext().getSessionMap().put("userMes", userLogin);
-        }
-    }
-    public List<User> getUsers() {
-        List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
-        Map.Entry<String, Object> param;
-        if (userLogin != null && userLogin.length()>0) {
-            param = new HashMap.SimpleEntry<String, Object>("login", userLogin);
-            parametersList.add(param);
-            return userService.getUsersByCustomParams(parametersList);
-        }
-        return null;
-    }
 
-    public void findUser(User user){
-        userLogin = user.getLogin();
-        receiverId = user.getId();
-    }
 
 
     public User getReceiver() {
@@ -92,18 +66,7 @@ public class MessageBean {
         return privateMessageService.getSendedPrivateMessagesBySenderId(SessionBean.getUserId());
     }
 
-    public String sendMessage() {
-        PrivateMessage privateMessage = new PrivateMessage();
-        privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
-        privateMessage.setReceiver(userService.getUserById(receiverId));
-        privateMessage.setDate(new Date());
-        privateMessage.setText(message);
-        privateMessageService.create(privateMessage);
-        receiverId = 0;
-        userLogin="";
-        message = "";
-        return "allMessages";
-    }
+
 
     public boolean getReceiverIsNull() {
         HttpSession session = SessionBean.getSession();
@@ -144,7 +107,11 @@ public class MessageBean {
         privateMessage.setText(message);
         privateMessageService.create(privateMessage);
         inputText.resetValue();
-        receiverId = 0;
 
+
+    }
+
+    public User getUser(){
+        return userService.getUserById( SessionBean.getUserId());
     }
 }

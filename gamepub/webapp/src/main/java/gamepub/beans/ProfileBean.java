@@ -66,7 +66,13 @@ public class ProfileBean {
     }
 
     public String getName() {
-        id = SessionBean.getUserId();
+        isEdit = false;
+        try {
+            id = SessionBean.getUserId();
+        }
+        catch (NullPointerException e){
+
+        }
         if (!userId.equals("my")) {
             id = Integer.parseInt(userId);
         }
@@ -77,7 +83,7 @@ public class ProfileBean {
         }
 
         User user = userService.getUserById(id);
-        isEdit = false;
+
         return user.getLogin();
     }
 
@@ -101,7 +107,7 @@ public class ProfileBean {
     }
 
     public String getLogin(){
-        return login;
+        return userService.getUserById(id).getLogin();
     }
 
     public void setLogin(String login){
@@ -207,7 +213,7 @@ public class ProfileBean {
 
 
     public boolean getHaveFbInfo(){
-        return  userService.getUserById(id).getFbInfo() != null;
+        return  userService.getUserById(id).getFbInfo() != null && userService.getUserById(id).getFbInfo().length() > 1;
     }
 
     //Games
