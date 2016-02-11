@@ -13,30 +13,35 @@
         <ui:define name="content">
             <h:outputStylesheet name="theme.css"/>
             <b:row>
-                <b:column span="8" offset="2">
+                <b:column span="5" offset="2">
                     <h:form id="messageForm">
-                        <p:growl id="growl" life="2000" />
+                        <p:growl id="growl" life="2000"/>
                         <h:panelGrid columns="1" style="width: 100%;" styleClass="newsItem">
 
-                            <h:panelGrid columns="2" id="userMesLogin">
-                                <p:graphicImage value="#{messageBean.receiver.avatarUrl}"
-                                                style="width:50px; height: 50px;" rendered="#{!messageBean.receiverIsNull}"/>
-                                <p:inputText value="#{messageBean.userLogin}"
-                                             >
+                            <h:panelGrid columns="3" id="userMesLogin">
+                                <p:graphicImage value="#{oneMessageBean.receiver.avatarUrl}"
+                                                style="width:50px; height: 50px;"
+                                                rendered="#{!oneMessageBean.receiverIsNull}"/>
+                                <p:inputText value="#{oneMessageBean.userLogin}">
                                     <p:ajax event="keyup" update=":overlayForm:messageOverlayUsers"
-                                            listener="#{messageBean.lifeSearch}"/>
+                                            listener="#{oneMessageBean.lifeSearch}"/>
                                 </p:inputText>
+                                <p:button class="btn btn-info" value="Go to dialog" outcome="mesDialog"
+                                          rendered="#{!oneMessageBean.receiverIsNull}">
+                                    <f:param value="#{oneMessageBean.receiver.id}" name="receiverId"/>
+                                </p:button>
                             </h:panelGrid>
 
-                            <p:inputTextarea value="#{messageBean.myMessage}" rows="10" cols="99"/>
-                            <b:commandButton class="btn btn-primary" value="Send" ajax="false"
-                                             action="#{messageBean.sendMessage}"/>
+                            <p:inputTextarea value="#{oneMessageBean.myMessage}" rows="10" cols="99"/>
+                            <p:commandButton class="btn btn-primary" value="Send" ajax="false"
+                                             action="#{oneMessageBean.sendMessage}"/>
+
                         </h:panelGrid>
                     </h:form>
                     <h:form id="overlayForm">
                         <p:overlayPanel id="overlay" for=":messageForm:userMesLogin" hideEffect="fade" dynamic="true"
                                         style="width:300px; ">
-                            <p:dataScroller value="#{messageBean.users}" mode="inline" scrollHeight="200"
+                            <p:dataScroller value="#{oneMessageBean.users}" mode="inline" scrollHeight="200"
                                             id="messageOverlayUsers" var="user"
                                             chunkSize="5">
 
@@ -45,7 +50,7 @@
                                                     style="width:50px; height: 50px;"/>
 
                                     <p:commandLink id="ajax" update=":messageForm:userMesLogin"
-                                                   actionListener="#{messageBean.findUser(user)}">
+                                                   actionListener="#{oneMessageBean.findUser(user)}">
                                         <h:outputText value="#{user.login}"/>
                                     </p:commandLink>
                                     <h:link outcome="news" includeViewParams="true">
@@ -54,6 +59,22 @@
                                 </h:panelGrid>
                             </p:dataScroller>
                         </p:overlayPanel>
+                    </h:form>
+                </b:column>
+                <b:column span="3">
+                    <h:form>
+                        <h5>My subscription</h5>
+                        <p:dataScroller value="#{profileBean.subscribedTo}" var="sub" chunkSize="10"
+                                        style="max-height: 300px">
+                            <h:panelGrid columns="2" styleClass="newsItem">
+                                <p:graphicImage value="#{sub.subscribedTo.avatarUrl}"
+                                                style="width:50px; height: 50px;"/>
+                                <p:commandLink id="ajaxsub" update=":messageForm:userMesLogin"
+                                               actionListener="#{oneMessageBean.findUser(sub.subscribedTo)}">
+                                    <h:outputText value="#{sub.subscribedTo.login}"/>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </p:dataScroller>
                     </h:form>
                 </b:column>
             </b:row>

@@ -107,7 +107,7 @@ public class ProfileBean {
     }
 
     public String getLogin(){
-        return login;
+        return userService.getUserById(id).getLogin();
     }
 
     public void setLogin(String login){

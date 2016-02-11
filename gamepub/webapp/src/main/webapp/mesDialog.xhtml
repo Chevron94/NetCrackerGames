@@ -18,9 +18,10 @@
             <b:row>
                 <b:column span="6" offset="3">
 
-                    <h:panelGrid columns="1" style="width: 100%;" styleClass="newsItem">
+                    <h:panelGrid columns="1" cellpadding="10" style="width: 100%;" styleClass="newsItem">
                         <h:form id="messageForm">
                             <p:growl id="commentsMessage" showDetail="true" life="1000"/>
+
                             <h:panelGrid columns="3" cellpadding="10">
                                 <h:panelGrid columns="1">
                                     <p:graphicImage value="#{messageBean.user.avatarUrl}"
@@ -36,8 +37,12 @@
                                 </h:panelGrid>
 
                             </h:panelGrid>
-                            <p:commandButton class="btn btn-primary" value="Send" update="dialogForm messageForm"
-                                             actionListener="#{messageBean.sendDialog}"/>
+                            <h:panelGrid columns="2" cellpadding="20">
+                                <p:commandButton class="btn btn-primary" value="Send" update="dialogForm messageForm"
+                                                 actionListener="#{messageBean.sendDialog}"/>
+                                <p:button class="btn btn-info" value="All messages" outcome="allMessages">
+                                </p:button>
+                            </h:panelGrid>
                         </h:form>
 
                         <h:form id="dialogForm">
@@ -45,7 +50,8 @@
                                             id="dialog" var="message"
                                             chunkSize="10">
 
-                                <h:panelGrid columns="2" styleClass="newsItem" cellpadding="10" columnClasses="percent_33, percent_33">
+                                <h:panelGrid columns="2" styleClass="newsItem" cellpadding="10"
+                                             columnClasses="percent_33, percent_33">
                                     <h:panelGrid columns="1" styleClass="newsItem">
                                         <p:graphicImage value="#{message.sender.avatarUrl}"
                                                         style="width:30px; height: 30px;"/>
