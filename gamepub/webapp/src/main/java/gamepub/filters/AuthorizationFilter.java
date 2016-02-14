@@ -1,7 +1,12 @@
 package gamepub.filters;
 
+import gamepub.beans.LoginBean;
 import gamepub.beans.SessionBean;
+import gamepub.beans.VKAuthorizationBean;
 
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,20 +16,25 @@ import java.io.IOException;
 /**
  * Created by Анатолий on 04.02.2016.
  */
+
 public class AuthorizationFilter implements Filter {
 
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        //HttpSession session = ;
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+
         try {
-            if(SessionBean.getSession() != null && (Integer)SessionBean.getSession().getAttribute("userid")!=0)
+            HttpSession session = request.getSession();
+            if(session.getAttribute("userid") != null)
                 filterChain.doFilter(request, response);
             else
                 ((HttpServletResponse)response).sendRedirect("/gamepub/registr.xhtml");
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             ((HttpServletResponse)response).sendRedirect("/gamepub/registr.xhtml");
         }
 
