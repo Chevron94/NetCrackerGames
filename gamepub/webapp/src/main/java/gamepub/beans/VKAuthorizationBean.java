@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package gamepub.beans;
+
 import gamepub.db.entity.City;
 import gamepub.db.entity.User;
 import gamepub.db.entity.UserRole;
@@ -57,9 +58,9 @@ public class VKAuthorizationBean implements Serializable {
     protected String userInfoUrl;
     protected boolean isError;
     public String vKInfo;
-    boolean logged=false;
-    
-    public boolean getLogged(){
+    boolean logged = false;
+
+    public boolean getLogged() {
         return logged;
     }
 
@@ -69,7 +70,7 @@ public class VKAuthorizationBean implements Serializable {
         if (user != null) {
 
             vKInfo = user.getVkInfo();
-            
+
             User userInBase = null;
             try {
                 userInBase = userService.getUserByVkInfo(user.getVkInfo());
@@ -94,7 +95,7 @@ public class VKAuthorizationBean implements Serializable {
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
         context.redirect("http://localhost:8080/gamepub/");
-        logged=true;
+        logged = true;
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
@@ -199,19 +200,32 @@ public class VKAuthorizationBean implements Serializable {
             String lastName = getJsonValue(json, "last_name");
             String name = firstName + " " + lastName;
             String photo = getJsonValue(json, "photo_max");
-            String bDate = getJsonValue(json, "bdate");
 
-            User user = new User();
-            UserRole ur = userRoleService.getUserRoleById(1);
-            City city = cityService.getCityById(1);
+            Integer idLoggedUser = null;
+            try {
+                idLoggedUser = SessionBean.getUserId();
+            } catch (Exception e) {
 
-            user.setAvatarUrl(photo);
-            user.setPassword(shaCode.code(shaCode.code(name) + id));
-            user.setEmail("default email");
-            user.setVkInfo(id);
-            user.setLogin(nickname);
-            user.setCity(city);
-            user.setUserRole(ur);
+            }
+            User user;
+            if (idLoggedUser != null) {
+                user = userService.getUserById(idLoggedUser);
+                user.setVkInfo(id);
+                userService.update(user);
+            } else {
+
+                user = new User();
+                UserRole ur = userRoleService.getUserRoleById(1);
+                City city = cityService.getCityById(1);
+
+                user.setAvatarUrl(photo);
+                user.setPassword(shaCode.code(shaCode.code(name) + id));
+                user.setEmail("default email");
+                user.setVkInfo(id);
+                user.setLogin(nickname);
+                user.setCity(city);
+                user.setUserRole(ur);
+            }
             return user;
         }
         return null;
