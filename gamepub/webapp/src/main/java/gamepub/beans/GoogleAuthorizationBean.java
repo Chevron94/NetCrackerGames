@@ -45,8 +45,8 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 @SessionScoped
-public class GoogleAuthorizationBean implements Serializable{
-    
+public class GoogleAuthorizationBean implements Serializable {
+
     @EJB
     private UserService userService;
     @EJB
@@ -61,6 +61,7 @@ public class GoogleAuthorizationBean implements Serializable{
     protected String redirectUri;
     protected String userInfoUrl;
     protected boolean isError;
+    public String googleInfo;
     public String login;
     boolean logged = false;
 
@@ -73,10 +74,11 @@ public class GoogleAuthorizationBean implements Serializable{
         User user = createUser();
         if (user != null) {
 
-            login = user.getLogin();
+            googleInfo = user.getSteamInfo();
+
             User userInBase = null;
             try {
-                userInBase = userService.getUserByLogin(user.getLogin());
+                userInBase = userService.getUserBySteamInfo(user.getSteamInfo());
             } catch (Exception e) {
 
             }
@@ -94,7 +96,7 @@ public class GoogleAuthorizationBean implements Serializable{
     public void doLogin() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
-        User user = userService.getUserByLogin(login);
+        User user = userService.getUserBySteamInfo(googleInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
         context.redirect("http://localhost:8080/gamepub/");
@@ -131,7 +133,7 @@ public class GoogleAuthorizationBean implements Serializable{
         clientSecret = "tuwSM6l3VKpT7cpxnNEoBr70";
         redirectUri = "http://localhost:8080/gamepub/google.xhtml";
         userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
-        isError=false;
+        isError = false;
     }
 
     public String getUserUrl() {
@@ -152,12 +154,11 @@ public class GoogleAuthorizationBean implements Serializable{
                 clientSecret, SCOPE).build();
         final GoogleAuthorizationCodeRequestUrl url = flow.newAuthorizationUrl();
         userUrl = url.setRedirectUri(redirectUri).build();
-    }    
+    }
 
     public String fetchPersonalInfo() throws IOException {
 
-        if (authCode!=null)
-        {
+        if (authCode != null) {
             final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(redirectUri).execute();
             final Credential credential = flow.createAndStoreCredential(response, null);
             final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
@@ -173,8 +174,7 @@ public class GoogleAuthorizationBean implements Serializable{
 
     public User createUser() throws IOException, ParseException, NoSuchAlgorithmException {
         String startJson = fetchPersonalInfo();
-        if (!startJson.equals(""))
-        {
+        if (!startJson.equals("")) {
             JSONParser jsonParser = new JSONParser();
             JSONObject json = (JSONObject) jsonParser.parse(startJson);
             String id = getJsonValue(json, "id");
@@ -182,17 +182,32 @@ public class GoogleAuthorizationBean implements Serializable{
             String name = getJsonValue(json, "name");
             String photo = getJsonValue(json, "picture");
             String email = getJsonValue(json, "email");
-            
-            User user = new User();
-            UserRole ur = userRoleService.getUserRoleById(1);
-            City city = cityService.getCityById(1);
 
-            user.setAvatarUrl(photo);
-            user.setPassword(shaCode.code(shaCode.code(name) + id));
-            user.setEmail(email);
-            user.setLogin(nickname);
-            user.setCity(city);
-            user.setUserRole(ur);
+            Integer idLoggedUser = null;
+            try {
+                idLoggedUser = SessionBean.getUserId();
+            } catch (Exception e) {
+
+            }
+            User user;
+            if (idLoggedUser != null) {
+                user = userService.getUserById(idLoggedUser);
+                user.setSteamInfo(id);
+                userService.update(user);
+            } else {
+
+                user = new User();
+                UserRole ur = userRoleService.getUserRoleById(1);
+                City city = cityService.getCityById(1);
+
+                user.setAvatarUrl(photo);
+                user.setPassword(shaCode.code(shaCode.code(name) + id));
+                user.setEmail(email);
+                user.setSteamInfo(id);
+                user.setLogin(nickname);
+                user.setCity(city);
+                user.setUserRole(ur);
+            }
             return user;
         }
         return null;
