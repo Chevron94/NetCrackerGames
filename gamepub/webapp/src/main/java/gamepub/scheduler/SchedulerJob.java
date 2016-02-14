@@ -108,7 +108,6 @@ public class SchedulerJob implements Job {
     }
 
     public List<Game> getFullInformation(List<Game> games, Platform platform) throws Exception {
-        System.out.println("Platform: "+ platform.getName()+":"+games.size());
         GamePlatformDaoImplementation gamePlatformDaoImplementation = new GamePlatformDaoImplementation();
         GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
         GameGenreDaoImplementation gameGenreDaoImplementation = new GameGenreDaoImplementation();
@@ -118,7 +117,6 @@ public class SchedulerJob implements Job {
         for (int i = 0; i<games.size(); i++){
             try {
                 Game g = games.get(i);
-                System.out.println(g.getName());
                 gamePlatform = new GamePlatform();
                 gamePlatform.setPlatform(platform);
                 String result = sendGet(g.getLinkToSteam());
