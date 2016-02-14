@@ -76,7 +76,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         for (HashMap.Entry<String, Object> param : parameterList) {
             if (param.getKey().equals("name")) {
                 jpa += " AND g.game.name LIKE :name";
-                parameters.put(param.getKey(), "%" + param.getValue() + "%");
+                parameters.put(param.getKey(), param.getValue() + "%");
             } else {
                 if (param.getKey().equals("platform")) {
                     List<Platform> platforms = (List<Platform>)param.getValue();

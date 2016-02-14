@@ -40,13 +40,24 @@ public class SchedulerJob implements Job {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", USER_AGENT);
         int responseCode = connection.getResponseCode();
+        System.out.println(responseCode);
         while (responseCode == 429) {
-            Thread.sleep(300000);
+            Thread.sleep(10000);
             responseCode = connection.getResponseCode();
+            System.out.println(responseCode);
         }
-        while (responseCode != 200) {
-            Thread.sleep(300000);
+        if (responseCode == 404){
+            Thread.sleep(10000);
             responseCode = connection.getResponseCode();
+            if (responseCode == 404){
+                return null;
+            }
+        }
+
+        while (responseCode != 200) {
+            Thread.sleep(10000);
+            responseCode = connection.getResponseCode();
+            System.out.println(responseCode);
         }
         BufferedReader input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
@@ -97,6 +108,7 @@ public class SchedulerJob implements Job {
     }
 
     public List<Game> getFullInformation(List<Game> games, Platform platform) throws Exception {
+        System.out.println("Platform: "+ platform.getName()+":"+games.size());
         GamePlatformDaoImplementation gamePlatformDaoImplementation = new GamePlatformDaoImplementation();
         GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
         GameGenreDaoImplementation gameGenreDaoImplementation = new GameGenreDaoImplementation();
@@ -104,56 +116,61 @@ public class SchedulerJob implements Job {
         GamePlatform gamePlatform;
         GameGenre gameGenre;
         for (int i = 0; i<games.size(); i++){
-            Game g = games.get(i);
-            gamePlatform = new GamePlatform();
-            gamePlatform.setPlatform(platform);
-            List<Game> tmp = gameDaoImplementation.getGamesByName(g.getName());
-            String result = sendGet(g.getLinkToSteam());
-            Document document = Jsoup.parse(result);
-            if (tmp != null && tmp.size() > 0) {
-                gamePlatform.setGame(tmp.get(0));
-            } else {
-                g.setPoster(document.select("img.product_image").attr("src").replace("-98", ""));
-                g.setDescription(document.select("div.summary_detail > span:nth-child(2)").text());
-                String genreText;
-                if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > th:nth-child(1)").text().equals("Genre(s):")) {
-                    genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(2)").get(0).text();
-                }else if (document.select("tr.alt:nth-child(3) > th:nth-child(1)").text().equals("Genre(s):")) {
-                    genreText = document.select("tr.alt:nth-child(3) > td:nth-child(2)").get(0).text();
-                }else if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > th:nth-child(1)").text().equals("Genre(s):")) {
-                    genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(2)").get(0).text();
-                }else if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > th:nth-child(1)").text().equals("Genre(s):")) {
-                    genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)").get(0).text();
-                }else
-                    genreText = document.select("tr.alt > td:nth-child(2)").get(0).text();
-                String[] genres = genreText.trim().split(" ");
-                for (int j = 0; j<genres.length; j++) {
-                    Genre genre = genreDaoImplementation.getGenreByName(genres[j]);
-                    if (genre == null) {
-                        genre = new Genre();
-                        genre.setName(genres[j]);
-                        genre = genreDaoImplementation.create(genre);
+            try {
+                Game g = games.get(i);
+                System.out.println(g.getName());
+                gamePlatform = new GamePlatform();
+                gamePlatform.setPlatform(platform);
+                String result = sendGet(g.getLinkToSteam());
+                Document document = Jsoup.parse(result);
+                List<Game> tmp = gameDaoImplementation.getGamesByName(g.getName());
+                if (tmp != null && tmp.size() > 0) {
+                    gamePlatform.setGame(tmp.get(0));
+                } else {
+                    g.setPoster(document.select("img.product_image").attr("src").replace("-98", ""));
+                    g.setDescription(document.select("div.summary_detail > span:nth-child(2)").text());
+                    String genreText;
+                    if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > th:nth-child(1)").text().equals("Genre(s):")) {
+                        genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(2)").get(0).text();
+                    } else if (document.select("tr.alt:nth-child(3) > th:nth-child(1)").text().equals("Genre(s):")) {
+                        genreText = document.select("tr.alt:nth-child(3) > td:nth-child(2)").get(0).text();
+                    } else if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > th:nth-child(1)").text().equals("Genre(s):")) {
+                        genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(2)").get(0).text();
+                    } else if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > th:nth-child(1)").text().equals("Genre(s):")) {
+                        genreText = document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)").get(0).text();
+                    } else
+                        genreText = document.select("tr.alt > td:nth-child(2)").get(0).text();
+                    String[] genres = genreText.trim().split(" ");
+                    for (int j = 0; j < genres.length; j++) {
+                        Genre genre = genreDaoImplementation.getGenreByName(genres[j]);
+                        if (genre == null) {
+                            genre = new Genre();
+                            genre.setName(genres[j]);
+                            genre = genreDaoImplementation.create(genre);
+                        }
+                        g = gameDaoImplementation.create(g);
+                        gamePlatform.setGame(g);
+                        games.set(i, g);
+                        gameGenre = new GameGenre();
+                        gameGenre.setGame(g);
+                        gameGenre.setGenre(genre);
+                        gameGenreDaoImplementation.create(gameGenre);
                     }
-                    g = gameDaoImplementation.create(g);
-                    gamePlatform.setGame(g);
-                    games.set(i, g);
-                    gameGenre = new GameGenre();
-                    gameGenre.setGame(g);
-                    gameGenre.setGenre(genre);
-                    gameGenreDaoImplementation.create(gameGenre);
                 }
+                //.release_data > span:nth-child(2)
+                //.release_data > span:nth-child(2)
+                String releaseDate = document.select(".release_data > span:nth-child(2)").text();
+                String metascore = document.select(".metascore_wrap > a:nth-child(2) > div:nth-child(1) > span:nth-child(2)").text();
+                gamePlatform.setReleaseDate(new Date(releaseDate));
+                if (metascore.equals("")) {
+                    gamePlatform.setMetacritic(0);
+                } else {
+                    gamePlatform.setMetacritic(Integer.parseInt(metascore));
+                }
+                gamePlatformDaoImplementation.create(gamePlatform);
+            }catch (Exception e){
+
             }
-            //.release_data > span:nth-child(2)
-            //.release_data > span:nth-child(2)
-            String releaseDate = document.select(".release_data > span:nth-child(2)").text();
-            String metascore = document.select(".metascore_wrap > a:nth-child(2) > div:nth-child(1) > span:nth-child(2)").text();
-            gamePlatform.setReleaseDate(new Date(releaseDate));
-            if (metascore.equals("")) {
-                gamePlatform.setMetacritic(0);
-            } else {
-                gamePlatform.setMetacritic(Integer.parseInt(metascore));
-            }
-            gamePlatformDaoImplementation.create(gamePlatform);
         }
         System.out.println(platform.getName()+": "+games.size());
         return games;
@@ -331,10 +348,11 @@ public class SchedulerJob implements Job {
         try {
             PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
             initPlatforms();
+            getFullInformation(getNamesAndLinks("vita"), platformDaoImplementation.getPlatformByName("PS Vita"));
             linkToSteam(getFullInformation(getNamesAndLinks("pc"), platformDaoImplementation.getPlatformByName("Windows")));
             getFullInformation(getNamesAndLinks("ps4"), platformDaoImplementation.getPlatformByName("PS4"));
             getFullInformation(getNamesAndLinks("ps3"), platformDaoImplementation.getPlatformByName("PS3"));
-            getFullInformation(getNamesAndLinks("vita"), platformDaoImplementation.getPlatformByName("PS Vita"));
+            //getFullInformation(getNamesAndLinks("vita"), platformDaoImplementation.getPlatformByName("PS Vita"));
         }catch (Exception e) {
 
         }

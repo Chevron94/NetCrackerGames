@@ -30,7 +30,7 @@
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/gamepub"/>
             <property name="hibernate.connection.username" value="postgres"/>
-            <property name="hibernate.connection.password" value="gamepub"/>
+            <property name="hibernate.connection.password" value="netcracker"/>
             <property name="hibernate.connection." value=""/>
             <property name="hibernate.connection.release_mode" value="auto"/>
             <property name="transaction.auto_close_session" value="true"/>
