@@ -102,12 +102,12 @@
                 </b:column>
 
                 <c:if test="#{!loginBean.logged &amp;&amp; !vKAuthorizationBean.logged &amp;&amp; !faceBookAuthorizationBean.logged &amp;&amp; !googleAuthorizationBean.logged}">
-                    <b:column offset="7" span="6" style="align:right">
+                    <b:column offset="1" span="6" style="align:right">
 
                         <h:form>
                             <p:growl id="msgs1" showDetail="true"/>
 
-                            <h:panelGrid columns="8" cellpadding="5">
+                            <h:panelGrid columns="8" cellpadding="10">
 
                                 <a href="#{vKAuthorizationBean.userUrl}"><img src="http://s1.iconbird.com/ico/2013/6/270/w445h4451371236205MezhdunarodnylogotipVK500.png" height="30" width="30"/></a>
                                 <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://iconizer.net/files/YOOicons_Social_Bookmarks/thumb/128/social_facebook_box_blue.png" height="30" width="30"/></a>
@@ -115,7 +115,7 @@
 
                                 <b:inputText styleClass="water" id="login" value="#{loginBean.name}"/>
 
-                                <b:inputSecret styleClass="water" id="password" value="#{loginBean.password}" inline="true"/>
+                                <b:inputSecret styleClass="water" id="password" value="#{loginBean.password}" />
 
                                 <p:watermark for="login" value="Login *"/>
                                 <p:watermark for="password" value="Password *"/>

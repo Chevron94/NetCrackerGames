@@ -93,15 +93,15 @@ public class PrivateMessagesDaoImplementation extends BaseDaoImplementation<Priv
         return result;
     }
 
-    public List<PrivateMessage> getAllPrivateMessagesBySenderIdAndReceiverId(Integer senderId, Integer receiverId) {
+    public List<PrivateMessage> getAllPrivateMessagesBySenderIdAndReceiverId(String senderId, String receiverId) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<PrivateMessage> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.or(cb.and(cb.equal(root.<User>get("sender").<Integer>get("id"), senderId),
-                cb.equal(root.<User>get("receiver").<Integer>get("id"), receiverId)),
-                cb.and(cb.equal(root.<User>get("sender").<Integer>get("id"), receiverId),
-                        cb.equal(root.<User>get("receiver").<Integer>get("id"), senderId))));
+        cq.where(cb.or(cb.and(cb.equal(root.<User>get("sender").<Integer>get("uid"), senderId),
+                cb.equal(root.<User>get("receiver").<Integer>get("uid"), receiverId)),
+                cb.and(cb.equal(root.<User>get("sender").<Integer>get("uid"), receiverId),
+                        cb.equal(root.<User>get("receiver").<Integer>get("uid"), senderId))));
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();

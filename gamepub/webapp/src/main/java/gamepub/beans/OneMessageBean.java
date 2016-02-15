@@ -6,6 +6,7 @@ import gamepub.db.service.PrivateMessageService;
 import gamepub.db.service.UserService;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -16,6 +17,7 @@ import java.util.*;
  */
 @ManagedBean
 @SessionScoped
+@Stateful
 public class OneMessageBean {
 
 

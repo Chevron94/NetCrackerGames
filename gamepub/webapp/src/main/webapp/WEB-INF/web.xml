@@ -9,16 +9,33 @@
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.xhtml</param-value>
     </context-param>
-    
-<context-param>
-	    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-	    <param-value>6LeyTRcTAAAAAJ2m-MlA86F_3Lrahrp701HTq4TA</param-value>
-	</context-param>
-	<context-param>
-	    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-	    <param-value>6LeyTRcTAAAAAJlWhYrQ8XVi_FIQBH5syN3P6NkI</param-value>
-	</context-param>
-        
+
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6LeyTRcTAAAAAJ2m-MlA86F_3Lrahrp701HTq4TA</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6LeyTRcTAAAAAJlWhYrQ8XVi_FIQBH5syN3P6NkI</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>gamepub.filters.AuthorizationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/profile.xhtml</url-pattern>
+        <url-pattern>/allUsers.xhtml</url-pattern>
+        <url-pattern>/allMessages.xhtml</url-pattern>
+        <url-pattern>/tradingLounge.xhtml</url-pattern>
+        <url-pattern>/mesDialog.xhtml</url-pattern>
+        <url-pattern>/gallery.xhtml</url-pattern>
+        <url-pattern>/message.xhtml</url-pattern>
+        <url-pattern>/tradingPage.xhtml</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -44,5 +61,7 @@
             org.quartz.ee.servlet.QuartzInitializerListener
         </listener-class>
     </listener>
+
+
 
 </web-app>

@@ -23,27 +23,24 @@ import java.util.*;
 public class MessageBean {
 
 
-
     @EJB
     PrivateMessageService privateMessageService;
     @EJB
     UserService userService;
 
-    int receiverId;
+    String receiverId;
     String message;
     User receiver;
 
 
-    public int getReceiverId(){
+    public String getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(int receiverId){
+    public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
-        receiver = userService.getUserById(receiverId);
+        receiver = userService.getUserByUid(receiverId);
     }
-
-
 
 
     public User getReceiver() {
@@ -67,32 +64,32 @@ public class MessageBean {
     }
 
 
-
     public boolean getReceiverIsNull() {
         HttpSession session = SessionBean.getSession();
         try {
-            receiverId = (Integer) session.getAttribute("receiverId");
-            receiver = userService.getUserById(receiverId);
+            receiverId = (String) session.getAttribute("receiverId");
+            receiver = userService.getUserByUid(receiverId);
             session.removeAttribute("receiverId");
 
         } catch (Exception e) {
 
         }
-        return receiverId == 0;
+        return receiverId == null;
     }
 
-    public String goToMessage(){
+    public String goToMessage() {
         return "message";
     }
 
-    public boolean getsReceiverIsNull(){
-        receiverId=0;
+    public boolean getsReceiverIsNull() {
+        receiverId = null;
         return true;
     }
 
     //dialog
-    public List<PrivateMessage> getDialog(){
-        return privateMessageService.getAllPrivateMessagesBySenderIdAndReceiverId(SessionBean.getUserId(),receiverId);
+    public List<PrivateMessage> getDialog() {
+        return privateMessageService.getAllPrivateMessagesBySenderIdAndReceiverId(
+                userService.getUserById(SessionBean.getUserId()).getUid(), receiverId);
     }
 
     public void sendDialog() {
@@ -102,7 +99,7 @@ public class MessageBean {
         String message = (String) inputText.getValue();
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
-        privateMessage.setReceiver(userService.getUserById(receiverId));
+        privateMessage.setReceiver(userService.getUserByUid(receiverId));
         privateMessage.setDate(new Date());
         privateMessage.setText(message);
         privateMessageService.create(privateMessage);
@@ -111,7 +108,7 @@ public class MessageBean {
 
     }
 
-    public User getUser(){
-        return userService.getUserById( SessionBean.getUserId());
+    public User getUser() {
+        return userService.getUserById(SessionBean.getUserId());
     }
 }
