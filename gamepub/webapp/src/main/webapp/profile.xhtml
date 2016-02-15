@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -97,6 +97,16 @@
                     <b:button outcome="tradingLounge" value="Trading lounge" rendered="#{profileBean.isMy}"/>
                     <b:button class="btn btn-info" outcome="allMessages" value="Messages"
                               rendered="#{profileBean.isMy}"/>
+                    <br/>Connect with:
+                    <h:form rendered="#{!profileBean.isVk()}">
+                        <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
+                    </h:form>
+                    <h:form rendered="#{!profileBean.isFacebook()}">
+                        <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
+                    </h:form>
+                    <h:form rendered="#{!profileBean.isGoogle()}">
+                        <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
+                    </h:form>
                     <!-- Follow -->
                     <h:form id="follow" rendered="#{!profileBean.isMy}">
                         <b:commandButton class="btn btn-primary" value="Follow" ajax="false"
@@ -127,105 +137,105 @@
                                                     styleClass="gameIcon btn btn-danger"
                                                     actionListener="#{profileBean.deleteMyGame(mygame)}"
                                                     update="myGamesForm favouriteForm exchangeForm">
-                                            </p:commandLink>
-                                        </f:facet>
-                                        <h:panelGrid columns="1" style="width:100%">
-                                            <p:graphicImage width="100%" height="90%" value="#{mygame.game.poster}"/>
-                                            <h:link outcome="aboutGame" value="#{mygame.game.name} "
-                                                    includeViewParams="true">
-                                                <f:param value="#{mygame.game.uid}" name="id"/>
-                                            </h:link>
-                                        </h:panelGrid>
-                                    </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <p:graphicImage width="100%" height="90%" value="#{mygame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{mygame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{mygame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                </p:dataGrid>
-                            </h:form>
-                        </b:tab>
-                        <b:tab title="Favourite games">
-                            <h:form id="favouriteForm">
-                                <p:dataGrid var="favouritegame" value="#{profileBean.favouriteGames}" columns="3"
-                                            layout="grid"
-                                            rows="12" paginator="true" id="favouriteGames"
-                                            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                            rowsPerPageTemplate="6,12,18">
+                                    </p:dataGrid>
+                                </h:form>
+                            </b:tab>
+                            <b:tab title="Favourite games">
+                                <h:form id="favouriteForm">
+                                    <p:dataGrid var="favouritegame" value="#{profileBean.favouriteGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="favouriteGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
 
-                                    <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
-                                        <f:facet name="actions">
-                                            <p:commandLink
+                                        <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                     styleClass="gameIcon btn btn-danger"
                                                     actionListener="#{profileBean.deleteMyGame(favouritegame)}"
                                                     update="myGamesForm favouriteForm exchangeForm">
-                                            </p:commandLink>
-                                        </f:facet>
-                                        <h:panelGrid columns="1" style="width:100%">
-                                            <p:graphicImage width="100%" height="90%"
-                                                            value="#{favouritegame.game.poster}"/>
-                                            <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
-                                                    includeViewParams="true">
-                                                <f:param value="#{favouritegame.game.uid}" name="id"/>
-                                            </h:link>
-                                        </h:panelGrid>
-                                    </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <p:graphicImage width="100%" height="90%"
+                                                                value="#{favouritegame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{favouritegame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                </p:dataGrid>
-                            </h:form>
-                        </b:tab>
-                        <b:tab title="Exchange games">
-                            <h:form id="exchangeForm">
-                                <p:dataGrid var="exchangegame" value="#{profileBean.exchangeGames}" columns="3"
-                                            layout="grid"
-                                            rows="12" paginator="true" id="exchangeGames"
-                                            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                            rowsPerPageTemplate="6,12,18">
+                                    </p:dataGrid>
+                                </h:form>
+                            </b:tab>
+                            <b:tab title="Exchange games">
+                                <h:form id="exchangeForm">
+                                    <p:dataGrid var="exchangegame" value="#{profileBean.exchangeGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="exchangeGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
 
-                                    <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
-                                        <f:facet name="actions">
-                                            <p:commandLink
+                                        <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                     styleClass="gameIcon btn btn-danger"
                                                     actionListener="#{profileBean.deleteMyGame(exchangegame)}"
                                                     update="myGamesForm favouriteForm exchangeForm">
-                                            </p:commandLink>
-                                        </f:facet>
-                                        <h:panelGrid columns="1" style="width:100%">
-                                            <p:graphicImage width="100%" height="90%"
-                                                            value="#{exchangegame.game.poster}"/>
-                                            <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
-                                                    includeViewParams="true">
-                                                <f:param value="#{exchangegame.game.uid}" name="id"/>
-                                            </h:link>
-                                        </h:panelGrid>
-                                    </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <p:graphicImage width="100%" height="90%"
+                                                                value="#{exchangegame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{exchangegame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                </p:dataGrid>
-                            </h:form>
-                        </b:tab>
-                        <b:tab title="Recomendation" id="tabRecomendation">
-                            <h:form>
-                                <p:dataGrid var="recomendGame" value="#{profileBean.recomendGames}" columns="3"
-                                            layout="grid"
-                                            rows="12" paginator="true" id="recomendGames"
-                                            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                            rowsPerPageTemplate="6,12,18">
+                                    </p:dataGrid>
+                                </h:form>
+                            </b:tab>
+                            <b:tab title="Recomendation" id="tabRecomendation">
+                                <h:form>
+                                    <p:dataGrid var="recomendGame" value="#{profileBean.recomendGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="recomendGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
 
-                                    <p:panel style="text-align:center">
-                                        <h:panelGrid columns="1" style="width:100%">
-                                            <p:graphicImage width="100%" height="90%" value="#{recomendGame.poster}"/>
-                                            <h:link outcome="aboutGame" value="#{recomendGame.name} "
-                                                    includeViewParams="true">
-                                                <f:param value="#{recomendGame.uid}" name="id"/>
-                                            </h:link>
-                                        </h:panelGrid>
-                                    </p:panel>
+                                        <p:panel style="text-align:center">
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <p:graphicImage width="100%" height="90%" value="#{recomendGame.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{recomendGame.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{recomendGame.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                </p:dataGrid>
-                            </h:form>
-                        </b:tab>
-                    </b:tabView>
+                                    </p:dataGrid>
+                                </h:form>
+                            </b:tab>
+                        </b:tabView>
 
 
-                </b:column>
-            </b:row>
-        </ui:define>
-    </ui:composition>
-</h:body>
+                    </b:column>
+                </b:row>
+            </ui:define>
+        </ui:composition>
+    </h:body>
 </html>

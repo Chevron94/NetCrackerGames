@@ -49,7 +49,7 @@ public class ProfileBean {
     CountryService countryService;
     @EJB
     FriendService friendService;
-    
+
     private String userId;
 
     @PostConstruct
@@ -69,8 +69,7 @@ public class ProfileBean {
         isEdit = false;
         try {
             id = SessionBean.getUserId();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
 
         }
         FacesContext context = FacesContext.getCurrentInstance();
@@ -82,7 +81,9 @@ public class ProfileBean {
         if (!userId.equals("my")) {
             user = userService.getUserByUid(userId);
             id = user.getId();
-        }else user = userService.getUserById(id);
+        } else {
+            user = userService.getUserById(id);
+        }
 
         return user.getLogin();
     }
@@ -106,13 +107,14 @@ public class ProfileBean {
         email = uemail;
     }
 
-    public String getLogin(){
+    public String getLogin() {
         return userService.getUserById(id).getLogin();
     }
 
-    public void setLogin(String login){
+    public void setLogin(String login) {
         this.login = login;
     }
+
     public String getFbInfo() {
         User user = userService.getUserById(id);
         if (user.getFbInfo() == null) {
@@ -175,8 +177,13 @@ public class ProfileBean {
             user.setFbInfo(fbInfo);
             System.out.println(fbInfo);
         }
-        if(login != null && userService.getUserByLogin(login) == null){
+        if (login != null && userService.getUserByLogin(login) == null) {
             user.setLogin(login);
+        } else {
+            FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Error",
+                    "Failed to login!");
+            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
         }
 
         userService.update(user);
@@ -205,9 +212,8 @@ public class ProfileBean {
         return friendService.getFriendBySubIdToId(SessionBean.getUserId(), id) != null;
     }
 
-
-    public boolean getHaveFbInfo(){
-        return  userService.getUserById(id).getFbInfo() != null && userService.getUserById(id).getFbInfo().length() > 1;
+    public boolean getHaveFbInfo() {
+        return userService.getUserById(id).getFbInfo() != null && userService.getUserById(id).getFbInfo().length() > 1;
     }
 
     //Games
@@ -232,23 +238,55 @@ public class ProfileBean {
         }
 
     }
-    public void upload(FileUploadEvent event) throws IOException{
-         if(event.getFile()!= null) {  
-      cloudUpload upload = new cloudUpload(event.getFile());                          
-                 User u = userService.getUserById(id);
-                 u.setAvatarUrl((String)upload.getUploadResult().get("url"));
-                 userService.update(u);
-            
+
+    public boolean isFacebook() {
+        if (userService.getUserById(SessionBean.getUserId()).getFbInfo() != null) {
+            return true;
+        } else {
+            return false;
         }
     }
-    public String exchangeNotification(){
-        int quantity=0;
-        List<UserGame> myWantedGames = userGameService.getWantedUserGamesByUserId(SessionBean.getUserId());
-            for(UserGame ug:myWantedGames){
-                if(!userGameService.getCanExchangeUserGamesByGameId(ug.getGame().getId()).isEmpty()) quantity++;
-                    }
-                if (quantity==0) return "Trading page";else return "[+"+Integer.toString(quantity)+"]TradingPage";
 
-            }
-    
+    public boolean isVk() {
+        if (userService.getUserById(SessionBean.getUserId()).getVkInfo() != null) {
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    public boolean isGoogle() {
+        if (userService.getUserById(SessionBean.getUserId()).getSteamInfo() != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void upload(FileUploadEvent event) throws IOException {
+        if (event.getFile() != null) {
+            cloudUpload upload = new cloudUpload(event.getFile());
+            User u = userService.getUserById(id);
+            u.setAvatarUrl((String) upload.getUploadResult().get("url"));
+            userService.update(u);
+
+        }
+    }
+
+    public String exchangeNotification() {
+        int quantity = 0;
+        List<UserGame> myWantedGames = userGameService.getWantedUserGamesByUserId(SessionBean.getUserId());
+        for (UserGame ug : myWantedGames) {
+            if (!userGameService.getCanExchangeUserGamesByGameId(ug.getGame().getId()).isEmpty()) {
+                quantity++;
+            }
+        }
+        if (quantity == 0) {
+            return "Trading page";
+        } else {
+            return "[+" + Integer.toString(quantity) + "]TradingPage";
+        }
+
+    }
+
+}

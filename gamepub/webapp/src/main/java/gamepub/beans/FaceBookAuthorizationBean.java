@@ -219,18 +219,31 @@ public class FaceBookAuthorizationBean implements Serializable {
             String name = getJsonValue(json, "name");
             String photo = getJsonValue(json, "picture");
 
-            User user = new User();
-            UserRole ur = userRoleService.getUserRoleById(1);
-            City city = cityService.getCityById(1);
+            Integer idLoggedUser = null;
+            try {
+                idLoggedUser = SessionBean.getUserId();
+            } catch (Exception e) {
 
-            user.setAvatarUrl(photo);
-            user.setPassword(shaCode.code(shaCode.code(name) + id));
-            user.setFbInfo(id);
-            user.setEmail("default email");
-            user.setLogin(nickname);
-            user.setCity(city);
-            user.setUserRole(ur);
+            }
+            User user;
+            if (idLoggedUser != null) {
+                user = userService.getUserById(idLoggedUser);
+                user.setFbInfo(id);
+                userService.update(user);
+            } else {
 
+                user = new User();
+                UserRole ur = userRoleService.getUserRoleById(1);
+                City city = cityService.getCityById(1);
+
+                user.setAvatarUrl(photo);
+                user.setPassword(shaCode.code(shaCode.code(name) + id));
+                user.setEmail("default email");
+                user.setFbInfo(id);
+                user.setLogin(nickname);
+                user.setCity(city);
+                user.setUserRole(ur);
+            }
             return user;
         }
         return null;

@@ -115,7 +115,7 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         if(parameterList!=null && parameterList.size()>0) {
             for (HashMap.Entry<String, Object> entry : parameterList) {
                 if (entry.getKey().equals("name")) {
-                    predicates.add(cb.like(root.<String>get("name"), "%" + entry.getValue() + "%"));
+                    predicates.add(cb.like(root.<String>get("name"), entry.getValue() + "%"));
                 } else if (entry.getKey().equals("game")) {
                     predicates.add(cb.equal(root.<Game>get("game"), entry.getValue()));
                 } else predicates.add(cb.lessThanOrEqualTo(root.<Date>get("date"), (Date) entry.getValue()));
