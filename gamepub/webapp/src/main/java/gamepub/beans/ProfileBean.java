@@ -208,8 +208,24 @@ public class ProfileBean {
         friendService.delete(friend.getId());
     }
 
+    public void ban() {
+        User user = userService.getUserById(id);
+        user.setActive(false);
+        userService.update(user);
+    }
+    
+    public void unban() {
+        User user = userService.getUserById(id);
+        user.setActive(true);
+        userService.update(user);
+    }
+    
     public boolean getIsSubscribedTo() {
         return friendService.getFriendBySubIdToId(SessionBean.getUserId(), id) != null;
+    }
+    
+    public boolean getIsBanned() {
+        return userService.getUserById(this.id).getActive() == false;
     }
 
     public boolean getHaveFbInfo() {
@@ -238,29 +254,21 @@ public class ProfileBean {
         }
 
     }
+    
+    public boolean getIsAdmin() {
+        return userService.getUserById(SessionBean.getUserId()).getUserRole().getId() == 2;
+    }
 
     public boolean isFacebook() {
-        if (userService.getUserById(SessionBean.getUserId()).getFbInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getFbInfo() != null;
     }
 
     public boolean isVk() {
-        if (userService.getUserById(SessionBean.getUserId()).getVkInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getVkInfo() != null;
     }
 
     public boolean isGoogle() {
-        if (userService.getUserById(SessionBean.getUserId()).getSteamInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getSteamInfo() != null;
     }
 
     public void upload(FileUploadEvent event) throws IOException {

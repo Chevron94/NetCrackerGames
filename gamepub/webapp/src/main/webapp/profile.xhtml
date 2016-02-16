@@ -98,13 +98,13 @@
                     <b:button class="btn btn-info" outcome="allMessages" value="Messages"
                               rendered="#{profileBean.isMy}"/>
                     <br/>Connect with:
-                    <h:form rendered="#{!profileBean.isVk()}">
+                    <h:form rendered="#{!profileBean.isVk() and profileBean.isMy}">
                         <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
                     </h:form>
-                    <h:form rendered="#{!profileBean.isFacebook()}">
+                    <h:form rendered="#{!profileBean.isFacebook() and profileBean.isMy}">
                         <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
                     </h:form>
-                    <h:form rendered="#{!profileBean.isGoogle()}">
+                    <h:form rendered="#{!profileBean.isGoogle() and profileBean.isMy}">
                         <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
                     </h:form>
                     <!-- Follow -->
@@ -119,7 +119,12 @@
                                   rendered="#{profileBean.isSubscribedTo}">
                             <f:param value="#{profileBean.userId}" name="receiverId"/>
                         </b:button>
-
+                        <b:commandButton class="btn btn-primary" value="Ban" ajax="false"
+                                         actionListener="#{profileBean.ban()}"
+                                         rendered="#{!profileBean.isBanned and profileBean.isAdmin}"/>
+                        <b:commandButton class="btn btn-danger" value="UnBan" ajax="false"
+                                         actionListener="#{profileBean.unban()}"
+                                         rendered="#{profileBean.isBanned and profileBean.isAdmin}"/>
                     </h:form>
                     <!-- Games -->
                     <b:tabView id="tabView">
