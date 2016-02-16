@@ -11,10 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by roman on 06.12.15.
@@ -135,8 +132,7 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
     }
     @Override
     public News create(News news) {
-        News tmp = super.create(news);
-        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
-        return update(tmp);
+        news.setUid(UUID.randomUUID().toString());
+        return super.create(news);
     }
 }

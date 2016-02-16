@@ -40,11 +40,9 @@ public class SchedulerJob implements Job {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", USER_AGENT);
         int responseCode = connection.getResponseCode();
-        System.out.println(responseCode);
         while (responseCode == 429) {
             Thread.sleep(10000);
             responseCode = connection.getResponseCode();
-            System.out.println(responseCode);
         }
         if (responseCode == 404){
             Thread.sleep(10000);
