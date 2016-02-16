@@ -100,6 +100,7 @@ public class RegistrBean {
             user.setCity(city);
             user.setUserRole(ur);
             user.setActive(true);
+            user.setBanned(false);
             userService.create(user);
 
             FacesMessage regMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
