@@ -12,10 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by roman on 05.12.15.
@@ -244,8 +241,7 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
 
     @Override
     public User create(User user) {
-        User tmp = super.create(user);
-        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
-        return update(tmp);
+        user.setUid(UUID.randomUUID().toString());
+        return super.create(user);
     }
 }

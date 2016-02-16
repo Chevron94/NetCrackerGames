@@ -1,5 +1,6 @@
 package gamepub.db.dao.implementation;
 
+import com.mchange.v2.uid.UidUtils;
 import gamepub.db.dao.GameDao;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.Platform;
@@ -9,9 +10,11 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by roman on 06.12.15.
@@ -117,8 +120,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
     @Override
     public Game create(Game game) {
-        Game tmp = super.create(game);
-        tmp.setUid(DigestUtils.md5Hex(String.valueOf(tmp.getId())));
-        return update(tmp);
+        game.setUid(UUID.randomUUID().toString());
+        return super.create(game);
     }
 }
