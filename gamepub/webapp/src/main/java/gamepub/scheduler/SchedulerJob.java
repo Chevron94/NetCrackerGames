@@ -19,10 +19,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,8 +75,10 @@ public class SchedulerJob implements Job {
             String res = sendGet(link + page);
             Document document = Jsoup.parse(res);
             Element element = document.select("li.game_product:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)").first();
-            if (element == null)
+            if (element == null){
+                Collections.reverse(result);
                 return result;
+            }
             int i = 1;
             while (element != null) {
                 List<Game> tmp = gameDaoImplementation.getGamesByName(element.text());
@@ -92,8 +91,10 @@ public class SchedulerJob implements Job {
                     else if (platform.equals("pc"))
                         platform1 = platformDaoImplementation.getPlatformByName("Windows");
                     else platform1 = platformDaoImplementation.getPlatformByName(platform.toUpperCase());
-                    if (gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(game.getId(),platform1.getId()) != null)
+                    if (gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(game.getId(),platform1.getId()) != null){
+                        Collections.reverse(result);
                         return result;
+                    }
                 }
                 game = new Game();
                 game.setName(element.text());
