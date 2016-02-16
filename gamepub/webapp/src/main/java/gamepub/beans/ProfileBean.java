@@ -210,13 +210,13 @@ public class ProfileBean {
 
     public void ban() {
         User user = userService.getUserById(id);
-        user.setActive(false);
+        user.setBanned(true);
         userService.update(user);
     }
     
     public void unban() {
         User user = userService.getUserById(id);
-        user.setActive(true);
+        user.setBanned(false);
         userService.update(user);
     }
     
@@ -225,7 +225,7 @@ public class ProfileBean {
     }
     
     public boolean getIsBanned() {
-        return userService.getUserById(this.id).getActive() == false;
+        return userService.getUserById(this.id).getBanned() == true;
     }
 
     public boolean getHaveFbInfo() {

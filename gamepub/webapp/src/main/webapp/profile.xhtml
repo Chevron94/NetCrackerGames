@@ -119,6 +119,9 @@
                                   rendered="#{profileBean.isSubscribedTo}">
                             <f:param value="#{profileBean.userId}" name="receiverId"/>
                         </b:button>
+                    </h:form>
+                    <!-- Ban -->
+                    <h:form id="ban" rendered="#{!profileBean.isMy}">
                         <b:commandButton class="btn btn-primary" value="Ban" ajax="false"
                                          actionListener="#{profileBean.ban()}"
                                          rendered="#{!profileBean.isBanned and profileBean.isAdmin}"/>

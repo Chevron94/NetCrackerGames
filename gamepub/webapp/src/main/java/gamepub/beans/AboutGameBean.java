@@ -130,7 +130,7 @@ public class AboutGameBean {
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
             return;
         }
-        if (userService.getUserById(SessionBean.getUserId()).getActive() == false){
+        if (userService.getUserById(SessionBean.getUserId()).getBanned() == true){
             errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "you are banned");
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
             return;
