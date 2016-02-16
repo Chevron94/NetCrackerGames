@@ -24,6 +24,7 @@ import gamepub.db.service.MarkService;
 import gamepub.db.service.PlatformService;
 import gamepub.db.service.UserGameService;
 import gamepub.db.service.UserService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +38,14 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import net.bootsfaces.component.commandButton.CommandButton;
+
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.rating.Rating;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 
 /**
- *
  * @author ����
  */
 @ManagedBean
@@ -73,7 +74,7 @@ public class AboutGameBean {
     Game game;
     List<Mark> marksAndReviews;
 
-    boolean drawStatus = false;
+    boolean drawStatus;
 
     public List<GameStatus> getStatus() {
         return gameStatusService.findAll();
@@ -89,8 +90,9 @@ public class AboutGameBean {
             drawStatus = true;
             notStatusButton();
             disableStatusButtons(userGame);
-        }
-        drawStatusButtons(drawStatus);
+        } else
+            drawStatus = false;
+        //drawStatusButtons(drawStatus);
         return g;
     }
 
@@ -325,15 +327,15 @@ public class AboutGameBean {
         UIViewRoot uiViewRoot = context.getViewRoot();
         CommandButton commandButton;
         if (userGame.isFavorite()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:favourite");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:favourite");
             commandButton.setDisabled(true);
         }
         if (userGame.isWanted()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:wanted");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:wanted");
             commandButton.setDisabled(true);
         }
         if (userGame.isCanExchange()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:exchange");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:exchange");
             commandButton.setDisabled(true);
         }
 
@@ -373,6 +375,16 @@ public class AboutGameBean {
         b2.setDisabled(false);
         b3.setDisabled(false);
         b4.setDisabled(false);
+    }
+
+    public boolean getDrawStatus() {
+        UserGame userGame = getUserGame();
+        if (getUserGame() != null) {
+            notStatusButton();
+            disableStatusButtons(userGame);
+            return true;
+        }
+        return false;
     }
 
     private void drawStatusButtons(boolean drawStatus) {
