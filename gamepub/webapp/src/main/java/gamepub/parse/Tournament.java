@@ -22,7 +22,7 @@ public class Tournament {
         Elements futureTournaments=null;
    ArrayList<Match> matches = new ArrayList<Match>();
    //
-        Document doc = Jsoup.connect("http://dota2.ru/matches/date/11-02-2016/").get();
+        Document doc = Jsoup.connect("http://dota2.ru/matches/").get();
         try{
        for(int i=0;i<5;i+=2){
            if(doc.select("div.matches-list").get(0).children().get(i).html().equals("Прошедшие матчи")){
@@ -38,7 +38,28 @@ public class Tournament {
         }
        catch(IndexOutOfBoundsException e){}
       
-        
+     if(currentTournaments!=null){
+       for(int i=0;i<currentTournaments.size();i++){
+            Match m = new Match();
+        m.setStatus("Current match");
+        m.setTournament(currentTournaments.get(i).child(0).child(0).text());
+        m.setTeam1(currentTournaments.get(i).child(0).child(1).text());
+        m.setTeam2(currentTournaments.get(i).child(0).child(3).text());        
+        m.setDataScore(currentTournaments.get(i).child(0).child(2).text());    
+        matches.add(m);
+       }
+   }   
+     if(futureTournaments!=null){
+       for(int i=0;i<futureTournaments.size();i++){
+            Match m = new Match();
+        m.setStatus("Future match");
+        m.setTournament(futureTournaments.get(i).child(0).child(0).text());
+        m.setTeam1(futureTournaments.get(i).child(0).child(1).text());
+        m.setTeam2(futureTournaments.get(i).child(0).child(3).text());        
+        m.setDataScore(futureTournaments.get(i).child(0).child(2).text());    
+        matches.add(m);
+       }
+   }
     if(previousTournaments!=null){
    for(int i=0;i<previousTournaments.size();i++){
             Match m = new Match();
@@ -53,29 +74,9 @@ public class Tournament {
         matches.add(m);
    
    }}
-   if(futureTournaments!=null){
-       for(int i=0;i<futureTournaments.size();i++){
-            Match m = new Match();
-        m.setStatus("Future match");
-        m.setTournament(futureTournaments.get(i).child(0).child(0).text());
-        m.setTeam1(futureTournaments.get(i).child(0).child(1).text());
-        m.setTeam2(futureTournaments.get(i).child(0).child(3).text());        
-        m.setDataScore(futureTournaments.get(i).child(0).child(2).text());    
-        matches.add(m);
-       }
-   } 
+    
    
-   if(currentTournaments!=null){
-       for(int i=0;i<currentTournaments.size();i++){
-            Match m = new Match();
-        m.setStatus("Current match");
-        m.setTournament(currentTournaments.get(i).child(0).child(0).text());
-        m.setTeam1(currentTournaments.get(i).child(0).child(1).text());
-        m.setTeam2(currentTournaments.get(i).child(0).child(3).text());        
-        m.setDataScore(currentTournaments.get(i).child(0).child(2).text());    
-        matches.add(m);
-       }
-   }
+   
 
 return matches;    
 }

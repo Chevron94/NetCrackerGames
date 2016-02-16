@@ -34,6 +34,9 @@ public class User {
     String token;
     @Column(name = "ACTIVE")
     Boolean active;
+    @Column(name = "BANNED")
+    Boolean banned;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ROLE_ID", nullable = false)
@@ -228,6 +231,14 @@ public class User {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public Boolean getBanned() {
+        return banned;
+    }
+
+    public void setBanned(Boolean banned) {
+        this.banned = banned;
     }
 
     @Override
