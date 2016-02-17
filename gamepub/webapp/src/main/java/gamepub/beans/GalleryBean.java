@@ -94,7 +94,15 @@ public UploadedFile getFile() {
              
         return images;
     }
-
+    
+    public void deleteImage(){
+        Map<String,String[]> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap(); 
+        String[] selectedImage = params.get("selectedImage");
+        List<UserScreenshot> userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());
+        for (UserScreenshot us:userScreens){
+      if(us.getLink().equals(selectedImage[0])) userScreenshotService.delete(us.getId());}
+    }
+    
     /**
      * @return the noScreensForUser
      */

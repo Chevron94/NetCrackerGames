@@ -266,7 +266,7 @@ public class ProfileBean {
     public void upload(FileUploadEvent event) throws IOException {
         if (event.getFile() != null) {
             cloudUpload upload = new cloudUpload(event.getFile());
-            User u = userService.getUserById(id);
+            User u = userService.getUserById(SessionBean.getUserId());
             u.setAvatarUrl((String) upload.getUploadResult().get("url"));
             userService.update(u);
 
