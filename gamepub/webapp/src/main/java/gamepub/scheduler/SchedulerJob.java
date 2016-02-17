@@ -251,7 +251,7 @@ public class SchedulerJob implements Job {
         GamePlatformDaoImplementation gamePlatformDaoImplementation = new GamePlatformDaoImplementation();
         GameScreenshotDaoImplementation gameScreenshotDaoImplementation = new GameScreenshotDaoImplementation();
         GamePlatform gamePlatform;
-
+        GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
 
         JSONObject jsonObject = new JSONObject(sendGet(GAME_URL));
         JSONArray jsonArray = jsonObject.getJSONObject("applist").getJSONArray("apps");
@@ -262,7 +262,7 @@ public class SchedulerJob implements Job {
 
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
-            if (g.getSteamId() != 0) {
+            if (g.getSteamId() == 0) {
                 if (steam.get(g.getName()) != null) {
                     g.setSteamId(steam.get(g.getName()));
                     JSONObject gameJSON;
@@ -277,6 +277,7 @@ public class SchedulerJob implements Job {
                     if (inStore) {
                         gameJSON = gameJSON.getJSONObject(String.valueOf(g.getSteamId())).getJSONObject("data");
                         g.setPoster(gameJSON.getString("header_image"));
+                        gameDaoImplementation.update(g);
                         String winReq;
                         String macReq;
                         String linuxReq;
@@ -301,23 +302,37 @@ public class SchedulerJob implements Job {
                             gamePlatform.setGame(g);
                             gamePlatform.setPlatform(platformDaoImplementation.getPlatformByName("Windows"));
                             gamePlatform.setSystemRequirements(winReq);
-                            gamePlatformDaoImplementation.create(gamePlatform);
+                            gamePlatformDaoImplementation.update(gamePlatform);
                         }
 
                         if (macReq != null) {
-                            gamePlatform = new GamePlatform();
+                            boolean exists = true;
+                            gamePlatform = gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(g.getId(), platformDaoImplementation.getPlatformByName("MAC-OS").getId());
+                            if (gamePlatform == null) {
+                                exists = false;
+                                gamePlatform = new GamePlatform();
+                            }
                             gamePlatform.setGame(g);
                             gamePlatform.setPlatform(platformDaoImplementation.getPlatformByName("MAC-OS"));
                             gamePlatform.setSystemRequirements(macReq);
-                            gamePlatformDaoImplementation.create(gamePlatform);
+                            if (!exists) {
+                                gamePlatformDaoImplementation.create(gamePlatform);
+                            }else gamePlatformDaoImplementation.update(gamePlatform);
                         }
 
                         if (linuxReq != null) {
-                            gamePlatform = new GamePlatform();
+                            boolean exists = true;
+                            gamePlatform = gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(g.getId(), platformDaoImplementation.getPlatformByName("Linux").getId());
+                            if (gamePlatform == null) {
+                                exists = false;
+                                gamePlatform = new GamePlatform();
+                            }
                             gamePlatform.setGame(g);
                             gamePlatform.setPlatform(platformDaoImplementation.getPlatformByName("Linux"));
-                            gamePlatform.setSystemRequirements(linuxReq);
-                            gamePlatformDaoImplementation.create(gamePlatform);
+                            gamePlatform.setSystemRequirements(macReq);
+                            if (!exists) {
+                                gamePlatformDaoImplementation.create(gamePlatform);
+                            }else gamePlatformDaoImplementation.update(gamePlatform);
                         }
                         steamNews(g);
                         try {
@@ -343,10 +358,17 @@ public class SchedulerJob implements Job {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
+            GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
             PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
             initPlatforms();
+            List<Platform> platforms = new ArrayList<Platform>();
+            platforms.add(platformDaoImplementation.getPlatformById(4));
+            List<HashMap.Entry<String,Object>> params = new ArrayList<Map.Entry<String, Object>>();
+            HashMap.Entry<String,Object> par = new HashMap.SimpleEntry<String, Object>("platform",platforms);
+            params.add(par);
+            linkToSteam(gameDaoImplementation.getGamesByCustomParams(params));
+            getFullInformation(getNamesAndLinks("pc"), platformDaoImplementation.getPlatformByName("Windows"));
             getFullInformation(getNamesAndLinks("vita"), platformDaoImplementation.getPlatformByName("PS Vita"));
-            linkToSteam(getFullInformation(getNamesAndLinks("pc"), platformDaoImplementation.getPlatformByName("Windows")));
             getFullInformation(getNamesAndLinks("ps4"), platformDaoImplementation.getPlatformByName("PS4"));
             getFullInformation(getNamesAndLinks("ps3"), platformDaoImplementation.getPlatformByName("PS3"));
             //getFullInformation(getNamesAndLinks("vita"), platformDaoImplementation.getPlatformByName("PS Vita"));
