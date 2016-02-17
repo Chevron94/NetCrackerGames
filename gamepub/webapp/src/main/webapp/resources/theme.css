@@ -7568,6 +7568,14 @@ background-image: none;
 .percent_33 {
   width: 33%;
 }
+.imgA {
+  width:auto;
+  max-width:100%;
+  height:auto;
+}
+.ui-carousel-item{
+  height: 500px;
+}
 .game_link{
   font-size: 14px;
   font-weight: 600;
