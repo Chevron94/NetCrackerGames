@@ -36,7 +36,7 @@
                                             </h:link>
                                         </h:panelGrid>
                                         <h:link outcome="mesDialog" value="#{message.text}" includeViewParams="true">
-                                            <f:param value="#{message.receiver.id}" name="receiverId"/>
+                                            <f:param value="#{message.receiver.uid}" name="receiverId"/>
                                         </h:link>
                                         <b:label text="#{message.date}"/>
                                     </h:panelGrid>
@@ -62,7 +62,7 @@
                                         </h:panelGrid>
 
                                         <h:link outcome="mesDialog" value="#{message.text}" includeViewParams="true">
-                                            <f:param value="#{message.receiver.id}" name="receiverId"/>
+                                            <f:param value="#{message.receiver.uid}" name="receiverId"/>
                                         </h:link>
                                         <b:label text="#{message.date}"/>
                                     </h:panelGrid>
