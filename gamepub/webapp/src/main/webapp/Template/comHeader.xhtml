@@ -45,7 +45,7 @@
                                                                 style="width:50px; height: 50px;"/>
 
                                                 <h:link outcome="aboutGame" value="#{game.name}" includeViewParams="true">
-                                                    <f:param value="#{game.id}" name="id"/>
+                                                    <f:param value="#{game.uid}" name="id"/>
                                                 </h:link>
                                             </h:panelGrid>
                                         </p:dataScroller>
@@ -63,7 +63,7 @@
                                                                 style="width:50px; height: 50px;"/>
 
                                                 <h:link outcome="news" value="#{news.name}" includeViewParams="true">
-                                                    <f:param value="#{news.id}" name="newsId"/>
+                                                    <f:param value="#{news.uid}" name="newsId"/>
                                                 </h:link>
                                             </h:panelGrid>
                                         </p:dataScroller>
@@ -81,7 +81,7 @@
                                                                 style="width:50px; height: 50px;"/>
 
                                                 <h:link outcome="profile" value="#{user.login}" includeViewParams="true">
-                                                    <f:param value="#{user.id}" name="userId"/>
+                                                    <f:param value="#{user.uid}" name="userId"/>
                                                 </h:link>
                                             </h:panelGrid>
                                         </p:dataScroller>
