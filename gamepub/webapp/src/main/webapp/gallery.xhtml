@@ -15,16 +15,25 @@
 <ui:composition template="/Template/template.xhtml">
             <ui:define name="content">     
                 <div align="center">
-     <h:form enctype="multipart/form-data">        
+     <h:form id="galleryForm" enctype="multipart/form-data">        
             <h2>#{loginBean.name}'s Gallery  </h2>
  
-            <p:galleria  value="#{galleryBean.images}" var="image" panelWidth="1000"
-                    panelHeight="700" showCaption="true">
-            <p:graphicImage value ="#{image}"                           
-                            alt="desc for #{image}"
-                            title="#{image}" />
-        </p:galleria> 
+            <p:contentFlow id="contentF"  value="#{galleryBean.images}" var="image" >
+                <p:commandLink
+                                                    styleClass="gameIcon btn btn-danger"
+                                                    oncomplete="removePicture([{name:'selectedImage',
+                                                    value:$('.item.active div.caption').text()}])"
+                                                    
+                                                    
+                                                    
+                                                    >
+                    </p:commandLink>
+                    <p:graphicImage value="#{image}"  styleClass="content"/>
+                    <div class="caption">#{image}</div>                            
+                
             
+            </p:contentFlow> 
+            <p:remoteCommand name="removePicture" actionListener="#{galleryBean.deleteImage}" update="contentF"/>
    
       
     
