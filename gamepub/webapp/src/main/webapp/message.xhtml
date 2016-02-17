@@ -22,10 +22,11 @@
                                 <p:graphicImage value="#{oneMessageBean.receiver.avatarUrl}"
                                                 style="width:50px; height: 50px;"
                                                 rendered="#{!oneMessageBean.receiverIsNull}"/>
-                                <p:inputText value="#{oneMessageBean.userLogin}">
+                                <p:inputText value="#{oneMessageBean.userLogin}" id="inputSearch">
                                     <p:ajax event="keyup" update=":overlayForm:messageOverlayUsers"
                                             listener="#{oneMessageBean.lifeSearch}"/>
                                 </p:inputText>
+                                <p:watermark for="inputSearch" value="User login..."/>
                                 <p:button class="btn btn-info" value="Go to dialog" outcome="mesDialog"
                                           rendered="#{!oneMessageBean.receiverIsNull}">
                                     <f:param value="#{oneMessageBean.receiver.id}" name="receiverId"/>
