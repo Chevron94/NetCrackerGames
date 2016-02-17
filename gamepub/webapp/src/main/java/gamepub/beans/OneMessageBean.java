@@ -24,6 +24,7 @@ public class OneMessageBean {
     String userLogin;
     int receiverId;
     String message;
+    User receiver;
     @EJB
     UserService userService;
     @EJB
@@ -49,18 +50,25 @@ public class OneMessageBean {
     }
 
     public void setUserLogin(String userLogin){
+
         this.userLogin  = userLogin;
+        try {
+            receiver = userService.getUserByLogin(userLogin);
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     public User getReceiver() {
-        if (receiverId != 0)
-            return userService.getUserById(receiverId);
-        return null;
+        return receiver;
     }
 
     public boolean getReceiverIsNull(){
-        return receiverId == 0;
+        return receiver == null;
     }
+
 
     public void lifeSearch() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -79,7 +87,8 @@ public class OneMessageBean {
         return null;
     }
 
-    public void findUser(User user){
+    public void findUser(String login){
+        User user = userService.getUserByLogin(login);
         userLogin = user.getLogin();
         receiverId = user.getId();
     }
@@ -88,14 +97,23 @@ public class OneMessageBean {
     public String sendMessage() {
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
-        privateMessage.setReceiver(userService.getUserById(receiverId));
+        privateMessage.setReceiver(userService.getUserByLogin(userLogin));
         privateMessage.setDate(new Date());
         privateMessage.setText(message);
         privateMessageService.create(privateMessage);
         receiverId = 0;
-        message = "";
-        userLogin = "";
+        message = null;
+        userLogin = null;
+        receiver = null;
         return "allMessages";
+    }
+
+    public List<User> searchUser(String query){
+        List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
+        Map.Entry<String, Object> param;
+        param = new HashMap.SimpleEntry<String, Object>("login", query);
+        parametersList.add(param);
+        return userService.getUsersByCustomParams(parametersList);
     }
 
 }
