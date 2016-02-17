@@ -14,22 +14,39 @@
             <h:outputStylesheet name="theme.css"/>
             <b:row>
                 <b:column span="5" offset="2">
+                    <h:form id="userAvt">
+                        <p:graphicImage value="#{oneMessageBean.receiver.avatarUrl}"
+                                        style="width:50px; height: 50px;"
+                                        rendered="#{!oneMessageBean.receiverIsNull}"/>
+                    </h:form>
                     <h:form id="messageForm">
                         <p:growl id="growl" life="2000"/>
                         <h:panelGrid columns="1" style="width: 100%;" styleClass="newsItem">
 
                             <h:panelGrid columns="3" id="userMesLogin">
-                                <p:graphicImage value="#{oneMessageBean.receiver.avatarUrl}"
-                                                style="width:50px; height: 50px;"
-                                                rendered="#{!oneMessageBean.receiverIsNull}"/>
-                                <p:inputText value="#{oneMessageBean.userLogin}" id="inputSearch">
-                                    <p:ajax event="keyup" update=":overlayForm:messageOverlayUsers"
-                                            listener="#{oneMessageBean.lifeSearch}"/>
-                                </p:inputText>
+
+                                <br/>
+                                <p:autoComplete id="inputSearch" value="#{oneMessageBean.userLogin}"
+                                                completeMethod="#{oneMessageBean.searchUser}" var="user"
+                                                itemLabel="#{user.login}" itemValue="#{user.login}"
+                                                forceSelection="true">
+                                    <p:ajax event="itemSelect" update="userAvt"/>
+                                    <p:column>
+                                        <p:graphicImage value="#{user.avatarUrl}"
+                                                        style="width:50px; height: 50px;"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{user.login}"/>
+
+                                    </p:column>
+
+                                </p:autoComplete>
+
                                 <p:watermark for="inputSearch" value="User login..."/>
                                 <p:button class="btn btn-info" value="Go to dialog" outcome="mesDialog"
                                           rendered="#{!oneMessageBean.receiverIsNull}">
-                                    <f:param value="#{oneMessageBean.receiver.id}" name="receiverId"/>
+                                    <f:param value="#{oneMessageBean.receiver.uid}" name="receiverId"/>
                                 </p:button>
                             </h:panelGrid>
 
@@ -39,28 +56,7 @@
 
                         </h:panelGrid>
                     </h:form>
-                    <h:form id="overlayForm">
-                        <p:overlayPanel id="overlay" for=":messageForm:userMesLogin" hideEffect="fade" dynamic="true"
-                                        style="width:300px; ">
-                            <p:dataScroller value="#{oneMessageBean.users}" mode="inline" scrollHeight="200"
-                                            id="messageOverlayUsers" var="user"
-                                            chunkSize="5">
 
-                                <h:panelGrid columns="2" styleClass="newsItem">
-                                    <p:graphicImage value="#{user.avatarUrl}"
-                                                    style="width:50px; height: 50px;"/>
-
-                                    <p:commandLink id="ajax" update=":messageForm:userMesLogin"
-                                                   actionListener="#{oneMessageBean.findUser(user)}">
-                                        <h:outputText value="#{user.login}"/>
-                                    </p:commandLink>
-                                    <h:link outcome="news" includeViewParams="true">
-                                        <f:param value="#{user.id}" name="newsId"/>
-                                    </h:link>
-                                </h:panelGrid>
-                            </p:dataScroller>
-                        </p:overlayPanel>
-                    </h:form>
                 </b:column>
                 <b:column span="3">
                     <h:form>
