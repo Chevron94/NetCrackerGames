@@ -37,26 +37,26 @@ public class NewsService extends NewsDaoImplementation {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<News> getNewsByName(String name) {
-        return super.getNewsByName(name);
+    public List<News> getNewsByName(String name, boolean all, Integer start, Integer count) {
+        return super.getNewsByName(name, all, start, count);
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<News> getNewsByGameId(Integer id) {
-        return super.getNewsByGameId(id);
+    public List<News> getNewsByGameId(Integer id, boolean all, Integer start, Integer count) {
+        return super.getNewsByGameId(id, all, start, count);
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<News> getNewsByDate(Date date) {
-        return super.getNewsByDate(date);
+    public List<News> getNewsByDate(Date date, boolean all, Integer start, Integer count) {
+        return super.getNewsByDate(date, all, start, count);
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<News> getNewsOrderByDate() {
-        return super.getNewsOrderByDate();
+    public List<News> getNewsOrderByDate(boolean all, Integer start, Integer count) {
+        return super.getNewsOrderByDate(all, start, count);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class NewsService extends NewsDaoImplementation {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
-        return super.getNewsByCustomParams(parameterList);
+    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
+        return super.getNewsByCustomParams(parameterList, all, start, count);
     }
 
     @Override

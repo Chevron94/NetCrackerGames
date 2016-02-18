@@ -54,7 +54,7 @@ public class LifeSearchBean {
         if(request != null && request.length()>0) {
             param = new HashMap.SimpleEntry<String, Object>("name", request);
             parametersList.add(param);
-            return newsService.getNewsByCustomParams(parametersList);
+            return newsService.getNewsByCustomParams(parametersList,true,0,0);
         }
         return null;
     }
@@ -64,7 +64,7 @@ public class LifeSearchBean {
         if(request != null && request.length()>0) {
             param = new HashMap.SimpleEntry<String, Object>("name", request);
             parametersList.add(param);
-            return gameService.getGamesByCustomParams(parametersList);
+            return gameService.getGamesByCustomParams(parametersList,true,0,0);
         }
         return null;
     }
