@@ -267,7 +267,7 @@ public class SchedulerJob implements Job {
         GamePlatform gamePlatform;
         GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
         if (g.getSteamId() == 0) {
-            System.out.println(g.getName() + " " + steam.get(g.getName()));
+  //          System.out.println(g.getName() + " " + steam.get(g.getName()));
             if (steam.get(g.getName()) != null) {
                 g.setSteamId(steam.get(g.getName()));
                 JSONObject gameJSON;
