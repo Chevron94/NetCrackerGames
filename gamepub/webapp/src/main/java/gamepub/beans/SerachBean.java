@@ -80,7 +80,7 @@ public class SerachBean {
             parametersList.add(param);
         }
 
-        return gameService.getGamesByCustomParams(parametersList);
+        return gameService.getGamesByCustomParams(parametersList,true,0,0);
 
     }
 
