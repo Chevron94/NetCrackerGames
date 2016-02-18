@@ -203,6 +203,8 @@ public class GoogleAuthorizationBean implements Serializable {
                 user.setAvatarUrl(photo);
                 user.setPassword(shaCode.code(shaCode.code(name) + id));
                 user.setEmail(email);
+                user.setActive(true);
+                user.setBanned(false);
                 user.setSteamInfo(id);
                 user.setLogin(nickname);
                 user.setCity(city);

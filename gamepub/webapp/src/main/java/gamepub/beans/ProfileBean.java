@@ -30,7 +30,7 @@ import org.primefaces.event.FileUploadEvent;
 public class ProfileBean {
 
     private Integer id;
-    List<Game> myGames;
+ 
     List<UserGame> userGame;
     private boolean isEdit;
     private boolean isMy;
@@ -217,8 +217,8 @@ public class ProfileBean {
     }
 
     //Games
-    public List<UserGame> getMyGames() {
-        return userGameService.getUserGamesByUserId(id);
+    public List<UserGame> getWantedGames() {
+        return userGameService.getWantedUserGamesByUserId(id);
     }
 
     public List<UserGame> getFavouriteGames() {
