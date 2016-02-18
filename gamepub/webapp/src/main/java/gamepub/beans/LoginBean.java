@@ -88,14 +88,20 @@ private boolean logged;
     }
 
     
-    public void logout(){
+    public String logout(){
         try {
             setLogged(false);
             SessionBean.getSession().invalidate();
+            return "main";
         }
         catch (Exception e){
             System.out.print(e.getMessage());
+            return "main";
         }
+    }
+
+    public String goToMain(){
+        return "main";
     }
     /**
      * @return the logged
