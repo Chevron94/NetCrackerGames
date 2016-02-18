@@ -10,6 +10,7 @@ import gamepub.db.entity.Comment;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.GameGenre;
 import gamepub.db.entity.GamePlatform;
+import gamepub.db.entity.GameScreenshot;
 import gamepub.db.entity.GameStatus;
 import gamepub.db.entity.Mark;
 import gamepub.db.entity.Platform;
@@ -18,6 +19,7 @@ import gamepub.db.entity.UserGame;
 import gamepub.db.service.CommentService;
 import gamepub.db.service.GameGenreService;
 import gamepub.db.service.GamePlatformService;
+import gamepub.db.service.GameScreenshotService;
 import gamepub.db.service.GameService;
 import gamepub.db.service.GameStatusService;
 import gamepub.db.service.MarkService;
@@ -37,7 +39,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-
 
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtextarea.InputTextarea;
@@ -70,6 +71,8 @@ public class AboutGameBean {
     GamePlatformService gamePlatformService;
     @EJB
     GameGenreService gameGenreService;
+    @EJB
+    GameScreenshotService gameScreenshotService;
 
     Game game;
     List<Mark> marksAndReviews;
@@ -90,10 +93,20 @@ public class AboutGameBean {
             drawStatus = true;
             notStatusButton();
             disableStatusButtons(userGame);
-        } else
+        } else {
             drawStatus = false;
+        }
         //drawStatusButtons(drawStatus);
         return g;
+    }
+
+    public List<String> getImages() {
+        List<GameScreenshot> gameScreenshots= gameScreenshotService.getScreenshotsByGameId(SessionBean.getGameId());
+        List<String> images=new ArrayList<String>();
+        for(GameScreenshot gm:gameScreenshots){
+            images.add(gm.getLink());
+        }
+        return images;
     }
 
     public List<Mark> getMarksAndReviews() {

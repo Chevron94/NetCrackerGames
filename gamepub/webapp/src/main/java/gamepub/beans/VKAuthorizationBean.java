@@ -221,6 +221,8 @@ public class VKAuthorizationBean implements Serializable {
                 user.setAvatarUrl(photo);
                 user.setPassword(shaCode.code(shaCode.code(name) + id));
                 user.setEmail("default email");
+                user.setActive(true);
+                user.setBanned(false);
                 user.setVkInfo(id);
                 user.setLogin(nickname);
                 user.setCity(city);

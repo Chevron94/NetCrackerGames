@@ -239,6 +239,8 @@ public class FaceBookAuthorizationBean implements Serializable {
                 user.setAvatarUrl(photo);
                 user.setPassword(shaCode.code(shaCode.code(name) + id));
                 user.setEmail("default email");
+                user.setActive(true);
+                user.setBanned(false);
                 user.setFbInfo(id);
                 user.setLogin(nickname);
                 user.setCity(city);
