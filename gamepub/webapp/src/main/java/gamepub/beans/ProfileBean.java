@@ -217,6 +217,16 @@ public class ProfileBean {
     }
 
     //Games
+    public List<UserGame> getSimpleAndFavouriteGames(){
+        List<UserGame> allMyGames= userGameService.getUserGamesByUserId(id);
+        List<UserGame> simpleGames=new ArrayList<UserGame>();
+        for(UserGame usergame: allMyGames){
+            if(!usergame.isCanExchange() && !usergame.isWanted())
+                simpleGames.add(usergame);
+        }
+        return simpleGames;
+    }
+    
     public List<UserGame> getWantedGames() {
         return userGameService.getWantedUserGamesByUserId(id);
     }
