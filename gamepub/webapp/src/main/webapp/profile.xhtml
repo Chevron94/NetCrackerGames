@@ -123,9 +123,9 @@
                     </h:form>
                     <!-- Games -->
                     <b:tabView id="tabView">
-                        <b:tab title="My games" id="tabMyGames">
+                        <b:tab title="Wanted games" id="tabMyGames">
                             <h:form id="myGamesForm">
-                                <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.myGames}" columns="3"
+                                <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.wantedGames}" columns="3"
                                             layout="grid"
                                             rows="12" paginator="true"
                                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"

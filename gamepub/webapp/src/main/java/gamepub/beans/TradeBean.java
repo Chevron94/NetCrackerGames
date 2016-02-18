@@ -31,7 +31,7 @@ public class TradeBean {
     @EJB
     UserGameService userGameService;
     
-    private List<String> userNames;
+    private List<User> users;
     private List<Game> wantedGames;
     
     public TradeBean() {
@@ -41,21 +41,21 @@ public class TradeBean {
      * @param game
      * @return the userList
      */
-    public List<String> getUserNames(Game game) {
-        userNames = new ArrayList<String>();
+    public List<User> getUsers(Game game) {
+        users = new ArrayList<User>();
          List<UserGame> exchangeUserGameList=userGameService.getCanExchangeUserGamesByGameId(game.getId());
         for(UserGame ug:exchangeUserGameList){
-        userNames.add(ug.getUser().getLogin());}
+        users.add(ug.getUser());}
         
-        return userNames;
+        return users;
         
     }
 
     /**
      * @param userList the userList to set
      */
-    public void setUserNames(List<String> userList) {
-        this.userNames = userList;
+    public void setUserNames(List<User> userList) {
+        this.users = userList;
     }
 
     /**
@@ -83,7 +83,7 @@ public class TradeBean {
     }
 
     public boolean noUsersCheck(Game game){
-       return (getUserNames(game).isEmpty());
+       return (getUsers(game).isEmpty());
        
         
     }
