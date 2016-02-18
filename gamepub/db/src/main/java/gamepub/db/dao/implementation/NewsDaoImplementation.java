@@ -55,7 +55,7 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         return result;
     }
 
-    public List<News> getNewsByName(String name) {
+    public List<News> getNewsByName(String name, boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<News> root = cq.from(instance);
@@ -64,10 +64,18 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<News> resList = new ArrayList<News>();
+            for(int i = 0; (i<count) && (result.size()>start+1); i++){
+                resList.add((News)result.get(start+i));
+            }
+            return resList;
+        }
     }
 
-    public List<News> getNewsByGameId(Integer id) {
+    public List<News> getNewsByGameId(Integer id, boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<News> root = cq.from(instance);
@@ -76,10 +84,18 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<News> resList = new ArrayList<News>();
+            for(int i = 0; (i<count) && (result.size()>start+1); i++){
+                resList.add((News)result.get(start+i));
+            }
+            return resList;
+        }
     }
 
-    public List<News> getNewsOrderByDate() {
+    public List<News> getNewsOrderByDate(boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<News> root = cq.from(instance);
@@ -87,10 +103,18 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<News> resList = new ArrayList<News>();
+            for(int i = 0; (i<count) && (result.size()>start+1); i++){
+                resList.add((News)result.get(start+i));
+            }
+            return resList;
+        }
     }
 
-    public List<News> getNewsByDate(Date date) {
+    public List<News> getNewsByDate(Date date, boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<News> root = cq.from(instance);
@@ -99,10 +123,18 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<News> resList = new ArrayList<News>();
+            for(int i = 0; (i<count) && (result.size()>start+1); i++){
+                resList.add((News)result.get(start+i));
+            }
+            return resList;
+        }
     }
 
-    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList){
+    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count){
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<News> root = cq.from(instance);
@@ -128,7 +160,15 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.orderBy(cb.desc(root.<Date>get("date")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<News> resList = new ArrayList<News>();
+            for(int i = 0; (i<count) && (result.size()>start+1); i++){
+                resList.add((News)result.get(start+i));
+            }
+            return resList;
+        }
     }
     @Override
     public News create(News news) {

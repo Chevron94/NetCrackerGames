@@ -58,7 +58,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         return result;
     }
 
-    public List<Game> getGamesByName(String name) {
+    public List<Game> getGamesByName(String name, boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Game> root = cq.from(instance);
@@ -67,13 +67,30 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         cq.orderBy(cb.asc(root.<String>get("name")));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
-        return result;
+        if (all)
+            return result;
+        else {
+            List<Game> resList = new ArrayList<Game>();
+            for (int i = 0; (i<count) && (result.size()>start+i); i++){
+                resList.add((Game)result.get(start+count));
+            }
+            return resList;
+        }
     }
 
-    public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
+    public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
         String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game";
         if (parameterList.size() == 0) {
-            return this.executeQuery(jpa);
+            List<Game> result = this.executeQuery(jpa+=" order by g.date");
+            if (all)
+                return result;
+            else {
+                List<Game> resList = new ArrayList<Game>();
+                for (int i = 0; (i<count) && (result.size()>start+i); i++){
+                    resList.add(result.get(start+count));
+                }
+                return resList;
+            }
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         for (HashMap.Entry<String, Object> param : parameterList) {
@@ -105,7 +122,16 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
             }
         }
-        return this.executeQuery(jpa, parameters);
+        List<Game> result = this.executeQuery(jpa, parameters);
+        if (all)
+            return result;
+        else {
+            List<Game> resList = new ArrayList<Game>();
+            for (int i = 0; (i<count) && (result.size()>start+i); i++){
+                resList.add(result.get(start+count));
+            }
+            return resList;
+        }
     }
 
     public List<Game> getGamesOrderByMarks(int maxValue){
