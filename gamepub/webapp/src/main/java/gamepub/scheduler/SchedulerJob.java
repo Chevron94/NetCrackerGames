@@ -263,6 +263,7 @@ public class SchedulerJob implements Job {
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
             if (g.getSteamId() == 0) {
+                System.out.println(g.getName()+" "+steam.get(g.getName()));
                 if (steam.get(g.getName()) != null) {
                     g.setSteamId(steam.get(g.getName()));
                     JSONObject gameJSON;
@@ -270,14 +271,15 @@ public class SchedulerJob implements Job {
                         gameJSON = new JSONObject(sendGet("http://store.steampowered.com/api/appdetails?appids=" + g.getSteamId()));
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Thread.sleep(100);
+                        Thread.sleep(10000);
                         gameJSON = new JSONObject(sendGet("http://store.steampowered.com/api/appdetails?appids=" + g.getSteamId()));
                     }
                     Boolean inStore = gameJSON.getJSONObject(String.valueOf(g.getSteamId())).getBoolean("success");
                     if (inStore) {
+                        g.setLinkToSteam("http://store.steampowered.com/app/" + g.getSteamId());
                         gameJSON = gameJSON.getJSONObject(String.valueOf(g.getSteamId())).getJSONObject("data");
                         g.setPoster(gameJSON.getString("header_image"));
-                        gameDaoImplementation.update(g);
+                        g = gameDaoImplementation.update(g);
                         String winReq;
                         String macReq;
                         String linuxReq;
