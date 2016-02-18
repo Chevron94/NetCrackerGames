@@ -154,9 +154,6 @@ public class SchedulerJob implements Job {
                         gameGenre.setGame(g);
                         gameGenre.setGenre(genre);
                         gameGenreDaoImplementation.create(gameGenre);
-                        if (platform.getName().equals("Windows")) {
-                          g = linkToSteam(g);
-                        }
                     }
                 }
                 //.release_data > span:nth-child(2)
@@ -170,6 +167,10 @@ public class SchedulerJob implements Job {
                     gamePlatform.setMetacritic(Integer.parseInt(metascore));
                 }
                 gamePlatformDaoImplementation.create(gamePlatform);
+                if (platform.getName().equals("Windows")) {
+                    g = linkToSteam(g);
+                    games.set(i, g);
+                }
             } catch (Exception e) {
 
             }
