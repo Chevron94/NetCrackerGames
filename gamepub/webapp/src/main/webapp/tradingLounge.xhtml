@@ -31,38 +31,35 @@ and open the template in the editor.
                 <b:column span="4" > 
                     <h3>Can exchange</h3>
                 </b:column> 
-            </b:row>
-            
+            </b:row>            
             <p:dataScroller var="user" value="#{tradingLoungeBean.users}">
-                <b:row style="margin-top: 10px">
-                    <b:column span="2" offset="1">
+                <b:row style="margin-top: 10px" > 
+                    <b:column span="2" offset="1">                        
                         
-                        <h:panelGrid columns="2" >
                         <h:link outcome="profile" includeViewParams="true"  >
                             <f:param value="#{user.uid}" name="userId"/>
-                            <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}" style="width:100px; height: 100 px;"/>
-                        </h:link>                         
-                    </h:panelGrid>
+                            <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}"  style="height: 172px"/>                    
+                        </h:link>     
+                        
                     </b:column>                    
                     <b:column span="4" >
-                        <p:dataGrid id="wantedGames" emptyMessage="#{user.login} doesnt want any game" var="wantedgame"
-                                    value="#{tradingLoungeBean.getWantedGames(user)}"  columns="6" layout="grid" 
-                                    rows="12"> 
-                                                                      
+                        <p:carousel  id="wantedGames"  var="wantedgame" responsive="true" itemStyle="height:150px"
+                                     rendered="#{!tradingLoungeBean.noWantedGamesCheck(user)}"
+                                    value="#{tradingLoungeBean.getWantedGames(user)}"   numVisible="6">                                                                       
                              <h:link outcome="aboutGame" includeViewParams="true">
                                             <f:param value="#{wantedgame.game.uid}" name="id"/>
-                                            <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"
-                                                            value="#{wantedgame.game.poster}" />
-                                            
-                                            </h:link>
-                                        
-                     </p:dataGrid>
-                    </b:column>
-                    
+                                            <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"    
+                                                            value="#{wantedgame.game.poster}" />                                            
+                                            </h:link>                                        
+                     </p:carousel>
+                        <h:outputText rendered="#{tradingLoungeBean.noWantedGamesCheck(user)}"
+                                      style="font-size: medium" value="This user doesn't want any game :(" />
+                        
+                    </b:column>                    
                     <b:column span="4" >
-                        <p:dataGrid id="forExchangeGames" emptyMessage="#{user.login} doesnt have any game for exchange" var="exchangegame"
-                                    value="#{tradingLoungeBean.getExchangeGames(user)}"  columns="6" layout="grid" 
-                        rows="12" > 
+                        <p:carousel id="forExchangeGames" var="exchangegame" responsive="true" itemStyle="height:150px"
+                                    rendered="#{!tradingLoungeBean.noExchangeGamesCheck(user)}"
+                                    value="#{tradingLoungeBean.getExchangeGames(user)}" numVisible="6"> 
                                                                       
                              <h:link outcome="aboutGame" includeViewParams="true">
                                             <f:param value="#{exchangegame.game.uid}" name="id"/>
@@ -71,7 +68,10 @@ and open the template in the editor.
                                             
                                             </h:link>
                                         
-                     </p:dataGrid>
+                     </p:carousel>
+                        <h:outputText rendered="#{tradingLoungeBean.noExchangeGamesCheck(user)}"
+                                      style="font-size: medium" value="This user has no games for exchange :(" />
+                        
                     </b:column>
                     
                 </b:row>    

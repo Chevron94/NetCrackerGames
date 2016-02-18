@@ -123,9 +123,9 @@
                     </h:form>
                     <!-- Games -->
                     <b:tabView id="tabView">
-                        <b:tab title="My games" id="tabMyGames">
+                        <b:tab title="Wanted games" id="tabMyGames">
                             <h:form id="myGamesForm">
-                                <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.myGames}" columns="3"
+                                <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.wantedGames}" columns="3"
                                             layout="grid"
                                             rows="12" paginator="true"
                                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -140,7 +140,7 @@
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%">
-                                                <p:graphicImage width="100%" height="90%" value="#{mygame.game.poster}"/>
+                                                <p:graphicImage width="100%" height="200px" value="#{mygame.game.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{mygame.game.name} "
                                                         includeViewParams="true">
                                                     <f:param value="#{mygame.game.uid}" name="id"/>
@@ -168,7 +168,7 @@
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%">
-                                                <p:graphicImage width="100%" height="90%"
+                                                <p:graphicImage width="100%" height="200px"
                                                                 value="#{favouritegame.game.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
                                                         includeViewParams="true">
@@ -197,7 +197,7 @@
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%">
-                                                <p:graphicImage width="100%" height="90%"
+                                                <p:graphicImage width="100%" height="200px"
                                                                 value="#{exchangegame.game.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
                                                         includeViewParams="true">
@@ -219,7 +219,7 @@
 
                                         <p:panel style="text-align:center">
                                             <h:panelGrid columns="1" style="width:100%">
-                                                <p:graphicImage width="100%" height="90%" value="#{recomendGame.poster}"/>
+                                                <p:graphicImage width="100%" height="200px" value="#{recomendGame.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{recomendGame.name} "
                                                         includeViewParams="true">
                                                     <f:param value="#{recomendGame.uid}" name="id"/>

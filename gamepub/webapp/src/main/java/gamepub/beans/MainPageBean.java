@@ -5,6 +5,7 @@ import gamepub.db.service.GameService;
 import gamepub.parse.Match;
 import gamepub.parse.Tournament;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import sun.util.resources.cldr.es.CalendarData_es_GQ;
 
 import javax.ejb.EJB;
@@ -39,8 +40,9 @@ public class MainPageBean {
 
     /**
      * @return the matches
+     * @throws java.net.UnknownHostException
      */
-    public List<Match> getMatches() throws IOException {
+    public List<Match> getMatches() throws Exception {
         Tournament tournament = new Tournament();
         return tournament.getMatches();        
     }

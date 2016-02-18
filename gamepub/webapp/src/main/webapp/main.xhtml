@@ -14,67 +14,71 @@
 
         <ui:define name="content">
 
-                    <b:column span="3">
-                    <div class="left-sidebar">
-                        <h3 align="center">Top of the week</h3>
-                        <h:form id="formLeft">
-                            <p:dataList value="#{mainPageBean.myGames}" var="game" type="unordered" itemType="none" paginator="false" rows="5" styleClass="paginated">
+            <b:column span="3">
+                <div class="left-sidebar">
+                    <h3 align="center">Top of the week</h3>
+                    <h:form id="formLeft">
+                        <p:dataList value="#{mainPageBean.myGames}" var="game" type="unordered" itemType="none"
+                                    paginator="false" rows="5" styleClass="paginated">
+                            <f:facet name="header">
+                                Games
+                            </f:facet>
+                            <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"
+                                         layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:graphicImage value="#{game.poster}" style="width:100%; height: 90%"/>
+                                <h:link outcome="aboutGame" value="#{game.name} " includeViewParams="true">
+                                    <f:param value="#{game.uid}" name="id"/>
+                                </h:link>
+
+                            </p:panelGrid>
+                        </p:dataList>
+                    </h:form>
+                </div><!-- .left-sidebar -->
+            </b:column>
+
+            <b:column span="6">
+                <div class="content">
+                    <h3 align="center">Hot games</h3>
+                    <h:form>
+                        <p:carousel value="#{mainPageBean.myGames}" var="game"
+                                    itemStyle="text-align:center" responsive="true" style="height: 60%; " numVisible="2">
+                            <p:panelGrid columns="2" style="width:100%;height:100%; text-align: center; margin:10px 0px" columnClasses="label,value"
+                                         layout="grid" styleClass="ui-panelgrid-blank">
+
                                 <f:facet name="header">
-                                    Games
+                                        <p:graphicImage value="#{game.poster}" styleClass="imgA"/>
                                 </f:facet>
-                                <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"
-                                             layout="grid" styleClass="ui-panelgrid-blank">
-
-                                    <p:graphicImage value="#{game.poster}" style="width:100%; height: 90%"/>
-                                    <h:link outcome="aboutGame" value="#{game.name} " includeViewParams="true">
-                                        <f:param value="#{game.uid}" name="id"/>
-                                    </h:link>
-
-                                </p:panelGrid>
-                            </p:dataList>
-                        </h:form>
-                    </div><!-- .left-sidebar -->
-                    </b:column>
-
-                    <b:column span="6">
-                    <div class="content">
-                        <h3 align="center">Hot games</h3>
-                        <h:form>
-                            <p:carousel value="#{mainPageBean.myGames}"  var="game"
-                                        itemStyle="text-align:center" responsive="true" style="height: 60%;" numVisible="2" >
-                                <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"
-                                             layout="grid" styleClass="ui-panelgrid-blank">
-                                    <f:facet name="header">
-                                        <p:graphicImage value="#{game.poster}" style="width:350px; height: 500px"/>
-                                    </f:facet>
-
-                                    <h:outputText value="#{game.uid}"/>
-                                    <h:link outcome="aboutGame" value="#{game.name} " includeViewParams="true">
-                                        <f:param value="#{game.uid}" name="id"/>
-                                    </h:link>
-
-                                </p:panelGrid>
 
 
-                            </p:carousel>
+                                <h:outputText value="#{game.uid}"/>
+                                <h:link outcome="aboutGame" value="#{game.name} " includeViewParams="true">
+                                    <f:param value="#{game.uid}" name="id"/>
+                                </h:link>
 
-                        </h:form>
-                    </div>
-                    </b:column>
+                            </p:panelGrid>
 
-                <b:column span="3">
+
+                        </p:carousel>
+
+                    </h:form>
+                </div>
+            </b:column>
+
+            <b:column span="3">
                 <div class="right-sidebar">
                     <h3 align="center">Tournaments</h3>
                     <h:form id="formRight">
-                        <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered" emptyMessage="No matches today">
+                        <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
+                                    emptyMessage="No matches today">
                             <f:facet name="header">
                                 Dota2
                             </f:facet>
-                          #{match.status}: #{match.setTournament(tournament)} - #{match.team1} - #{match.dataScore} - #{match.team2} 
+                            #{match.status}: #{match.setTournament(tournament)} - #{match.team1} - #{match.dataScore} - #{match.team2}
                         </p:dataList>
                     </h:form>
                 </div><!-- .right-sidebar -->
-               </b:column>
+            </b:column>
 
 
         </ui:define>

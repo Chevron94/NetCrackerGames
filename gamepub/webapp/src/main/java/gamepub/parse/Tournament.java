@@ -6,6 +6,7 @@
 package gamepub.parse;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,14 +17,14 @@ import org.jsoup.select.Elements;
  * @author fitok
  */
 public class Tournament {
-    public ArrayList<Match> getMatches() throws IOException{
+    public ArrayList<Match> getMatches() {
        Elements currentTournaments=null;
         Elements previousTournaments=null;
         Elements futureTournaments=null;
    ArrayList<Match> matches = new ArrayList<Match>();
-   //
+       try{
         Document doc = Jsoup.connect("http://dota2.ru/matches/").get();
-        try{
+        
        for(int i=0;i<5;i+=2){
            if(doc.select("div.matches-list").get(0).children().get(i).html().equals("Прошедшие матчи")){
                previousTournaments = doc.select("div.matches-list").get(0).child(i+1).children();
@@ -36,7 +37,7 @@ public class Tournament {
            }
        }
         }
-       catch(IndexOutOfBoundsException e){}
+       catch(Exception e){}
       
      if(currentTournaments!=null){
        for(int i=0;i<currentTournaments.size();i++){
@@ -74,7 +75,7 @@ public class Tournament {
         matches.add(m);
    
    }}
-    
+       
    
    
 
