@@ -78,6 +78,11 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         }
     }
 
+    public List<Game> getGamesWhichHaveNews() {
+        String jpa = "Select DISTINCT n.game from News n order by n.game.name";
+        return this.executeQuery(jpa);
+    }
+
     public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
         String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game";
         if (parameterList.size() == 0) {

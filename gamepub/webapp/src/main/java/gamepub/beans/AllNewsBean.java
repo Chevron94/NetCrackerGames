@@ -77,7 +77,7 @@ public class AllNewsBean {
         g.setName("None");
         g.setId(0);
         res.add(g);
-        res.addAll(gameService.findAll());
+        res.addAll(gameService.getGamesWhichHaveNews());
         return res;
     }
 
