@@ -101,9 +101,9 @@ public class AboutGameBean {
     }
 
     public List<String> getImages() {
-        List<GameScreenshot> gameScreenshots= gameScreenshotService.getScreenshotsByGameId(SessionBean.getGameId());
-        List<String> images=new ArrayList<String>();
-        for(GameScreenshot gm:gameScreenshots){
+        List<GameScreenshot> gameScreenshots = gameScreenshotService.getScreenshotsByGameId(SessionBean.getGameId());
+        List<String> images = new ArrayList<String>();
+        for (GameScreenshot gm : gameScreenshots) {
             images.add(gm.getLink());
         }
         return images;
@@ -177,6 +177,43 @@ public class AboutGameBean {
             FacesMessage errMes = new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "no rights to delete");
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
         }
+    }
+
+    public void addToMyGames() {
+
+        boolean exist = true;
+        UserGame userGame = userGameService.getUserGameByUserIdAndGameId(SessionBean.getUserId(), SessionBean.getGameId());
+        if (userGame == null) {
+            exist = false;
+            userGame = new UserGame();
+        }
+        userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
+        userGame.setUser(userService.getUserById(SessionBean.getUserId()));
+
+        int gameStatusId = 0;
+        try {
+            gameStatusId = userGame.getGameStatus().getId();
+        } catch (Exception e) {
+
+        }
+
+        userGame.setCanExchange(false);
+        userGame.setWanted(false);
+        userGame.setFavorite(false);
+
+        if (!exist) {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(1));
+            userGameService.create(userGame);
+        } else {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(gameStatusId));
+            userGameService.delete(userGame.getId());
+            userGameService.update(userGame);
+        }
+
+        notStatusButton();
+        disableButtons(userGame);
+        drawStatus = true;
+        disableStatusButtons(userGame);
     }
 
     public void addToFavourite() {
@@ -349,6 +386,16 @@ public class AboutGameBean {
         }
         if (userGame.isCanExchange()) {
             commandButton = (CommandButton) uiViewRoot.findComponent("comForm:exchange");
+            commandButton.setDisabled(true);
+        }
+        if (!userGame.isCanExchange() && !userGame.isWanted() && !userGame.isFavorite()) {
+            CommandButton fav=(CommandButton) uiViewRoot.findComponent("comForm:favourite");
+            CommandButton wan=(CommandButton) uiViewRoot.findComponent("comForm:wanted");
+            CommandButton exc=(CommandButton) uiViewRoot.findComponent("comForm:exchange");
+            fav.setDisabled(false);
+            wan.setDisabled(false);
+            exc.setDisabled(false);
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:mygame");
             commandButton.setDisabled(true);
         }
 

@@ -83,7 +83,7 @@ public class SchedulerJob implements Job {
             }
             int i = 1;
             while (element != null) {
-                List<Game> tmp = gameDaoImplementation.getGamesByName(element.text());
+                List<Game> tmp = gameDaoImplementation.getGamesByName(element.text(),true,0,0);
                 Game game;
                 if (tmp != null && tmp.size() > 0) {
                     game = tmp.get(0);
@@ -122,7 +122,7 @@ public class SchedulerJob implements Job {
                 gamePlatform.setPlatform(platform);
                 String result = sendGet(g.getLinkToSteam());
                 Document document = Jsoup.parse(result);
-                List<Game> tmp = gameDaoImplementation.getGamesByName(g.getName());
+                List<Game> tmp = gameDaoImplementation.getGamesByName(g.getName(),true,0,0);
                 if (tmp != null && tmp.size() > 0) {
                     gamePlatform.setGame(tmp.get(0));
                 } else {
@@ -233,7 +233,7 @@ public class SchedulerJob implements Job {
         NewsDaoImplementation newsDaoImplementation = new NewsDaoImplementation();
         JSONArray newsJson;
         String json = sendGet(NEWS_URL + game.getSteamId() + "\"");
-        List<News> newses = newsDaoImplementation.getNewsByGameId(game.getId());
+        List<News> newses = newsDaoImplementation.getNewsByGameId(game.getId(),true,0,0);
         if (json != null) {
             jsonObject = new JSONObject(json);
             newsJson = jsonObject.getJSONObject("appnews").getJSONArray("newsitems");

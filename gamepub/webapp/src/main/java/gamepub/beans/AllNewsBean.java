@@ -45,7 +45,7 @@ public class AllNewsBean {
             param = new HashMap.SimpleEntry<String, Object>("date", date);
             parametersList.add(param);
         }
-        return newsService.getNewsByCustomParams(parametersList);
+        return newsService.getNewsByCustomParams(parametersList,true,0,0);
     }
 
     public void search(){
