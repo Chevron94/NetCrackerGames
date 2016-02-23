@@ -7,6 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+
 <h:body>
     <ui:composition template="/Template/template.xhtml">
         <ui:define name="content">
@@ -104,18 +105,14 @@
                                   rendered="#{profileBean.isMy}"/>
                         <br/>Connect with:
                         <h:form rendered="#{!profileBean.isVk()}">
-                            <a href="#{vKAuthorizationBean.userUrl}"><img
-                                    src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
+
+                            <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
                         </h:form>
                         <h:form rendered="#{!profileBean.isFacebook()}">
-                            <a href="#{faceBookAuthorizationBean.userUrl}"><img
-                                    src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
-                                    height="30" width="110"/></a>
+                            <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
                         </h:form>
                         <h:form rendered="#{!profileBean.isGoogle()}">
-                            <a href="#{googleAuthorizationBean.userUrl}"><img
-                                    src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
-                                    width="110"/></a>
+                            <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
                         </h:form>
                         <!-- Follow -->
                         <h:form id="follow" rendered="#{!profileBean.isMy}">
@@ -133,21 +130,20 @@
                         </h:form>
                         <!-- Games -->
                         <b:tabView id="tabView">
-                            <b:tab title="Wanted games" id="tabMyGames">
+                            <b:tab title="My games">
                                 <h:form id="myGamesForm">
-                                    <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.wantedGames}"
-                                                columns="3"
+                                    <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.simpleAndFavouriteGames}" columns="3"
                                                 layout="grid"
                                                 rows="12" paginator="true"
                                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                    >
+                                                >
 
                                         <p:panel style="text-align:center" header="#{mygame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                        styleClass="gameIcon btn btn-danger"
-                                                        actionListener="#{profileBean.deleteMyGame(mygame)}"
-                                                        update="myGamesForm favouriteForm exchangeForm">
+                                                    styleClass="gameIcon btn btn-danger"
+                                                    actionListener="#{profileBean.deleteMyGame(mygame)}"
+                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
@@ -156,6 +152,34 @@
                                                 <h:link outcome="aboutGame" value="#{mygame.game.name} "
                                                         includeViewParams="true">
                                                     <f:param value="#{mygame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
+
+                                    </p:dataGrid>
+                                </h:form>
+                            </b:tab>
+                            <b:tab title="Wanted games">
+                                <h:form id="wantedForm">
+                                    <p:dataGrid var="wantedgame" value="#{profileBean.wantedGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                >
+
+                                        <p:panel style="text-align:center" header="#{wantedgame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
+                                                    styleClass="gameIcon btn btn-danger"
+                                                    actionListener="#{profileBean.deleteMyGame(wantedgame)}"
+                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <p:graphicImage width="100%" height="200px" value="#{wantedgame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{wantedgame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{wantedgame.game.uid}" name="id"/>
                                                 </h:link>
                                             </h:panelGrid>
                                         </p:panel>
@@ -174,9 +198,9 @@
                                         <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                        styleClass="gameIcon btn btn-danger"
-                                                        actionListener="#{profileBean.deleteMyGame(favouritegame)}"
-                                                        update="myGamesForm favouriteForm exchangeForm">
+                                                    styleClass="gameIcon btn btn-danger"
+                                                    actionListener="#{profileBean.deleteMyGame(favouritegame)}"
+                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
@@ -203,9 +227,9 @@
                                         <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                        styleClass="gameIcon btn btn-danger"
-                                                        actionListener="#{profileBean.deleteMyGame(exchangegame)}"
-                                                        update="myGamesForm favouriteForm exchangeForm">
+                                                    styleClass="gameIcon btn btn-danger"
+                                                    actionListener="#{profileBean.deleteMyGame(exchangegame)}"
+                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
