@@ -87,7 +87,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
             else {
                 List<Game> resList = new ArrayList<Game>();
                 for (int i = 0; (i<count) && (result.size()>start+i); i++){
-                    resList.add(result.get(start+count));
+                    resList.add(result.get(start+i));
                 }
                 return resList;
             }
@@ -122,15 +122,17 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
             }
         }
-        List<Game> result = this.executeQuery(jpa, parameters);
-        if (all)
+
+        if (all){
+            List<Game> result = this.executeQuery(jpa, parameters);
             return result;
+        }
         else {
-            List<Game> resList = new ArrayList<Game>();
+            /*List<Game> resList = new ArrayList<Game>();
             for (int i = 0; (i<count) && (result.size()>start+i); i++){
-                resList.add(result.get(start+count));
-            }
-            return resList;
+                resList.add(result.get(start+i));
+            }*/
+            return this.executeQuery(jpa, parameters,count);
         }
     }
 
