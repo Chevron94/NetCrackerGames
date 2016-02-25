@@ -103,6 +103,8 @@
                         <b:button outcome="tradingLounge" value="Trading lounge" rendered="#{profileBean.isMy}"/>
                         <b:button class="btn btn-info" outcome="allMessages" value="Messages"
                                   rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" outcome="robokassa/payment" value="Payment"
+                                  rendered="#{profileBean.isMy}"/>
                         <br/>Connect with:
                         <h:form rendered="#{!profileBean.isVk()}">
 
@@ -175,7 +177,7 @@
                                                     update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
-                                            <h:panelGrid columns="1" style="width:100%">
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
                                                 <p:graphicImage width="100%" height="200px" value="#{wantedgame.game.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{wantedgame.game.name} "
                                                         includeViewParams="true">

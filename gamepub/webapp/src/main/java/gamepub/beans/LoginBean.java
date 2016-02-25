@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import sun.security.rsa.RSASignature;
 
 /**
  *
