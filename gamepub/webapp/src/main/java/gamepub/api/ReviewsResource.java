@@ -32,6 +32,7 @@ public class ReviewsResource {
 
     @POST
     @Path("/add")
+    @Consumes("application/x-www-form-urlencoded")
     public String addMark(MultivaluedMap<String, String> form) {
         try {
             if (Integer.parseInt(form.getFirst("userId")) == SessionBean.getUserId()) {
@@ -53,6 +54,7 @@ public class ReviewsResource {
 
     @POST
     @Path("/delete")
+    @Consumes("application/x-www-form-urlencoded")
     public String deleteReview(MultivaluedMap<String, String> form) {
         try {
             if (markService.getMarkById(Integer.parseInt(form.getFirst("markId"))).getUser().getId() == SessionBean.getUserId()) {

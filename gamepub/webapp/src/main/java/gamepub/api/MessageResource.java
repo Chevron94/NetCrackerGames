@@ -42,6 +42,7 @@ public class MessageResource {
 
     @POST
     @Path("/add")
+    @Consumes("application/x-www-form-urlencoded")
     public String sendMessage(MultivaluedMap<String, String> form) {
         try {
             if (userService.getUserByLogin(form.getFirst("senderLogin")).getId() == SessionBean.getUserId()) {
