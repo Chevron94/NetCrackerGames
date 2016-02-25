@@ -1,7 +1,6 @@
 package gamepub.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -27,6 +26,7 @@ public class Mark {
     @JoinColumn(name = "GAME_ID", nullable = false)
 
     Game game;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
     User user;

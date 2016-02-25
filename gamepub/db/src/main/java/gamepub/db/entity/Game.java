@@ -1,7 +1,6 @@
 package gamepub.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -31,28 +30,26 @@ public class Game {
 
     @Column(name = "STEAM_ID", nullable = true)
     int steamId;
-
+    
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GamePlatform> gamePlatforms;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
-    List<GameGenre> gameGenres;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GameScreenshot> gameScreenshots;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
+    List<GameGenre> gameGenres;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<Tournament> tournaments;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<Mark> marks;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<UserGame> userGames;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<News> newses;
