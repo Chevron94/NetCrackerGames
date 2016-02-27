@@ -1,5 +1,7 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -45,20 +47,28 @@ public class User {
     @JoinColumn(name = "CITY_ID", nullable = false)
     City city;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
     List<PrivateMessage> sendedPrivateMessages;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     List<PrivateMessage> receivedPrivateMessages;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscribedTo")
     List<Friend> subscribers;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscriber")
     List<Friend> subscribeTo;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<UserScreenshot> userScreenshots;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Mark> marks;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<UserGame> userGames;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Comment> comments;
 

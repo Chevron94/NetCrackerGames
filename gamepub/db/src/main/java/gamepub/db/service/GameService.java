@@ -42,6 +42,12 @@ public class GameService extends GameDaoImplementation {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<Game> getGamesWhichHaveNews() {
+        return super.getGamesWhichHaveNews();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
         return super.getGamesByCustomParams(parameterList, all, start, count);
     }

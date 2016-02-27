@@ -31,7 +31,13 @@ public class MainPageBean {
         for (int i=0; i<4; i++){
             tmp.add(myGames.get(i));
         }*/
-        return gameService.getGamesOrderByMarks(6);
+        List<Game> games = gameService.getGamesOrderByMarks(6);
+        List<Game> result = new ArrayList<Game>();
+        for(int i = 0; result.size()<6; i++){
+            if (!result.contains(games.get(i)))
+                result.add(games.get(i));
+        }
+        return result;
     }
 
     public String goToConcreteGame() {

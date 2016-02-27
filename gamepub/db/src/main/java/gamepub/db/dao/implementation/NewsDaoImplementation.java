@@ -82,17 +82,14 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.select(root);
         cq.where(cb.equal(root.<Game>get("game").<Integer>get("id"), id));
         cq.orderBy(cb.desc(root.<Date>get("date")));
-        List result = getEntityManager().createQuery(cq).getResultList();
-        closeEntityManager();
-        if (all)
-            return result;
-        else {
-            List<News> resList = new ArrayList<News>();
-            for(int i = 0; (i<count) && (result.size()>start+1); i++){
-                resList.add((News)result.get(start+i));
-            }
-            return resList;
+        List result;
+        if(all){
+            result = getEntityManager().createQuery(cq).getResultList();
+        }else{
+            result = getEntityManager().createQuery(cq).setFirstResult(start).setMaxResults(count).getResultList();
         }
+        closeEntityManager();
+        return result;
     }
 
     public List<News> getNewsOrderByDate(boolean all, Integer start, Integer count) {
@@ -101,17 +98,14 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         Root<News> root = cq.from(instance);
         cq.select(root);
         cq.orderBy(cb.desc(root.<Date>get("date")));
-        List result = getEntityManager().createQuery(cq).getResultList();
-        closeEntityManager();
-        if (all)
-            return result;
-        else {
-            List<News> resList = new ArrayList<News>();
-            for(int i = 0; (i<count) && (result.size()>start+1); i++){
-                resList.add((News)result.get(start+i));
-            }
-            return resList;
+        List result;
+        if(all){
+            result = getEntityManager().createQuery(cq).getResultList();
+        }else{
+            result = getEntityManager().createQuery(cq).setFirstResult(start).setMaxResults(count).getResultList();
         }
+        closeEntityManager();
+        return result;
     }
 
     public List<News> getNewsByDate(Date date, boolean all, Integer start, Integer count) {
@@ -121,17 +115,14 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
         cq.select(root);
         cq.where(cb.equal(root.<Date>get("date"), date));
         cq.orderBy(cb.desc(root.<Date>get("date")));
-        List result = getEntityManager().createQuery(cq).getResultList();
-        closeEntityManager();
-        if (all)
-            return result;
-        else {
-            List<News> resList = new ArrayList<News>();
-            for(int i = 0; (i<count) && (result.size()>start+1); i++){
-                resList.add((News)result.get(start+i));
-            }
-            return resList;
+        List result;
+        if(all){
+            result = getEntityManager().createQuery(cq).getResultList();
+        }else{
+            result = getEntityManager().createQuery(cq).setFirstResult(start).setMaxResults(count).getResultList();
         }
+        closeEntityManager();
+        return result;
     }
 
     public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count){
@@ -158,17 +149,14 @@ public class NewsDaoImplementation extends BaseDaoImplementation<News,Integer> i
             cq.where(p);
         }
         cq.orderBy(cb.desc(root.<Date>get("date")));
-        List result = getEntityManager().createQuery(cq).getResultList();
-        closeEntityManager();
-        if (all)
-            return result;
-        else {
-            List<News> resList = new ArrayList<News>();
-            for(int i = 0; (i<count) && (result.size()>start+1); i++){
-                resList.add((News)result.get(start+i));
-            }
-            return resList;
+        List result;
+        if(all){
+            result = getEntityManager().createQuery(cq).getResultList();
+        }else{
+            result = getEntityManager().createQuery(cq).setFirstResult(start).setMaxResults(count).getResultList();
         }
+        closeEntityManager();
+        return result;
     }
     @Override
     public News create(News news) {
