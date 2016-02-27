@@ -120,7 +120,6 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
             }
         }
-
         if (all)
             return this.executeQuery(jpa, parameters);
         else {
