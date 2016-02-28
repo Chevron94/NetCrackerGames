@@ -55,7 +55,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    List<PrivateMessage> sendedPrivateMessages;
+    List<PrivateMessage> sentPrivateMessages;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     List<PrivateMessage> receivedPrivateMessages;
@@ -161,12 +161,12 @@ public class User {
         this.city = city;
     }
 
-    public List<PrivateMessage> getSendedPrivateMessages() {
-        return sendedPrivateMessages;
+    public List<PrivateMessage> getSentPrivateMessages() {
+        return sentPrivateMessages;
     }
 
-    public void setSendedPrivateMessages(List<PrivateMessage> sendedPrivateMessages) {
-        this.sendedPrivateMessages = sendedPrivateMessages;
+    public void setSentPrivateMessages(List<PrivateMessage> sentPrivateMessages) {
+        this.sentPrivateMessages = sentPrivateMessages;
     }
 
     public List<PrivateMessage> getReceivedPrivateMessages() {
