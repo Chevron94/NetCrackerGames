@@ -41,7 +41,7 @@
                 <br/>
 
                 <b:row>
-                    <b:column span="8" offset="2">
+                    <b:column span="8" offset="2" rendered="#{!aboutGameBean.isBanned}">
 
                         <h:form id="statusForm">
                             <b:commandButton value=" " id="notstarted" ajax="false" actionListener="#{aboutGameBean.addStatus(1)}" styleClass="btn btn-primary" icon="glyphicon glyphicon-unchecked" title="not started"/>                                                       

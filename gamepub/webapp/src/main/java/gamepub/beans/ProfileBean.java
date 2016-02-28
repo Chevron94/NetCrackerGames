@@ -177,13 +177,19 @@ public class ProfileBean {
             user.setFbInfo(fbInfo);
             System.out.println(fbInfo);
         }
-        if (login != null && userService.getUserByLogin(login) == null) {
+        if (login != null && ((userService.getUserByLogin(login) == null) || (userService.getUserByLogin(login).getId() == SessionBean.getUserId()))) {
             user.setLogin(login);
         } else {
-            FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This login is already used!."));
+            context.getExternalContext().getSessionMap().remove("edit");
+            context.getExternalContext().getSessionMap().put("edit", true);
+            isEdit = true;
+            /*FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Error",
                     "Failed to login!");
             RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+            RequestContext.getCurrentInstance().showMessageInDialog(failMes);*/
+        }
         }
 
         userService.update(user);
@@ -225,7 +231,7 @@ public class ProfileBean {
     }
     
     public boolean getIsBanned() {
-        return userService.getUserById(this.id).getBanned() == true;
+        return userService.getUserById(id).getBanned() == true;
     }
 
     public boolean getHaveFbInfo() {

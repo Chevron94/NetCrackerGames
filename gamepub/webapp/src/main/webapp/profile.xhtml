@@ -23,26 +23,33 @@
                 <!--Edit Information about user -->
                 <b:column span="3">
                     <h:form id="infoedit" enctype="multipart/form-data">
-                        <h:panelGrid columns="1" cellpadding="10" rendered="#{profileBean.isEdit and profileBean.isMy}">
-                            Login:
-                            <p:inputText id="login" value="#{profileBean.login}"/>
+                        <b:panel id="panel" rendered="#{profileBean.isEdit and profileBean.isMy}">
+                        <h:panelGrid id ="panelgrid" columns="1" cellpadding="10">
+                            <p:outputLabel for="login" value="Login:"/>
+                            <p:inputText id="login" value="#{profileBean.login}" required="true"/>
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            
                             <p:outputLabel for="city"/>
                             <b:selectOneMenu id="city" value="#{profileBean.cityId}">
                                 <f:selectItems value="#{profileBean.cities}" var="city" itemLabel="#{city.name}"
                                                itemValue="#{city.id}"/>
                             </b:selectOneMenu>
+                            
                             <p:outputLabel for="email" value="Email:"/>
                             <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
                                 <f:validateLength minimum="5"/>
                             </p:inputText>
+                            
                             <p:outputLabel for="fbInfo" value="FbInfo:"/>
                             <b:inputText id="fbInfo" value="#{profileBean.fbInfo}"/>
                             <p:outputLabel for="up" value="Choose image:"/>
                             <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
                                           skinSimple="true"/>
-                            <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
-                                             actionListener="#{profileBean.confirmEdit()}"/>
                         </h:panelGrid>
+                            
+                            <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
+                                             actionListener="#{profileBean.confirmEdit()}" update="panel"/>
+                        </b:panel>
 
                     </h:form>
                     <h:form id="info">
@@ -60,15 +67,14 @@
                                     #{profileBean.fbInfo}
                                 </p:layoutUnit>
                             </p:layout>
-
                         </h:panelGrid>
-
-
+                        <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
+                                    actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy and !profileBean.isBanned and !profileBean.isEdit}"/>
                     </h:form>
 
                 </b:column>
                 <!-- List of friends -->
-                <b:column span="3" rendered="#{profileBean.isMy}">
+                <b:column span="3" rendered="#{profileBean.isMy and !profileBean.isBanned}">
                     <h5>My subscription</h5>
                     <p:dataScroller value="#{profileBean.subscribedTo}" var="sub" chunkSize="10"
                                     style="max-height: 300px">
@@ -86,36 +92,37 @@
             <b:row>
                 <!-- Buttons and games-->
                 <b:column span="10" offset="1">
-                    <h:form>
-                        <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
-                                         actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
-                    </h:form>
+                    <br/>
                     <b:button class="btn btn-primary" outcome="gallery" value="My gallery"
-                              rendered="#{profileBean.isMy}"/>
+                              rendered="#{profileBean.isMy and !profileBean.isBanned}"/>
                     <b:button outcome="tradingPage" value="#{profileBean.exchangeNotification()}"
-                              rendered="#{profileBean.isMy}"/>
-                    <b:button outcome="tradingLounge" value="Trading lounge" rendered="#{profileBean.isMy}"/>
+                              rendered="#{profileBean.isMy and !profileBean.isBanned}"/>
+                    <b:button outcome="tradingLounge" value="Trading lounge" rendered="#{profileBean.isMy and !profileBean.isBanned}"/>
                     <b:button class="btn btn-info" outcome="allMessages" value="Messages"
-                              rendered="#{profileBean.isMy}"/>
-                    <br/>Connect with:
-                    <h:form rendered="#{!profileBean.isVk() and profileBean.isMy}">
-                        <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
-                    </h:form>
-                    <h:form rendered="#{!profileBean.isFacebook() and profileBean.isMy}">
-                        <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
-                    </h:form>
-                    <h:form rendered="#{!profileBean.isGoogle() and profileBean.isMy}">
-                        <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
+                              rendered="#{profileBean.isMy and !profileBean.isBanned}"/>
+                    <!--Connect with oauth-->
+                    <h:form id="connect" rendered="#{profileBean.isMy and !profileBean.isBanned}"> 
+                        Connect with:
+                        <br/>
+                        <h:form  rendered="#{!profileBean.isVk()}">
+                            <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
+                        </h:form>
+                        <h:form rendered="#{!profileBean.isFacebook()}">
+                            <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
+                        </h:form>
+                        <h:form rendered="#{!profileBean.isGoogle()}">
+                            <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
+                        </h:form>
                     </h:form>
                     <!-- Follow -->
-                    <h:form id="follow" rendered="#{!profileBean.isMy}">
+                    <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBanned}"> 
                         <b:commandButton class="btn btn-primary" value="Follow" ajax="false"
                                          actionListener="#{profileBean.follow()}"
                                          rendered="#{!profileBean.isSubscribedTo}"/>
                         <b:commandButton class="btn btn-danger" value="UnFollow" ajax="false"
                                          actionListener="#{profileBean.unfollow()}"
                                          rendered="#{profileBean.isSubscribedTo}"/>
-                        <b:button outcome="mesDialog" class="btn btn-info" value="Dialog" ajax="false"
+                        <b:button outcome="mesDialog" class="btn btn-info" value="Dialog"
                                   rendered="#{profileBean.isSubscribedTo}">
                             <f:param value="#{profileBean.userId}" name="receiverId"/>
                         </b:button>
@@ -130,7 +137,7 @@
                                          rendered="#{profileBean.isBanned and profileBean.isAdmin}"/>
                     </h:form>
                     <!-- Games -->
-                    <b:tabView id="tabView">
+                    <b:tabView id="tabView" rendered="#{!profileBean.isBanned}">
                         <b:tab title="My games" id="tabMyGames">
                             <h:form id="myGamesForm">
                                 <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.myGames}" columns="3"

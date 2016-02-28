@@ -313,6 +313,10 @@ public class AboutGameBean {
     public void setId(String id) {
         this.id = id;
     }
+    
+    public boolean getIsBanned() {
+        return userService.getUserById(SessionBean.getUserId()).getBanned() == true;
+    }
 
     private UserGame getUserGame() {
 
