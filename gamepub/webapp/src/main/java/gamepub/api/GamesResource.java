@@ -26,25 +26,51 @@ public class GamesResource {
     GameService gameService;
     @EJB
     MarkService markService;
+    
+    AuthResource authResource = new AuthResource();
 
     @GET
     @Path("/allGames")
     @Produces("application/json")
-    public List<Game> getAllGames() {
-        return gameService.findAll();
+    public List<Game> getAllGames(@QueryParam("token") String token) {
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth){
+            case OK:{
+                return gameService.findAll();
+            }
+            default:{
+                return null;
+            }
+        }        
     }
     
     @GET
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Produces("application/json")
-    public Game getOneGameById(@PathParam("id") Integer id){
-        return gameService.find(id);
+    public Game getOneGameById(@PathParam("id") Integer id, @QueryParam("token") String token){
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth){
+            case OK:{
+                return gameService.find(id);
+            }
+            default:{
+                return null;
+            }
+        }
     }
     
     @GET
     @Path("/{id}/reviews")
     @Produces("application/json")
-    public List<Mark> getReviews(@PathParam("id") Integer id){
-        return markService.getMarksByGameId(id);
+    public List<Mark> getReviews(@PathParam("id") Integer id, @QueryParam("token") String token){
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth){
+            case OK:{
+                return markService.getMarksByGameId(id);
+            }
+            default:{
+                return null;
+            }
+        }
     }
 }
