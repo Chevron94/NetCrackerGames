@@ -15,107 +15,92 @@
     <ui:composition>
         <h:outputStylesheet name="theme.css"/>
 
-        <div class="container-fluid navbar navbar-inverse">
+        <b:navBar brandImg="resources/pub.png" brandHref="main.xhtml" styleClass="navbar navbar-inverse" style="margin:0px;">
 
 
-            <b:column span="5">
-                <h:form>
-                    <p:growl id="msgs3" showDetail="true"/>
-                    <h:panelGrid columns="7" cellpadding="5">
+            <b:navbarLinks styleClass="navbar-left">
 
-                        <p:autoComplete id="inputSearch" value="#{lifeSearchBean.request}"
-                                        completeMethod="#{lifeSearchBean.searchGame}" var="game"
-                                        itemLabel="#{game.name}" itemValue="#{game.name}"
-                                        forceSelection="true" scrollHeight="250">
+                <b:navLink styleClass="btn btn-default my_nav" outcome="allNews" value="Last News"
+                           icon="ui-icon-star"/>
 
-                                <p:column>
-                                    <h:link outcome="aboutGame">
-                                    <p:graphicImage value="#{game.poster}"
-                                                    style="width:50px; height: 50px;"/>
-                                        <f:param value="#{game.uid}" name="id"/>
-                                    </h:link>
-                                </p:column>
+                <b:navLink styleClass="btn btn-default my_nav" outcome="search" value="Extended search"
+                           icon="ui-icon-star"/>
 
-                                <p:column>
-                                    <h:link outcome="aboutGame">
-                                    <h:outputText value="#{game.name}"/>
-                                        <f:param value="#{game.uid}" name="id"/>
-                                    </h:link>
-                                </p:column>
+            </b:navbarLinks>
 
-                        </p:autoComplete>
+            <b:navbarLinks styleClass="navbar-right"
+                           rendered="#{!loginBean.logged &amp;&amp; !vKAuthorizationBean.logged &amp;&amp; !faceBookAuthorizationBean.logged &amp;&amp; !googleAuthorizationBean.logged}">
 
+                <a id="atrigger" class="btn btn-success btn-lg" href="#amodal"
+                   data-toggle="modal"><b:icon name="log-in"/> Enter</a>
+            </b:navbarLinks>
 
-                        <b:button styleClass="gBut" outcome="allNews" value="Last News" icon="ui-icon-star"/>
+            <h:form rendered="#{loginBean.logged || vKAuthorizationBean.logged || faceBookAuthorizationBean.logged || googleAuthorizationBean.logged}">
 
-                        <b:button styleClass="gBut" outcome="search" value="Extended serach"
-                                  icon="ui-icon-star"/>
+                <b:navbarLinks styleClass="navbar-right">
 
+                    <b:navLink styleClass="btn btn-default my_nav" outcome="profile" value="MY PROFILE"
+                              icon="ui-icon-star">
+                        <f:param value="my" name="userId"/>
+                    </b:navLink>
+                    <b:commandButton styleClass="gBut btn btn-danger" style="margin-top:0px;" value="logout"
+                                     action="#{loginBean.logout}" ajax="false"/>
+                </b:navbarLinks>
+            </h:form>
 
-                        <b:button styleClass="gBut" outcome="main" value="Main page" icon="ui-icon-star"/>
+            <h:form styleClass="navbar-form navbar-right hidden-md hidden-sm hidden-xs">
+                <p:growl id="msgs3" showDetail="true"/>
+                <p:autoComplete id="inputSearch" value="#{lifeSearchBean.request}"
+                                completeMethod="#{lifeSearchBean.searchGame}" var="game"
+                                itemLabel="#{game.name}" itemValue="#{game.name}"
+                                forceSelection="true" scrollHeight="250" placeholder="Search...">
 
-                    </h:panelGrid>
-                </h:form>
-            </b:column>
+                    <p:column>
+                        <h:link outcome="aboutGame">
+                            <p:graphicImage value="#{game.poster}"
+                                            style="width:50px; height: 50px;"/>
+                            <f:param value="#{game.uid}" name="id"/>
+                        </h:link>
+                    </p:column>
 
-            <c:if test="#{!loginBean.logged &amp;&amp; !vKAuthorizationBean.logged &amp;&amp; !faceBookAuthorizationBean.logged &amp;&amp; !googleAuthorizationBean.logged}">
-                <b:column offset="1" span="6" style="align:right">
+                    <p:column>
+                        <h:link outcome="aboutGame">
+                            <h:outputText value="#{game.name}"/>
+                            <f:param value="#{game.uid}" name="id"/>
+                        </h:link>
+                    </p:column>
 
-                    <h:form>
-                        <p:growl id="msgs1" showDetail="true"/>
+                </p:autoComplete>
+            </h:form>
+        </b:navBar>
+        <b:modal id="amodal" title="Enter" styleClass="modalPseudoClass">
+            <h:form>
+                <a href="#{vKAuthorizationBean.userUrl}"><img
+                        src="http://s1.iconbird.com/ico/2013/6/270/w445h4451371236205MezhdunarodnylogotipVK500.png"
+                        height="32" width="32"/></a>
+                <a href="#{faceBookAuthorizationBean.userUrl}"><img
+                        src="http://s1.iconbird.com/ico/0512/WPZOOMSocialNetworkingIcon/file1337019873.png"
+                        height="30" width="30"/></a>
+                <a href="#{googleAuthorizationBean.userUrl}"><img
+                        src="http://s1.iconbird.com/ico/2013/9/446/w512h5121380376600FlurryGoogleAlt.png"
+                        height="34" width="34"/></a>
 
-                        <h:panelGrid columns="8" cellpadding="10">
-
-                            <a href="#{vKAuthorizationBean.userUrl}"><img
-                                    src="http://s1.iconbird.com/ico/2013/6/270/w445h4451371236205MezhdunarodnylogotipVK500.png"
-                                    height="32" width="32"/></a>
-                            <a href="#{faceBookAuthorizationBean.userUrl}"><img
-                                    src="http://s1.iconbird.com/ico/0512/WPZOOMSocialNetworkingIcon/file1337019873.png"
-                                    height="30" width="30"/></a>
-                            <a href="#{googleAuthorizationBean.userUrl}"><img
-                                    src="http://s1.iconbird.com/ico/2013/9/446/w512h5121380376600FlurryGoogleAlt.png"
-                                    height="34" width="34"/></a>
-
-                            <b:inputText styleClass="water" id="login" value="#{loginBean.name}"/>
-
-                            <b:inputSecret styleClass="water" id="password" value="#{loginBean.password}"/>
-
-                            <p:watermark for="login" value="Login *"/>
-                            <p:watermark for="password" value="Password *"/>
-
-                            <b:commandButton styleClass="btn-success gBut" value="Sign In" icon="ui-icon-star"
-                                             actionListener="#{loginBean.check}"
-                                             ajax="false"/>
-
-                            <b:button styleClass="gBut" outcome="registr" value="Registr"/>
-
-                        </h:panelGrid>
-                    </h:form>
-                </b:column>
-            </c:if>
-
-            <c:if test="#{loginBean.logged || vKAuthorizationBean.logged || faceBookAuthorizationBean.logged || googleAuthorizationBean.logged}">
-                <b:column offset="4" span="3" style="align:right">
-                    <h:form>
-                        <p:growl id="msgs2" showDetail="true"/>
-
-                        <h:panelGrid columns="3" cellpadding="5">
-
-                            <b:button outcome="allUsers" styleClass="gBut btn" value="Users"/>
-                            <b:button styleClass="gBut btn btn-info" outcome="profile" value="MY PROFILE"
-                                      icon="ui-icon-star">
-                                <f:param value="my" name="userId"/>
-                            </b:button>
-                            <b:commandButton styleClass="gBut btn btn-danger" value="logout"
-                                             action="#{loginBean.logout}" ajax="false"/>
+                <b:inputText styleClass="water" id="login" value="#{loginBean.name}"/>
+                <p:watermark for="login" value="Login *"/>
 
 
-                        </h:panelGrid>
-                    </h:form>
-                </b:column>
-            </c:if>
+                <b:inputSecret styleClass="water" id="password" value="#{loginBean.password}"/>
 
-        </div>
+                <p:watermark for="password" value="Password *"/>
+
+
+                <b:commandButton styleClass="btn-success btn" value="Sign In" icon="ui-icon-star"
+                                 actionListener="#{loginBean.check}"
+                                 ajax="false"/>
+
+                <b:navLink styleClass="btn btn-default" outcome="registr" value="Sig Up"/>
+            </h:form>
+        </b:modal>
 
     </ui:composition>
 
