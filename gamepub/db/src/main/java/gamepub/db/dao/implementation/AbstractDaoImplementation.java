@@ -42,6 +42,7 @@ public abstract class AbstractDaoImplementation<T, PK> {
         return result;
     }
 
+
     protected List<T> executeQuery(String jpql, Integer start, Integer count){
         em = getEntityManager();
         List<T> result = em.createQuery(jpql).setFirstResult(start).setMaxResults(count).getResultList();

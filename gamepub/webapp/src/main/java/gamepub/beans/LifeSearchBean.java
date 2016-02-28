@@ -15,6 +15,7 @@ import gamepub.db.service.UserService;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 @ManagedBean
 @SessionScoped
+@ViewScoped
 public class LifeSearchBean {
 
     String request;
@@ -33,6 +35,8 @@ public class LifeSearchBean {
     GameService gameService;
     @EJB
     UserService userService;
+
+    private int startGame  = 0;
 
     public String getRequest(){
         return request;
@@ -77,5 +81,17 @@ public class LifeSearchBean {
             return userService.getUsersByCustomParams(parametersList);
         }
         return null;
+    }
+
+    public List<Game> searchGame(String query){
+        List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
+        Map.Entry<String, Object> param;
+        param = new HashMap.SimpleEntry<String, Object>("name", query);
+        parametersList.add(param);
+        return gameService.getGamesByCustomParams(parametersList,false,0,startGame);
+    }
+
+    public void loadGame(){
+        startGame+=10;
     }
 }

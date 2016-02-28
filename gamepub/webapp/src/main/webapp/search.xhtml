@@ -15,80 +15,96 @@
                 <h1>Search</h1>
                 <h:form id="searchForm">
 
-                    <h:panelGrid columns="4" style="margin:10px;" cellpadding="5">
-
-                        <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
+                    <b:row>
+                        <b:column span="3">
                             <h3 style="margin-top:0px">Name</h3>
                             <p:inputText id="nameGame" value="#{serachBean.myGame}"/>
-                        </h:panelGrid>
 
-                        <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
+                        </b:column>
+                        <b:column span="3">
+
                             <h3 style="margin-top:0px">Genre</h3>
                             <b:selectOneMenu id="console1" value="#{serachBean.myGenre}" style="width:125px">
                                 <f:selectItems value="#{serachBean.genre}" var="genre" itemLabel="#{genre.name}"
                                                itemValue="#{genre.id}"/>
                             </b:selectOneMenu>
-                        </h:panelGrid>
 
-                        <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
+                        </b:column>
+                        <b:column span="3">
+
                             <h3 style="margin-top:0px">Platforms</h3>
                             <p:selectManyCheckbox id="platformRadio" value="#{serachBean.platform}" columns="3">
                                 <f:selectItems value="#{serachBean.platforms}" var="platform"
                                                itemLabel="#{platform.name}"
                                                itemValue="#{platform.id}"/>
                             </p:selectManyCheckbox>
-                        </h:panelGrid>
 
-                        <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
+                        </b:column>
+                        <b:column span="3">
+
                             <h3 style="margin-top:0px">Before</h3>
                             <p:calendar id="mask" pattern="dd-MM-yyyy" value="#{serachBean.date}" mask="true"/>
-                        </h:panelGrid>
+
+                        </b:column>
 
 
-                    </h:panelGrid>
+                    </b:row>
                     <b:commandButton value="Search" styleClass="btn btn-primary" update="dataForm" icon="ui-icon-check"
                                      actionListener="#{serachBean.search}"/>
 
                 </h:form>
-
-                <h:form id="dataForm">
-                    <p:dataScroller id="sgames" value="#{serachBean.myGames}" var="game" chunkSize="10">
-
-                        <h:panelGrid columns="2" styleClass="gameItem" columnClasses="logo,detail">
+                <b:row style="width:100%">
+                    <h:form id="dataForm">
+                        <p:dataScroller id="sgames" value="#{serachBean.myGames}" var="game" chunkSize="10">
+                            <f:facet name="loader">
+                                <p:commandButton  action="#{serachBean.loadMore}" value="More" icon="ui-icon-circle-triangle-s">
+                                </p:commandButton>
+                            </f:facet>
                             <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="10">
-                                    <h:panelGrid style="width:400px; height: 200px; border: 1px solid #dfdfdf; text-align: center;">
-                                        <div align="center">
-                                            <h:link outcome="aboutGame" includeViewParams="true">
-                                                <f:param value="#{game.uid}" name="id"/>
-                                                <p:graphicImage value="#{game.poster}"
-                                                                style="max-width:400px; max-height: 200px;"/>
-                                            </h:link>
-                                        </div>
-                                    </h:panelGrid>
-                                    <h:panelGrid columns="1" style="margin:20px" cellpadding="5">
+                                <b:row style="width:100%;">
+                                    <b:column span="5"
+                                              style="margin:10px; height:100%; border: 1px solid #dfdfdf; text-align: center;">
+
+
+                                        <h:link outcome="aboutGame" includeViewParams="true">
+                                            <f:param value="#{game.uid}" name="id"/>
+                                            <p:graphicImage value="#{game.poster}"
+                                                            styleClass="imgA" style="max-height: 200px;"/>
+                                        </h:link>
+
+
+                                    </b:column>
+                                    <br/>
+                                    <b:column span="5" style=" margin:20px; height:100%;">
                                         <h:link styleClass="game_link" outcome="aboutGame" value="#{game.name} "
                                                 includeViewParams="true">
                                             <f:param value="#{game.uid}" name="id"/>
                                         </h:link>
-                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}" var="gameplatform"
+                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
+                                                    var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>Release date:</b> <b:label severity="primary"
-                                                                          text="#{gameplatform.releaseDate}"/>
+                                            <b>#{gameplatform.platform.name} - </b> <b>Release date:</b> <b:label
+                                                severity="primary"
+                                                text="#{gameplatform.releaseDate}"/>
                                         </p:dataList>
-                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}" var="gameplatform"
+                                        <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
+                                                    var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>Metacritic:</b> <b:label severity="success"
-                                                                        text="#{gameplatform.metacritic}"/>
+                                            <b>#{gameplatform.platform.name} - Metacritic:</b> <b:label
+                                                severity="success"
+                                                text="#{gameplatform.metacritic}"/>
                                         </p:dataList>
-                                    </h:panelGrid>
-                                </h:panelGrid>
+
+                                    </b:column>
+                                </b:row>
                             </p:outputPanel>
-                        </h:panelGrid>
 
-                    </p:dataScroller>
-                </h:form>
 
+                        </p:dataScroller>
+                        <p:commandButton actionListener="#{serachBean.loadMore}" value="More"
+                                         icon="ui-icon-circle-triangle-s" update="sgames"/>
+                    </h:form>
+                </b:row>
             </b:column>
         </ui:define>
     </ui:composition>

@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import sun.security.rsa.RSASignature;
 
 /**
  *
@@ -88,14 +89,20 @@ private boolean logged;
     }
 
     
-    public void logout(){
+    public String logout(){
         try {
             setLogged(false);
             SessionBean.getSession().invalidate();
+            return "main";
         }
         catch (Exception e){
             System.out.print(e.getMessage());
+            return "main";
         }
+    }
+
+    public String goToMain(){
+        return "main";
     }
     /**
      * @return the logged
