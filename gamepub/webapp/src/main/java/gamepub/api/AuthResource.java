@@ -5,7 +5,7 @@ import gamepub.db.service.UserService;
 import gamepub.encode.shaCode;
 
 import javax.ejb.EJB;
-import javax.jws.soap.SOAPBinding;
+import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +20,7 @@ import java.util.UUID;
 
 
 @Path("/login")
+@Stateless
 public class AuthResource {
 
     public enum AUTH {OK, WRONG_TOKEN, BANNED, ALL_REQUESTS_ARE_USED, TOKEN_EXPIRED}
@@ -59,6 +60,8 @@ public class AuthResource {
         User user = userService.getUserByApiToken(token);
         if(user == null){
             return AUTH.WRONG_TOKEN;
+        }else{
+            user.setUsedRequest(user.getUsedRequest()-1);
         }
         if(user.getBanned()){
             return AUTH.BANNED;
@@ -72,7 +75,7 @@ public class AuthResource {
         return AUTH.OK;
     }
 
-    @Path("/token")
+    @Path("token")
     @POST
     @Consumes("application/x-www-form-urlencoded")
     public String updateToken(MultivaluedMap<String, String> form){
