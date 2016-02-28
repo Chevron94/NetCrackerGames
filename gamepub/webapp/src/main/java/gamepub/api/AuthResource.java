@@ -72,10 +72,11 @@ public class AuthResource {
         return AUTH.OK;
     }
 
-    @GET
-    @Path("/token/{token}")
-    @Produces("application/json")
-    public String updateToken(@PathParam("token") String token){
+    @Path("/token")
+    @POST
+    @Consumes("application/x-www-form-urlencoded")
+    public String updateToken(MultivaluedMap<String, String> form){
+        String token = form.getFirst("token");
         User user = userService.getUserByApiToken(token);
         if (user != null && !user.getBanned()) {
             String newToken = UUID.randomUUID().toString();
