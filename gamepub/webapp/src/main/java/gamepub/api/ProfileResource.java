@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by roman on 23.02.16.
  */
-@Path("/profile")
+@Path("/users")
 @Stateless
 public class ProfileResource {
     @EJB

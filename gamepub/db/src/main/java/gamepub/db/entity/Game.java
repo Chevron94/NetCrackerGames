@@ -35,6 +35,7 @@ public class Game {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GamePlatform> gamePlatforms;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GameScreenshot> gameScreenshots;
 

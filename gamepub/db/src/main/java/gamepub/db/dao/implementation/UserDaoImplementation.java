@@ -73,6 +73,23 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
         return result;
     }
 
+    public User getUserByApiToken(String token) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<User> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String >get("apiToken"), token));
+        User result;
+        try {
+            result = (User)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
+
     public User getUserByLogin(String login) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -242,6 +259,15 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
     @Override
     public User create(User user) {
         user.setUid(UUID.randomUUID().toString());
+        user.setUsedRequest(100);
         return super.create(user);
+    }
+
+    public void refreshRequestsCount() {
+        List<User> users = findAll();
+        for(int i=0; i<users.size();i++){
+            users.get(i).setUsedRequest(100);
+            update(users.get(i));
+        }
     }
 }

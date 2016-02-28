@@ -42,9 +42,10 @@ public class MessageResource {
 
     @POST
     @Path("/add")
+    @Consumes("application/x-www-form-urlencoded")
     public String sendMessage(MultivaluedMap<String, String> form) {
         try {
-            if (userService.getUserByLogin(form.getFirst("senderLogin")).getId() == SessionBean.getUserId()) {
+         //   if (userService.getUserByLogin(form.getFirst("senderLogin")).getId() == SessionBean.getUserId()) {
                 PrivateMessage privateMessage = new PrivateMessage();
                 privateMessage.setSender(userService.getUserByLogin(form.getFirst("senderLogin")));
                 privateMessage.setReceiver(userService.getUserByLogin(form.getFirst("receiverLogin")));
@@ -52,9 +53,9 @@ public class MessageResource {
                 privateMessage.setText(form.getFirst("message"));
                 privateMessageService.create(privateMessage);
                 return "ok";
-            } else {
-                return "no rights to send message";
-            }
+           // } else {
+           //     return "no rights to send message";
+           // }
         } catch (Exception e) {
             return "error";
         }

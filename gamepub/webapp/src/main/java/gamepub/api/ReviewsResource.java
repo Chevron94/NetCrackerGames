@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package gamepub.api;
-
+//TODO Ограничение API: неавторизован - 100/день, авторизован - 1000/день, прем - неограниченно
+//TODO Добавить OAuth2
 import gamepub.beans.SessionBean;
 import gamepub.db.entity.Mark;
 import gamepub.db.service.GameService;
@@ -32,9 +33,10 @@ public class ReviewsResource {
 
     @POST
     @Path("/add")
+    @Consumes("application/x-www-form-urlencoded")
     public String addMark(MultivaluedMap<String, String> form) {
         try {
-            if (Integer.parseInt(form.getFirst("userId")) == SessionBean.getUserId()) {
+ //           if (Integer.parseInt(form.getFirst("userId")) == SessionBean.getUserId()) {
                 Mark mark = new Mark();
                 mark.setDate(new java.util.Date());
                 mark.setMark(Integer.parseInt(form.getFirst("mark")));
@@ -43,9 +45,9 @@ public class ReviewsResource {
                 mark.setUser(userService.getUserById(Integer.parseInt(form.getFirst("userId"))));
                 markService.create(mark);
                 return "ok";
-            } else {
-                return "no rights to add mark and review";
-            }
+   //         } else {
+    //            return "no rights to add mark and review";
+     //       }
         } catch (Exception e) {
             return "error";
         }
@@ -53,14 +55,15 @@ public class ReviewsResource {
 
     @POST
     @Path("/delete")
+    @Consumes("application/x-www-form-urlencoded")
     public String deleteReview(MultivaluedMap<String, String> form) {
         try {
-            if (markService.getMarkById(Integer.parseInt(form.getFirst("markId"))).getUser().getId() == SessionBean.getUserId()) {
+       //     if (markService.getMarkById(Integer.parseInt(form.getFirst("markId"))).getUser().getId() == SessionBean.getUserId()) {
                 markService.delete(Integer.parseInt(form.getFirst("markId")));
                 return "ok";
-            } else {
-                return "no rigthts to delete";
-            }
+         //   } else {
+          //      return "no rigthts to delete";
+          //  }
         } catch (Exception e) {
             return "error";
         }
