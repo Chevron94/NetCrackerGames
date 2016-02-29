@@ -48,12 +48,12 @@
                 </b:navbarLinks>
             </h:form>
 
-            <h:form styleClass="navbar-form navbar-right hidden-md hidden-sm hidden-xs">
+            <h:form styleClass="navbar-form navbar-right hidden-md hidden-sm hidden-xs" >
                 <p:growl id="msgs3" showDetail="true"/>
-                <p:autoComplete id="inputSearch" value="#{lifeSearchBean.request}"
+                <p:autoComplete id="inputSearch" styleClass="water" value="#{lifeSearchBean.request}"
                                 completeMethod="#{lifeSearchBean.searchGame}" var="game"
                                 itemLabel="#{game.name}" itemValue="#{game.name}"
-                                forceSelection="true" scrollHeight="250" placeholder="Search...">
+                                forceSelection="true" scrollHeight="250">
 
                     <p:column>
                         <h:link outcome="aboutGame">
@@ -71,6 +71,7 @@
                     </p:column>
 
                 </p:autoComplete>
+                <p:watermark for="inputSearch" value="Search..."/>
             </h:form>
         </b:navBar>
         <b:modal id="amodal" title="Enter" styleClass="modalPseudoClass">
@@ -98,7 +99,7 @@
                                  actionListener="#{loginBean.check}"
                                  ajax="false"/>
 
-                <b:navLink styleClass="btn btn-default" outcome="registr" value="Sig Up"/>
+                <b:button styleClass="btn btn-default" outcome="registr" value="Sig Up"/>
             </h:form>
         </b:modal>
 
