@@ -184,12 +184,14 @@ public class ProfileBean {
             context.getExternalContext().getSessionMap().remove("edit");
             context.getExternalContext().getSessionMap().put("edit", true);
             isEdit = true;
-            /*FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Error",
-                    "Failed to login!");
-            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
-            RequestContext.getCurrentInstance().showMessageInDialog(failMes);*/
         }
+        if (email != null && (userService.getUserByEmail(email) == null) || (userService.getUserByEmail(email).getId() == SessionBean.getUserId())) {
+            user.setEmail(email);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This email is already used!."));
+            context.getExternalContext().getSessionMap().remove("edit");
+            context.getExternalContext().getSessionMap().put("edit", true);
+            isEdit = true;
         }
 
         userService.update(user);

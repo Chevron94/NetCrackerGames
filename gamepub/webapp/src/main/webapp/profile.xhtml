@@ -25,9 +25,9 @@
                     <h:form id="infoedit" enctype="multipart/form-data">
                         <b:panel id="panel" rendered="#{profileBean.isEdit and profileBean.isMy}">
                         <h:panelGrid id ="panelgrid" columns="1" cellpadding="10">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                             <p:outputLabel for="login" value="Login:"/>
                             <p:inputText id="login" value="#{profileBean.login}" required="true"/>
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                             
                             <p:outputLabel for="city"/>
                             <b:selectOneMenu id="city" value="#{profileBean.cityId}">
