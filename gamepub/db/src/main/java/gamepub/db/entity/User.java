@@ -3,6 +3,7 @@ package gamepub.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +39,12 @@ public class User {
     Boolean active;
     @Column(name = "BANNED")
     Boolean banned;
-
+    @Column(name = "API_TOKEN", nullable = true)
+    String apiToken;
+    @Column(name = "USED REQUESTS")
+    Integer usedRequest;
+    @Column(name = "TOKEN_EXPIRE_DATE")
+    Date expireDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ROLE_ID", nullable = false)
@@ -49,7 +55,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    List<PrivateMessage> sendedPrivateMessages;
+    List<PrivateMessage> sentPrivateMessages;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     List<PrivateMessage> receivedPrivateMessages;
@@ -155,12 +161,12 @@ public class User {
         this.city = city;
     }
 
-    public List<PrivateMessage> getSendedPrivateMessages() {
-        return sendedPrivateMessages;
+    public List<PrivateMessage> getSentPrivateMessages() {
+        return sentPrivateMessages;
     }
 
-    public void setSendedPrivateMessages(List<PrivateMessage> sendedPrivateMessages) {
-        this.sendedPrivateMessages = sendedPrivateMessages;
+    public void setSentPrivateMessages(List<PrivateMessage> sentPrivateMessages) {
+        this.sentPrivateMessages = sentPrivateMessages;
     }
 
     public List<PrivateMessage> getReceivedPrivateMessages() {
@@ -249,6 +255,30 @@ public class User {
 
     public void setBanned(Boolean banned) {
         this.banned = banned;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public Integer getUsedRequest() {
+        return usedRequest;
+    }
+
+    public void setUsedRequest(Integer usedRequest) {
+        this.usedRequest = usedRequest;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
     }
 
     @Override

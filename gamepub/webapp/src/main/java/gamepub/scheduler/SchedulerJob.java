@@ -78,7 +78,7 @@ public class SchedulerJob implements Job {
             Document document = Jsoup.parse(res);
             Element element = document.select("li.game_product:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)").first();
             if (element == null) {
-                //Collections.reverse(result);
+                Collections.reverse(result);
                 return result;
             }
             int i = 1;
@@ -94,7 +94,7 @@ public class SchedulerJob implements Job {
                         platform1 = platformDaoImplementation.getPlatformByName("Windows");
                     else platform1 = platformDaoImplementation.getPlatformByName(platform.toUpperCase());
                     if (gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(game.getId(), platform1.getId()) != null) {
-                        //Collections.reverse(result);
+                        Collections.reverse(result);
                         return result;
                     }
                 }
@@ -375,6 +375,8 @@ public class SchedulerJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
+            UserDaoImplementation userDaoImplementation = new UserDaoImplementation();
+            userDaoImplementation.refreshRequestsCount();
             PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
             initPlatforms();
             initSteam();

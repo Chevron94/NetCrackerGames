@@ -5,8 +5,8 @@
  */
 package gamepub.api;
 
-import gamepub.beans.SessionBean;
 import gamepub.db.entity.PrivateMessage;
+import gamepub.db.entity.User;
 import gamepub.db.service.PrivateMessageService;
 import gamepub.db.service.UserService;
 import java.util.Date;
@@ -29,32 +29,66 @@ public class MessageResource {
     @EJB
     PrivateMessageService privateMessageService;
 
+    AuthResource authResource = new AuthResource();
+
     @GET
-    @Path("/{userId}/allMessage")
+    @Path("/sendedMessages")
     @Produces("application/json")
-    public List<PrivateMessage> receiveMessage(@PathParam("userId") Integer userId) {
-        if (userId == SessionBean.getUserId()) {
-            return privateMessageService.getSendedPrivateMessagesBySenderId(userId);
-        } else {
-            return null;
+    public List<PrivateMessage> getSendedMessages(@QueryParam("token") String token) {
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth) {
+            case OK: {
+                User user= userService.getUserByApiToken(token);
+                return privateMessageService.getSendedPrivateMessagesBySenderId(user.getId());
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+    
+    @GET
+    @Path("/receivedMessages")
+    @Produces("application/json")
+    public List<PrivateMessage> getReceivedMessages(@QueryParam("token") String token) {
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth) {
+            case OK: {
+                User user= userService.getUserByApiToken(token);
+                return privateMessageService.getReceivedPrivateMessagesByReceiverId(user.getId());
+            }
+            default: {
+                return null;
+            }
         }
     }
 
     @POST
-    @Path("/add")
+    @Path("/send")
     @Consumes("application/x-www-form-urlencoded")
     public String sendMessage(MultivaluedMap<String, String> form) {
         try {
-            if (userService.getUserByLogin(form.getFirst("senderLogin")).getId() == SessionBean.getUserId()) {
-                PrivateMessage privateMessage = new PrivateMessage();
-                privateMessage.setSender(userService.getUserByLogin(form.getFirst("senderLogin")));
-                privateMessage.setReceiver(userService.getUserByLogin(form.getFirst("receiverLogin")));
-                privateMessage.setDate(new Date());
-                privateMessage.setText(form.getFirst("message"));
-                privateMessageService.create(privateMessage);
-                return "ok";
-            } else {
-                return "no rights to send message";
+            String token = form.getFirst("token");
+            switch (authResource.checkToken(token)) {
+                case ALL_REQUESTS_ARE_USED:
+                    return "ALL REQUESTS FOR TODAY ARE USED";
+                case WRONG_TOKEN:
+                    return "WRONG TOKEN";
+                case BANNED:
+                    return "YOU WAS BANNED";
+                case TOKEN_EXPIRED:
+                    return "TOKEN EXPIRED";
+                case OK: {
+                    PrivateMessage privateMessage = new PrivateMessage();
+                    privateMessage.setSender(userService.getUserByApiToken(token));
+                    privateMessage.setReceiver(userService.getUserByLogin(form.getFirst("receiverLogin")));
+                    privateMessage.setDate(new Date());
+                    privateMessage.setText(form.getFirst("message"));
+                    privateMessageService.create(privateMessage);
+                    return "ok";
+                }
+                default:
+                    return "error";
             }
         } catch (Exception e) {
             return "error";

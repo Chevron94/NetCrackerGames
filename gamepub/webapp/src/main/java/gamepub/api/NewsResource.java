@@ -26,11 +26,21 @@ public class NewsResource {
     @EJB
     GameService gameService;
 
+    AuthResource authResource = new AuthResource();
+
     @GET
     @Path("all")
     @Produces("application/json")
-    public List<News> getAll(){
-        return newsService.findAll();
+    public List<News> getAll(@QueryParam("token") String token){
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth){
+            case OK:{
+                return newsService.findAll();
+            }
+            default:{
+                return null;
+            }
+        }
     }
 
     @GET
@@ -38,19 +48,29 @@ public class NewsResource {
     @Produces("application/json")
     public List<News> getCustom(@DefaultValue("") @QueryParam("name") String name,
                                 @DefaultValue("") @QueryParam("game") String game,
-                                @DefaultValue("") @QueryParam("date") String date){
+                                @DefaultValue("") @QueryParam("date") String date,
+                                @QueryParam("token") String token){
         try {
-            List<Map.Entry<String, Object>> params = new ArrayList<Map.Entry<String, Object>>();
-            if (name != null && !name.trim().equals("")) {
-                params.add(new HashMap.SimpleEntry<String, Object>("name", name));
+            AuthResource.AUTH auth = authResource.checkToken(token);
+            switch (auth){
+                case OK:{
+                    List<Map.Entry<String, Object>> params = new ArrayList<Map.Entry<String, Object>>();
+                    if (name != null && !name.trim().equals("")) {
+                        params.add(new HashMap.SimpleEntry<String, Object>("name", name));
+                    }
+                    if (date != null && !date.trim().equals("")){
+                        params.add(new HashMap.SimpleEntry<String, Object>("date",new Date(date)));
+                    }
+                    if (game != null && !game.trim().equals("")){
+                        params.add(new HashMap.SimpleEntry<String, Object>("game",gameService.getGameById(Integer.valueOf(game))));
+                    }
+                    return newsService.getNewsByCustomParams(params, true, 0, 0);
+                }
+                default: {
+                    return null;
+                }
             }
-            if (date != null && !date.trim().equals("")){
-                params.add(new HashMap.SimpleEntry<String, Object>("date",new Date(date)));
-            }
-            if (game != null && !game.trim().equals("")){
-                params.add(new HashMap.SimpleEntry<String, Object>("game",gameService.getGameById(Integer.valueOf(game))));
-            }
-                return newsService.getNewsByCustomParams(params, true, 0, 0);
+
         }catch (Exception e){
             return null;
         }
@@ -59,15 +79,31 @@ public class NewsResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public News getOne(@PathParam("id") Integer id){
-        return newsService.find(id);
+    public News getOne(@PathParam("id") Integer id, @QueryParam("token") String token){
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth) {
+            case OK: {
+                return newsService.find(id);
+            }
+            default: {
+                return null;
+            }
+        }
     }
 
     @GET
     @Path("{id}/comments")
     @Produces("application/json")
-    public List<Comment> getComments(@PathParam("id") Integer id){
-        return commentService.getCommentsByNewsId(id);
+    public List<Comment> getComments(@PathParam("id") Integer id, @QueryParam("token") String token){
+        AuthResource.AUTH auth = authResource.checkToken(token);
+        switch (auth) {
+            case OK: {
+                return commentService.getCommentsByNewsId(id);
+            }
+            default: {
+                return null;
+            }
+        }
     }
 
 }
