@@ -19,7 +19,38 @@
 
                 <h2 align="center" id="userName">#{profileBean.name}</h2>
                 <b:row>
-                    <b:column span="4" offset="1">
+                    <b:column span="1" style="margin:10px">
+                        <h:panelGrid columns="1" style="margin: 10px; padding:10px;">
+
+                        <b:button class="btn btn-primary" style="width:100%;" outcome="gallery" value="My gallery"
+                                  rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" style="width:100%;" outcome="allUsers" value="Users"
+                                  rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" outcome="tradingPage" style="width:100%;" value="#{profileBean.exchangeNotification()}"
+                                  rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" outcome="tradingLounge" style="width:100%;" value="Trading lounge" rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" style="width:100%;" outcome="allMessages" value="Messages"
+                                  rendered="#{profileBean.isMy}"/>
+                        <b:button class="btn btn-primary" style="width:100%;" outcome="robokassa/payment" value="Payment"
+                                  rendered="#{profileBean.isMy}"/>
+                            <h:form>
+                                <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
+                                                 style="width:100%;" actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
+                            </h:form>
+                        <br/>Connect with:
+                        <h:form rendered="#{!profileBean.isVk()}">
+
+                            <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
+                        </h:form>
+                        <h:form rendered="#{!profileBean.isFacebook()}">
+                            <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
+                        </h:form>
+                        <h:form rendered="#{!profileBean.isGoogle()}">
+                            <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
+                        </h:form>
+                        </h:panelGrid>
+                    </b:column>
+                    <b:column span="4">
                         <p:graphicImage value="#{profileBean.image}" style="width:50%; height: 50%;"/>
                     </b:column>
                     <!--Edit Information about user -->
@@ -92,30 +123,7 @@
                 <b:row>
                     <!-- Buttons and games-->
                     <b:column span="10" offset="1">
-                        <h:form>
-                            <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
-                                             actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
-                        </h:form>
-                        <b:button class="btn btn-primary" outcome="gallery" value="My gallery"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button outcome="tradingPage" value="#{profileBean.exchangeNotification()}"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button outcome="tradingLounge" value="Trading lounge" rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-info" outcome="allMessages" value="Messages"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" outcome="robokassa/payment" value="Payment"
-                                  rendered="#{profileBean.isMy}"/>
-                        <br/>Connect with:
-                        <h:form rendered="#{!profileBean.isVk()}">
 
-                            <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
-                        </h:form>
-                        <h:form rendered="#{!profileBean.isFacebook()}">
-                            <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
-                        </h:form>
-                        <h:form rendered="#{!profileBean.isGoogle()}">
-                            <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
-                        </h:form>
                         <!-- Follow -->
                         <h:form id="follow" rendered="#{!profileBean.isMy}">
                             <b:commandButton class="btn btn-primary" value="Follow" ajax="false"
