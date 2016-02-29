@@ -29,7 +29,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         CriteriaQuery cq = cb.createQuery();
         Root<Game> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.equal(root.<Integer>get("id"), id));
+        cq.where(cb.equal(root.<Integer>get("id"), id),cb.isNotNull(root.<String>get("poster")));
         Game result;
         try {
             result = (Game)getEntityManager().createQuery(cq).getSingleResult();
@@ -46,7 +46,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         CriteriaQuery cq = cb.createQuery();
         Root<Game> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.equal(root.<String>get("uid"), uid));
+        cq.where(cb.equal(root.<String>get("uid"), uid),cb.isNotNull(root.<String>get("poster")));
         Game result;
         try {
             result = (Game)getEntityManager().createQuery(cq).getSingleResult();
@@ -58,22 +58,37 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         return result;
     }
 
-    public List<Game> getGamesByName(String name) {
+    public List<Game> getGamesByName(String name, boolean all, Integer start, Integer count) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Game> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.equal(root.<String>get("name"), name));
+        cq.where(cb.equal(root.<String>get("name"), name), cb.isNotNull(root.<String>get("poster")));
         cq.orderBy(cb.asc(root.<String>get("name")));
-        List result = getEntityManager().createQuery(cq).getResultList();
+
+        List result;
+        if(all){
+            result = getEntityManager().createQuery(cq).getResultList();
+        }else{
+            result = getEntityManager().createQuery(cq).setFirstResult(start).setMaxResults(count).getResultList();
+        }
         closeEntityManager();
         return result;
     }
 
-    public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
-        String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game";
+    public List<Game> getGamesWhichHaveNews() {
+        String jpa = "Select DISTINCT n.game from News n order by n.game.name";
+        return this.executeQuery(jpa);
+    }
+
+    public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
+        String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game AND g.game.poster != ''";
         if (parameterList.size() == 0) {
-            return this.executeQuery(jpa);
+            if (all)
+                return this.executeQuery(jpa);
+            else {
+                return this.executeQuery(jpa,start,count);
+            }
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         for (HashMap.Entry<String, Object> param : parameterList) {
@@ -105,17 +120,16 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
             }
         }
-        return this.executeQuery(jpa, parameters);
+        if (all)
+            return this.executeQuery(jpa, parameters);
+        else {
+            return this.executeQuery(jpa,start,count);
+        }
     }
 
     public List<Game> getGamesOrderByMarks(int maxValue){
-        String jpa = "Select gp.game from GamePlatform gp Order by gp.metacritic desc, gp.game.name";
-        List<Game> queryResult = this.executeQuery(jpa);
-        List<Game> result = new ArrayList<Game>();
-        for(int i = 0; i<Math.min(maxValue,queryResult.size()); i++){
-            result.add(queryResult.get(i));
-        }
-        return result;
+        String jpa = "Select gp.game from GamePlatform gp WHERE NOT (gp.game.poster IS NULL) AND gp.game.poster != ''  Order by gp.metacritic desc, gp.game.name";
+        return this.executeQuery(jpa,0,6*maxValue);
     }
 
     @Override

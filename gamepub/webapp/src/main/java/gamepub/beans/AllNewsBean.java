@@ -1,6 +1,5 @@
 package gamepub.beans;
 
-import gamepub.db.entity.Comment;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.News;
 import gamepub.db.service.GameService;
@@ -8,7 +7,6 @@ import gamepub.db.service.NewsService;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.util.*;
@@ -45,7 +43,7 @@ public class AllNewsBean {
             param = new HashMap.SimpleEntry<String, Object>("date", date);
             parametersList.add(param);
         }
-        return newsService.getNewsByCustomParams(parametersList);
+        return newsService.getNewsByCustomParams(parametersList,true,0,0);
     }
 
     public void search(){
@@ -76,8 +74,9 @@ public class AllNewsBean {
         Game g = new Game();
         g.setName("None");
         g.setId(0);
+        g.setUid("");
         res.add(g);
-        res.addAll(gameService.findAll());
+        res.addAll(gameService.getGamesWhichHaveNews());
         return res;
     }
 

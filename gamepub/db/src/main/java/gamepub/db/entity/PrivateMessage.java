@@ -1,5 +1,6 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -18,10 +19,12 @@ public class PrivateMessage {
 
     @Column(name = "TEXT", columnDefinition = "TEXT", nullable = false)
     String text;
-
+    
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SENDER_ID", nullable = false)
     User sender;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "RECEIVER_ID", nullable = false)
     User receiver;

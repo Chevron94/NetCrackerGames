@@ -5,6 +5,7 @@ import gamepub.db.service.GameService;
 import gamepub.parse.Match;
 import gamepub.parse.Tournament;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import sun.util.resources.cldr.es.CalendarData_es_GQ;
 
 import javax.ejb.EJB;
@@ -30,7 +31,13 @@ public class MainPageBean {
         for (int i=0; i<4; i++){
             tmp.add(myGames.get(i));
         }*/
-        return gameService.getGamesOrderByMarks(6);
+        List<Game> games = gameService.getGamesOrderByMarks(6);
+        List<Game> result = new ArrayList<Game>();
+        for(int i = 0; result.size()<6; i++){
+            if (!result.contains(games.get(i)))
+                result.add(games.get(i));
+        }
+        return result;
     }
 
     public String goToConcreteGame() {
@@ -39,8 +46,9 @@ public class MainPageBean {
 
     /**
      * @return the matches
+     * @throws java.net.UnknownHostException
      */
-    public List<Match> getMatches() throws IOException {
+    public List<Match> getMatches() throws Exception {
         Tournament tournament = new Tournament();
         return tournament.getMatches();        
     }

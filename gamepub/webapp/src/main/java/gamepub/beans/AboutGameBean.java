@@ -10,6 +10,7 @@ import gamepub.db.entity.Comment;
 import gamepub.db.entity.Game;
 import gamepub.db.entity.GameGenre;
 import gamepub.db.entity.GamePlatform;
+import gamepub.db.entity.GameScreenshot;
 import gamepub.db.entity.GameStatus;
 import gamepub.db.entity.Mark;
 import gamepub.db.entity.Platform;
@@ -18,12 +19,14 @@ import gamepub.db.entity.UserGame;
 import gamepub.db.service.CommentService;
 import gamepub.db.service.GameGenreService;
 import gamepub.db.service.GamePlatformService;
+import gamepub.db.service.GameScreenshotService;
 import gamepub.db.service.GameService;
 import gamepub.db.service.GameStatusService;
 import gamepub.db.service.MarkService;
 import gamepub.db.service.PlatformService;
 import gamepub.db.service.UserGameService;
 import gamepub.db.service.UserService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +40,13 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import net.bootsfaces.component.commandButton.CommandButton;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.rating.Rating;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 
 /**
- *
  * @author ����
  */
 @ManagedBean
@@ -69,11 +71,13 @@ public class AboutGameBean {
     GamePlatformService gamePlatformService;
     @EJB
     GameGenreService gameGenreService;
+    @EJB
+    GameScreenshotService gameScreenshotService;
 
     Game game;
     List<Mark> marksAndReviews;
 
-    boolean drawStatus = false;
+    boolean drawStatus;
 
     public List<GameStatus> getStatus() {
         return gameStatusService.findAll();
@@ -89,9 +93,20 @@ public class AboutGameBean {
             drawStatus = true;
             notStatusButton();
             disableStatusButtons(userGame);
+        } else {
+            drawStatus = false;
         }
-        drawStatusButtons(drawStatus);
+        //drawStatusButtons(drawStatus);
         return g;
+    }
+
+    public List<String> getImages() {
+        List<GameScreenshot> gameScreenshots = gameScreenshotService.getScreenshotsByGameId(SessionBean.getGameId());
+        List<String> images = new ArrayList<String>();
+        for (GameScreenshot gm : gameScreenshots) {
+            images.add(gm.getLink());
+        }
+        return images;
     }
 
     public List<Mark> getMarksAndReviews() {
@@ -167,6 +182,43 @@ public class AboutGameBean {
             FacesMessage errMes = new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "no rights to delete");
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
         }
+    }
+
+    public void addToMyGames() {
+
+        boolean exist = true;
+        UserGame userGame = userGameService.getUserGameByUserIdAndGameId(SessionBean.getUserId(), SessionBean.getGameId());
+        if (userGame == null) {
+            exist = false;
+            userGame = new UserGame();
+        }
+        userGame.setGame(gameService.getGameById(SessionBean.getGameId()));
+        userGame.setUser(userService.getUserById(SessionBean.getUserId()));
+
+        int gameStatusId = 0;
+        try {
+            gameStatusId = userGame.getGameStatus().getId();
+        } catch (Exception e) {
+
+        }
+
+        userGame.setCanExchange(false);
+        userGame.setWanted(false);
+        userGame.setFavorite(false);
+
+        if (!exist) {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(1));
+            userGameService.create(userGame);
+        } else {
+            userGame.setGameStatus(gameStatusService.getGameStatusById(gameStatusId));
+            userGameService.delete(userGame.getId());
+            userGameService.update(userGame);
+        }
+
+        notStatusButton();
+        disableButtons(userGame);
+        drawStatus = true;
+        disableStatusButtons(userGame);
     }
 
     public void addToFavourite() {
@@ -334,15 +386,25 @@ public class AboutGameBean {
         UIViewRoot uiViewRoot = context.getViewRoot();
         CommandButton commandButton;
         if (userGame.isFavorite()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:favourite");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:favourite");
             commandButton.setDisabled(true);
         }
         if (userGame.isWanted()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:wanted");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:wanted");
             commandButton.setDisabled(true);
         }
         if (userGame.isCanExchange()) {
-            commandButton = (CommandButton) uiViewRoot.findComponent("statusForm:exchange");
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:exchange");
+            commandButton.setDisabled(true);
+        }
+        if (!userGame.isCanExchange() && !userGame.isWanted() && !userGame.isFavorite()) {
+            CommandButton fav=(CommandButton) uiViewRoot.findComponent("comForm:favourite");
+            CommandButton wan=(CommandButton) uiViewRoot.findComponent("comForm:wanted");
+            CommandButton exc=(CommandButton) uiViewRoot.findComponent("comForm:exchange");
+            fav.setDisabled(false);
+            wan.setDisabled(false);
+            exc.setDisabled(false);
+            commandButton = (CommandButton) uiViewRoot.findComponent("comForm:mygame");
             commandButton.setDisabled(true);
         }
 
@@ -382,6 +444,16 @@ public class AboutGameBean {
         b2.setDisabled(false);
         b3.setDisabled(false);
         b4.setDisabled(false);
+    }
+
+    public boolean getDrawStatus() {
+        UserGame userGame = getUserGame();
+        if (getUserGame() != null) {
+            notStatusButton();
+            disableStatusButtons(userGame);
+            return true;
+        }
+        return false;
     }
 
     private void drawStatusButtons(boolean drawStatus) {

@@ -57,4 +57,12 @@ public class TradingLoungeBean {
     public List<UserGame> getExchangeGames(User u) {       
         return userGameService.getCanExchangeUserGamesByUserId(u.getId());
     }
+    public boolean noWantedGamesCheck(User u){
+       return (getWantedGames(u).isEmpty());
+   
+    }
+    public boolean noExchangeGamesCheck(User u){
+       return (getExchangeGames(u).isEmpty());
+   
+    }
 }

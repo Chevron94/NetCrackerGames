@@ -1,5 +1,7 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "GAME_SCREENSHOT")
 public class GameScreenshot {
+    @JsonIgnore
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +18,7 @@ public class GameScreenshot {
     @Column(name = "LINK", nullable = false)
     String link;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GAME_ID", nullable = false)
     Game game;

@@ -12,9 +12,9 @@ import java.util.List;
 public interface NewsDao extends BaseDao<News,Integer> {
     public News getNewsById(Integer id);
     public News getNewsByUid(String uid);
-    public List<News> getNewsByName(String name);
-    public List<News> getNewsByGameId(Integer id);
-    public List<News> getNewsByDate(Date date);
-    public List<News> getNewsOrderByDate();
-    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList);
+    public List<News> getNewsByName(String name, boolean notAll, Integer start, Integer count);
+    public List<News> getNewsByGameId(Integer id, boolean notAll, Integer start, Integer count);
+    public List<News> getNewsByDate(Date date, boolean notAll, Integer start, Integer count);
+    public List<News> getNewsOrderByDate(boolean notAll, Integer start, Integer count);
+    public List<News> getNewsByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean notAll, Integer start, Integer count);
 }

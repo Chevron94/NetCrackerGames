@@ -1,5 +1,7 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class City {
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
     Country country;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     List<User> users;
 

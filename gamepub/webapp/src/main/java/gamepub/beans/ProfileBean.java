@@ -30,7 +30,7 @@ import org.primefaces.event.FileUploadEvent;
 public class ProfileBean {
 
     private Integer id;
-    List<Game> myGames;
+ 
     List<UserGame> userGame;
     private boolean isEdit;
     private boolean isMy;
@@ -241,8 +241,18 @@ public class ProfileBean {
     }
 
     //Games
-    public List<UserGame> getMyGames() {
-        return userGameService.getUserGamesByUserId(id);
+    public List<UserGame> getSimpleAndFavouriteGames(){
+        List<UserGame> allMyGames= userGameService.getUserGamesByUserId(id);
+        List<UserGame> simpleGames=new ArrayList<UserGame>();
+        for(UserGame usergame: allMyGames){
+            if(!usergame.isCanExchange() && !usergame.isWanted())
+                simpleGames.add(usergame);
+        }
+        return simpleGames;
+    }
+    
+    public List<UserGame> getWantedGames() {
+        return userGameService.getWantedUserGamesByUserId(id);
     }
 
     public List<UserGame> getFavouriteGames() {
@@ -282,7 +292,7 @@ public class ProfileBean {
     public void upload(FileUploadEvent event) throws IOException {
         if (event.getFile() != null) {
             cloudUpload upload = new cloudUpload(event.getFile());
-            User u = userService.getUserById(id);
+            User u = userService.getUserById(SessionBean.getUserId());
             u.setAvatarUrl((String) upload.getUploadResult().get("url"));
             userService.update(u);
 
