@@ -16,42 +16,72 @@
                 <f:metadata>
                     <f:viewParam name="userId" value="#{profileBean.userId}"/>
                 </f:metadata>
-
-                <h2 align="center" id="userName">#{profileBean.name}</h2>
                 <b:row>
-                    <b:column span="1" style="margin:10px">
-                        <h:panelGrid columns="1" style="margin: 10px; padding:10px;">
+                    <b:column offset="2" span="1">
+                    <h2 align="center" id="userName">#{profileBean.name}</h2>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column span="1" style="margin-right:10px">
+                        <h:panelGrid columns="1" style="padding:10px;">
 
-                        <b:button class="btn btn-primary" style="width:100%;" outcome="gallery" value="My gallery"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" style="width:100%;" outcome="allUsers" value="Users"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" outcome="tradingPage" style="width:100%;" value="#{profileBean.exchangeNotification()}"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" outcome="tradingLounge" style="width:100%;" value="Trading lounge" rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" style="width:100%;" outcome="allMessages" value="Messages"
-                                  rendered="#{profileBean.isMy}"/>
-                        <b:button class="btn btn-primary" style="width:100%;" outcome="robokassa/payment" value="Payment"
-                                  rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" style="width:100%;" outcome="gallery" value="My gallery"
+                                      rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" style="width:100%;" outcome="allUsers" value="Users"
+                                      rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" outcome="tradingPage" style="width:100%;"
+                                      value="#{profileBean.exchangeNotification()}"
+                                      rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" outcome="tradingLounge" style="width:100%;"
+                                      value="Trading lounge" rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" style="width:100%;" outcome="allMessages" value="Messages"
+                                      rendered="#{profileBean.isMy}"/>
+                            <b:button class="btn btn-primary" style="width:100%;" outcome="robokassa/payment"
+                                      value="Payment"
+                                      rendered="#{profileBean.isMy}"/>
                             <h:form>
                                 <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
-                                                 style="width:100%;" actionListener="#{profileBean.edit()}" rendered="#{profileBean.isMy}"/>
+                                                 style="width:100%;" actionListener="#{profileBean.edit()}"
+                                                 rendered="#{profileBean.isMy}"/>
                             </h:form>
-                        <br/>Connect with:
-                        <h:form rendered="#{!profileBean.isVk()}">
+                            <!-- Follow -->
+                            <h:form id="follow" rendered="#{!profileBean.isMy}">
+                                <b:commandButton style="width:100%;" class="btn btn-primary" value="Follow" ajax="false"
+                                                 actionListener="#{profileBean.follow()}"
+                                                 rendered="#{!profileBean.isSubscribedTo}"/>
+                                <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
+                                                 actionListener="#{profileBean.unfollow()}"
+                                                 rendered="#{profileBean.isSubscribedTo}"/>
+                                <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog" ajax="false"
+                                          rendered="#{profileBean.isSubscribedTo}">
+                                    <f:param value="#{profileBean.userId}" name="receiverId"/>
+                                </b:button>
 
-                            <a href="#{vKAuthorizationBean.userUrl}"><img src="http://baltcompany.ru/images/vkontakte.png" height="30" width="110"/></a>
-                        </h:form>
-                        <h:form rendered="#{!profileBean.isFacebook()}">
-                            <a href="#{faceBookAuthorizationBean.userUrl}"><img src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif" height="30" width="110"/></a>
-                        </h:form>
-                        <h:form rendered="#{!profileBean.isGoogle()}">
-                            <a href="#{googleAuthorizationBean.userUrl}"><img src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30" width="110"/></a>
-                        </h:form>
+                            </h:form>
+                            <h:panelGrid rendered="#{profileBean.isMy and
+                        (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
+                                <br/>Connect with:
+                                <h:form rendered="#{!profileBean.isVk()}">
+
+                                    <a href="#{vKAuthorizationBean.userUrl}"><img
+                                            src="http://baltcompany.ru/images/vkontakte.png" height="30"
+                                            width="110"/></a>
+                                </h:form>
+                                <h:form rendered="#{!profileBean.isFacebook()}">
+                                    <a href="#{faceBookAuthorizationBean.userUrl}"><img
+                                            src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
+                                            height="30" width="110"/></a>
+                                </h:form>
+                                <h:form rendered="#{!profileBean.isGoogle()}">
+                                    <a href="#{googleAuthorizationBean.userUrl}"><img
+                                            src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
+                                            width="110"/></a>
+                                </h:form>
+                            </h:panelGrid>
                         </h:panelGrid>
                     </b:column>
-                    <b:column span="4">
-                        <p:graphicImage value="#{profileBean.image}" style="width:50%; height: 50%;"/>
+                    <b:column span="3" offset="1">
+                        <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
                     </b:column>
                     <!--Edit Information about user -->
                     <b:column span="3">
@@ -80,9 +110,9 @@
 
                         </h:form>
                         <h:form id="info">
-                            <h:panelGrid columns="1" cellpadding="5" rendered="#{!profileBean.isEdit}">
+                            <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
                                 City:
-                                <b:label text="#{profileBean.city}"/>
+                                <b:label text="#{profileBean.city}" style="font-size:150;"/>
                                 Country:
                                 <b:label text="#{profileBean.country}"/>
                                 Email:
@@ -124,36 +154,24 @@
                     <!-- Buttons and games-->
                     <b:column span="10" offset="1">
 
-                        <!-- Follow -->
-                        <h:form id="follow" rendered="#{!profileBean.isMy}">
-                            <b:commandButton class="btn btn-primary" value="Follow" ajax="false"
-                                             actionListener="#{profileBean.follow()}"
-                                             rendered="#{!profileBean.isSubscribedTo}"/>
-                            <b:commandButton class="btn btn-danger" value="UnFollow" ajax="false"
-                                             actionListener="#{profileBean.unfollow()}"
-                                             rendered="#{profileBean.isSubscribedTo}"/>
-                            <b:button outcome="mesDialog" class="btn btn-info" value="Dialog" ajax="false"
-                                      rendered="#{profileBean.isSubscribedTo}">
-                                <f:param value="#{profileBean.userId}" name="receiverId"/>
-                            </b:button>
 
-                        </h:form>
                         <!-- Games -->
                         <b:tabView id="tabView">
                             <b:tab title="My games">
                                 <h:form id="myGamesForm">
-                                    <p:dataGrid id="myGamesGrid" var="mygame" value="#{profileBean.simpleAndFavouriteGames}" columns="3"
+                                    <p:dataGrid id="myGamesGrid" var="mygame"
+                                                value="#{profileBean.simpleAndFavouriteGames}" columns="3"
                                                 layout="grid"
                                                 rows="12" paginator="true"
                                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                >
+                                    >
 
                                         <p:panel style="text-align:center" header="#{mygame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                    styleClass="gameIcon btn btn-danger"
-                                                    actionListener="#{profileBean.deleteMyGame(mygame)}"
-                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
+                                                        styleClass="gameIcon btn btn-danger"
+                                                        actionListener="#{profileBean.deleteMyGame(mygame)}"
+                                                        update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
@@ -175,18 +193,19 @@
                                                 layout="grid"
                                                 rows="12" paginator="true"
                                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                >
+                                    >
 
                                         <p:panel style="text-align:center" header="#{wantedgame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                    styleClass="gameIcon btn btn-danger"
-                                                    actionListener="#{profileBean.deleteMyGame(wantedgame)}"
-                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
+                                                        styleClass="gameIcon btn btn-danger"
+                                                        actionListener="#{profileBean.deleteMyGame(wantedgame)}"
+                                                        update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                <p:graphicImage width="100%" height="200px" value="#{wantedgame.game.poster}"/>
+                                                <p:graphicImage width="100%" height="200px"
+                                                                value="#{wantedgame.game.poster}"/>
                                                 <h:link outcome="aboutGame" value="#{wantedgame.game.name} "
                                                         includeViewParams="true">
                                                     <f:param value="#{wantedgame.game.uid}" name="id"/>
@@ -208,9 +227,9 @@
                                         <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                    styleClass="gameIcon btn btn-danger"
-                                                    actionListener="#{profileBean.deleteMyGame(favouritegame)}"
-                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
+                                                        styleClass="gameIcon btn btn-danger"
+                                                        actionListener="#{profileBean.deleteMyGame(favouritegame)}"
+                                                        update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">
@@ -237,9 +256,9 @@
                                         <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
                                             <f:facet name="actions">
                                                 <p:commandLink
-                                                    styleClass="gameIcon btn btn-danger"
-                                                    actionListener="#{profileBean.deleteMyGame(exchangegame)}"
-                                                    update="myGamesForm favouriteForm exchangeForm wantedForm">
+                                                        styleClass="gameIcon btn btn-danger"
+                                                        actionListener="#{profileBean.deleteMyGame(exchangegame)}"
+                                                        update="myGamesForm favouriteForm exchangeForm wantedForm">
                                                 </p:commandLink>
                                             </f:facet>
                                             <h:panelGrid columns="1" style="width:100%; height: 250px">

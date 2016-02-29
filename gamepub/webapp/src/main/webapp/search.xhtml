@@ -83,14 +83,16 @@
                                         <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
                                                     var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>#{gameplatform.platform.name} - </b> <b>Release date:</b> <b:label
+                                            <span style="font-size:150%"> <b>#{gameplatform.platform.name} - </b> <b>Release date:</b></span>
+                                            <b:label
                                                 severity="primary"
                                                 text="#{gameplatform.releaseDate}"/>
                                         </p:dataList>
                                         <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
                                                     var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>#{gameplatform.platform.name} - Metacritic:</b> <b:label
+                                            <span style="font-size:150%"> <b>#{gameplatform.platform.name} - Metacritic:</b></span>
+                                            <b:label
                                                 severity="success"
                                                 text="#{gameplatform.metacritic}"/>
                                         </p:dataList>

@@ -4852,7 +4852,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .label {
   display: inline;
   padding: .2em .6em .3em;
-  font-size: 75%;
+  font-size: 150%;
   font-weight: bold;
   line-height: 1;
   color: #ffffff;
@@ -7600,6 +7600,9 @@ nav > li > a:hover{
 :-ms-input-placeholder      {color:#000000;}
 .container{
   width: auto;
+}
+.table_info >tr >td{
+  padding: 5px;
 }
 .game_link{
   font-size: 14px;
