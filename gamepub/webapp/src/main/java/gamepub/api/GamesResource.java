@@ -26,8 +26,8 @@ public class GamesResource {
     GameService gameService;
     @EJB
     MarkService markService;
-    
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @GET
     @Path("/allGames")

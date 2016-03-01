@@ -28,8 +28,8 @@ public class MessageResource {
     UserService userService;
     @EJB
     PrivateMessageService privateMessageService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @GET
     @Path("/sendedMessages")

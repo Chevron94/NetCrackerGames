@@ -22,8 +22,8 @@ public class TradingResource {
     GameService gameService;
     @EJB
     UserGameService userGameService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @GET
     @Path("all")

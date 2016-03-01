@@ -29,8 +29,8 @@ public class CommentsResource {
     CommentService commentService;
     @EJB
     UserService userService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @POST
     @Path("add")

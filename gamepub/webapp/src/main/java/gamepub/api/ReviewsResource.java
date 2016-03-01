@@ -32,8 +32,8 @@ public class ReviewsResource {
     UserService userService;
     @EJB
     GameService gameService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @POST
     @Path("/add")

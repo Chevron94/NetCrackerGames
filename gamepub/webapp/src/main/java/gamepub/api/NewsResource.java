@@ -25,8 +25,8 @@ public class NewsResource {
     UserService userService;
     @EJB
     GameService gameService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @GET
     @Path("all")

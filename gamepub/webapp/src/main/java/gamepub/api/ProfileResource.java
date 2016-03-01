@@ -32,8 +32,8 @@ public class ProfileResource {
     MarkService markService;
     @EJB
     CityService cityService;
-
-    AuthResource authResource = new AuthResource();
+    @EJB
+    AuthResource authResource;
 
     @GET
     @Path("all")

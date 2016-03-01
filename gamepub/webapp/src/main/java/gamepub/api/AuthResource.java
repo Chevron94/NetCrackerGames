@@ -62,6 +62,7 @@ public class AuthResource {
             return AUTH.WRONG_TOKEN;
         }else{
             user.setUsedRequest(user.getUsedRequest()-1);
+            userService.update(user);
         }
         if(user.getBanned()){
             return AUTH.BANNED;

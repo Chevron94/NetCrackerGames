@@ -41,7 +41,7 @@ public class User {
     Boolean banned;
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
-    @Column(name = "USED REQUESTS")
+    @Column(name = "USED_REQUESTS")
     Integer usedRequest;
     @Column(name = "TOKEN_EXPIRE_DATE")
     Date expireDate;
