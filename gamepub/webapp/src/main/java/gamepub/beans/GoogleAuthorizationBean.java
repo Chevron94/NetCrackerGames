@@ -29,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -97,10 +99,17 @@ public class GoogleAuthorizationBean implements Serializable {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
         User user = userService.getUserBySteamInfo(googleInfo);
-        session.setAttribute("userid", user.getId());
-        session.setAttribute("username", user.getLogin());
-        context.redirect("http://localhost:8080/gamepub/");
-        logged = true;
+        if(user.getBanned() != true)
+        {
+            session.setAttribute("userid", user.getId());
+            session.setAttribute("username", user.getLogin());
+            context.redirect("http://localhost:8080/gamepub/");
+            logged = true;
+        }
+        else
+        {
+            context.redirect("/gamepub/banned.xhtml");
+        }
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
