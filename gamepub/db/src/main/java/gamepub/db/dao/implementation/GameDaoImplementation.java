@@ -123,7 +123,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         if (all)
             return this.executeQuery(jpa, parameters);
         else {
-            return this.executeQuery(jpa,start,count);
+            return this.executeQuery(jpa,parameters,start,count);
         }
     }
 
