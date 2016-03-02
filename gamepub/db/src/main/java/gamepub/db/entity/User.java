@@ -44,7 +44,8 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CITY_ID", nullable = false)
     City city;
-
+    
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
     List<PrivateMessage> sendedPrivateMessages;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
@@ -61,7 +62,10 @@ public class User {
     List<UserGame> userGames;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Comment> comments;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "offeringUser")
+    List<Trade> offeringUserTrades;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receivingUser")
+    List<Trade> receivingUserTrades;
     public User() {
     }
 
@@ -272,4 +276,41 @@ public class User {
                 ", city=" + city +
                 '}';
     }
+
+    /**
+     * @return the offeringUserTrades
+     */
+    public List<Trade> getOfferingUserTrades() {
+        return offeringUserTrades;
+    }
+
+    /**
+     * @param offeringUserTrades the offeringUserTrades to set
+     */
+    public void setOfferingUserTrades(List<Trade> offeringUserTrades) {
+        this.offeringUserTrades = offeringUserTrades;
+    }
+
+    /**
+     * @return the receivingUserTrades
+     */
+    public List<Trade> getReceivingUserTrades() {
+        return receivingUserTrades;
+    }
+
+    /**
+     * @param receivingUserTrades the receivingUserTrades to set
+     */
+    public void setReceivingUserTrades(List<Trade> receivingUserTrades) {
+        this.receivingUserTrades = receivingUserTrades;
+    }
+
+
+    
+
+    
+
+    
+
+   
 }

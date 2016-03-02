@@ -33,6 +33,13 @@ public class SessionBean {
         else
             return null;
     }
+    public static Integer getUserForTradeId() {
+        HttpSession session = getSession();
+        if (session != null)
+            return (Integer) session.getAttribute("tradeuser");
+        else
+            return null;
+    }
        public static Integer getGameId() {
         HttpSession session = getSession();
         if (session != null)
