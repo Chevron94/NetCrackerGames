@@ -38,6 +38,8 @@ public class User {
     Boolean active;
     @Column(name = "BANNED")
     Boolean banned;
+    @Column(name = "FINE")
+    int fine;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -249,6 +251,14 @@ public class User {
 
     public void setBanned(Boolean banned) {
         this.banned = banned;
+    }
+
+    public int getFine(){
+        return fine;
+    }
+
+    public void setFine(int fine){
+        this.fine = fine;
     }
 
     @Override

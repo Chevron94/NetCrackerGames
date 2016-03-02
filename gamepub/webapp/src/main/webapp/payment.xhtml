@@ -9,7 +9,7 @@
 >
 
 <h:body>
-    <ui:composition template="../Template/template.xhtml">
+    <ui:composition template="Template/template.xhtml">
         <ui:define name="content">
             <link rel="alternate" type="application/json+oembed"
                   href="https://www.jotform.com/oembed/?format=json&amp;url=http%3A%2F%2Fwww.jotform.com%2Fform%2F60551407812854"
@@ -82,7 +82,22 @@
 
 
                   <h:form id="outSummform" rendered="#{!robokassaBean.isOutPay}">
-                      <p:inputText id="inputSumm" styleClass="form-textbox"/>
+                      <p:inputText id="inputSumm" styleClass="form-textbox">
+                          <f:convertNumber maxFractionDigits="2"
+                                           groupingUsed="true"
+                                           currencySymbol="$"
+                                           maxIntegerDigits="4"
+                                           type="currency"/>
+                      </p:inputText>
+                      <h:inputText id="money" required="true">
+                          <f:convertNumber maxFractionDigits="2"
+                                           groupingUsed="true"
+                                           currencySymbol="$"
+                                           maxIntegerDigits="4"
+                                           type="currency"/>
+                      </h:inputText>
+
+
                       <p:commandButton styleClass="form-submit-button"
                                        actionListener="#{robokassaBean.submit}"
                                        ajax="false"

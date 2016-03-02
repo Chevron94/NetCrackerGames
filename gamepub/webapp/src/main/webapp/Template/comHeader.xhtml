@@ -26,23 +26,34 @@
                 <b:navLink styleClass="btn btn-default my_nav" outcome="search" value="Extended search"
                            icon="ui-icon-star"/>
 
+                <b:navLink styleClass="btn btn-default my_nav hidden-md hidden-lg hidden-sm " outcome="profile" value="MY PROFILE"
+                          icon="ui-icon-star">
+                    <f:param value="my" name="userId"/>
+                </b:navLink>
+
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="profile" value="My Profile"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="gallery" value="My gallery"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="allUsers" value="Users"/>
+
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm" outcome="tradingLounge"
+                          value="Trading lounge "/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="allMessages" value="Messages"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="payment"
+                          value="Payments"/>
+
             </b:navbarLinks>
 
             <b:navbarLinks styleClass="navbar-right"
                            rendered="#{!loginBean.logged &amp;&amp; !vKAuthorizationBean.logged &amp;&amp; !faceBookAuthorizationBean.logged &amp;&amp; !googleAuthorizationBean.logged}">
 
                 <a id="atrigger" class="btn btn-success btn-lg" href="#amodal"
-                   data-toggle="modal"><b:icon name="log-in"/> Enter</a>
+                   data-toggle="modal"><b:icon name="log-in"/> Sign in</a>
             </b:navbarLinks>
 
             <h:form rendered="#{loginBean.logged || vKAuthorizationBean.logged || faceBookAuthorizationBean.logged || googleAuthorizationBean.logged}">
 
                 <b:navbarLinks styleClass="navbar-right">
 
-                    <b:navLink styleClass="btn btn-default my_nav" outcome="profile" value="MY PROFILE"
-                              icon="ui-icon-star">
-                        <f:param value="my" name="userId"/>
-                    </b:navLink>
                     <b:commandButton styleClass="gBut btn btn-danger" style="margin-top:0px;" value="logout"
                                      action="#{loginBean.logout}" ajax="false"/>
                 </b:navbarLinks>
@@ -74,7 +85,7 @@
                 <p:watermark for="inputSearch" value="Search..."/>
             </h:form>
         </b:navBar>
-        <b:modal id="amodal" title="Enter" styleClass="modalPseudoClass">
+        <b:modal id="amodal" title="Sign in" styleClass="modalPseudoClass">
             <h:form>
                 <a href="#{vKAuthorizationBean.userUrl}"><img
                         src="http://s1.iconbird.com/ico/2013/6/270/w445h4451371236205MezhdunarodnylogotipVK500.png"

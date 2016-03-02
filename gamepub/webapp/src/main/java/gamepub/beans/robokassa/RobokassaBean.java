@@ -25,6 +25,7 @@ import java.util.Date;
 @ManagedBean
 @SessionScoped
 @Stateful
+@ViewScoped
 public class RobokassaBean {
     @EJB
     UserService userService;
