@@ -50,19 +50,19 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-                <groupId>com.google.http-client</groupId>
-                <artifactId>google-http-client</artifactId>
-                <version>1.13.1-beta</version>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client</artifactId>
+            <version>1.13.1-beta</version>
         </dependency>
         <dependency>
-                <groupId>com.google.http-client</groupId>
-                <artifactId>google-http-client-jackson</artifactId>
-                <version>1.13.1-beta</version>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson</artifactId>
+            <version>1.13.1-beta</version>
         </dependency>
         <dependency>
-                <groupId>com.google.apis</groupId>
-                <artifactId>google-api-services-oauth2</artifactId>
-                <version>v2-rev29-1.13.2-beta</version>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-oauth2</artifactId>
+            <version>v2-rev29-1.13.2-beta</version>
         </dependency>
         
 
@@ -158,6 +158,32 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.0.11.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
+            <version>3.0.11.Final</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
         </dependency>
 
     </dependencies>

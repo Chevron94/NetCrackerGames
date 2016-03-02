@@ -6,17 +6,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
-<link rel="stylesheet" href="style.css" type="text/css"/>
 <h:head>
 </h:head>
 <h:body>
     <div class="wrapper">
         <b:row styleClass="header">
-
+            <b:column span="12">
                 <ui:insert name="header">
                     <ui:include src="comHeader.xhtml"/>
                 </ui:insert>
-
+            </b:column>
             <!-- .header-->
         </b:row>
 

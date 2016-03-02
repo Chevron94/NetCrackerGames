@@ -1,5 +1,7 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -8,10 +10,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "GAME_GENRE")
 public class GameGenre {
+    @JsonIgnore
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GAME_ID", nullable = false)
     Game game;

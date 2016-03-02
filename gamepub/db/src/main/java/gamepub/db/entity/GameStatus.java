@@ -1,5 +1,7 @@
 package gamepub.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class GameStatus {
     @Column(name = "NAME", nullable = false)
     String name;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameStatus")
     List<UserGame> userGames;
 
