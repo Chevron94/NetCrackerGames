@@ -31,6 +31,7 @@ and open the template in the editor.
             </b:row> 
                 
                    <h:form>
+                       
                        <p:dataScroller var="game" value="#{tradeBean.wantedGames}">
                 <b:row style="margin-top: 10px">
                     <b:column span="2" offset="1">                        
@@ -41,9 +42,17 @@ and open the template in the editor.
                         </h:link>                         
      
                     </b:column>                    
-                    <b:column span="8" >
-                        <p:carousel  id="users"  var="user" value="#{tradeBean.getUsers(game)}" responsive="true" itemStyle="height: 150px" rendered="#{!tradeBean.noUsersCheck(game)}"
-                                   numVisible="8">                                                                       
+                    <b:column span="5" >
+                        <p:carousel   id="users"  var="user" value="#{tradeBean.getUsers(game)}" responsive="true" itemStyle="height: 150px" rendered="#{!tradeBean.noUsersCheck(game)}"
+                                   numVisible="8">   
+                            
+                              
+                            <p:commandLink value="Trade Offer" id="exchange"
+                                                    styleClass="gameIcon btn btn-info"
+                                                    actionListener="#{tradeOfferBean.openOfferDialog(user)}">   
+                                <p:ajax event="dialogReturn" listener="#{dfView.onCarChosen}"  />
+                            </p:commandLink>                                                    
+                            
                              <h:link outcome="profile" includeViewParams="true">
                                  <f:param value="#{user.uid}" name="userId"/>
                                  <b:image name="user" tooltip="#{user.login}"  width="100%" height="100%"

@@ -83,8 +83,8 @@ public class SerachBean {
             param = new HashMap.SimpleEntry<String, Object>("dateGame", context.getExternalContext().getSessionMap().get("dateGame"));
             parametersList.add(param);
         }
-
-        return gameService.getGamesByCustomParams(parametersList, false, 0, startGame);
+        List<Game> games = gameService.getGamesByCustomParams(parametersList, false, 0, startGame);
+        return games;
 
     }
 

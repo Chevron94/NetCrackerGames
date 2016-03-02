@@ -72,13 +72,13 @@ public class SchedulerJob implements Job {
         PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
         List<Game> result = new ArrayList<Game>();
         String baseLink = "http://www.metacritic.com";
-        String link = "http://www.metacritic.com/browse/games/release-date/available/" + platform + "/metascore?page=";
+        String link = "http://www.metacritic.com/browse/games/release-date/available/" + platform + "/date?page=";
         for (int page = 0; ; page++) {
             String res = sendGet(link + page);
             Document document = Jsoup.parse(res);
             Element element = document.select("li.game_product:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)").first();
             if (element == null) {
-                //Collections.reverse(result);
+                Collections.reverse(result);
                 return result;
             }
             int i = 1;
@@ -94,7 +94,7 @@ public class SchedulerJob implements Job {
                         platform1 = platformDaoImplementation.getPlatformByName("Windows");
                     else platform1 = platformDaoImplementation.getPlatformByName(platform.toUpperCase());
                     if (gamePlatformDaoImplementation.getGamePlatformByGameIdAndPlatformId(game.getId(), platform1.getId()) != null) {
-                        //Collections.reverse(result);
+                        Collections.reverse(result);
                         return result;
                     }
                 }
@@ -127,7 +127,7 @@ public class SchedulerJob implements Job {
                     gamePlatform.setGame(tmp.get(0));
                     g = tmp.get(0);
                 } else {
-                    g.setPoster(document.select("img.product_image").attr("src").replace("-98", ""));
+                    g.setPoster(document.select("img.product_image").attr("src"));
                     g.setDescription(document.select("div.summary_detail > span:nth-child(2)").text());
                     String genreText;
                     if (document.select("div.product_details:nth-child(4) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > th:nth-child(1)").text().equals("Genre(s):")) {
@@ -157,8 +157,6 @@ public class SchedulerJob implements Job {
                         gameGenreDaoImplementation.create(gameGenre);
                     }
                 }
-                //.release_data > span:nth-child(2)
-                //.release_data > span:nth-child(2)
                 String releaseDate = document.select(".release_data > span:nth-child(2)").text();
                 String metascore = document.select(".metascore_wrap > a:nth-child(2) > div:nth-child(1) > span:nth-child(2)").text();
                 gamePlatform.setReleaseDate(new Date(releaseDate));
@@ -269,7 +267,7 @@ public class SchedulerJob implements Job {
         GameScreenshotDaoImplementation gameScreenshotDaoImplementation = new GameScreenshotDaoImplementation();
         GamePlatform gamePlatform;
         GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
-        if (g.getSteamId() == g.getSteamId()) {
+        if (g.getSteamId() == 0) {
   //          System.out.println(g.getName() + " " + steam.get(g.getName()));
             if (steam.get(g.getName()) != null) {
                 g.setSteamId(steam.get(g.getName()));
@@ -277,7 +275,7 @@ public class SchedulerJob implements Job {
                 try {
                     gameJSON = new JSONObject(sendGet("http://store.steampowered.com/api/appdetails?appids=" + g.getSteamId()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                //    e.printStackTrace();
                     Thread.sleep(10000);
                     gameJSON = new JSONObject(sendGet("http://store.steampowered.com/api/appdetails?appids=" + g.getSteamId()));
                 }
@@ -375,6 +373,8 @@ public class SchedulerJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
+            UserDaoImplementation userDaoImplementation = new UserDaoImplementation();
+            userDaoImplementation.refreshRequestsCount();
             PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
             initPlatforms();
             initSteam();

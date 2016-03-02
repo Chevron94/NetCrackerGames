@@ -12,10 +12,13 @@ import gamepub.db.service.GameService;
 import gamepub.db.service.UserGameService;
 import gamepub.db.service.UserService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -33,7 +36,7 @@ public class TradeBean {
     
     private List<User> users;
     private List<Game> wantedGames;
-    
+        
     public TradeBean() {
     }
 
@@ -66,7 +69,7 @@ public class TradeBean {
     /**
      * @return the wantedGames
      */
-    public List<Game> getWantedGames() {
+    public List<Game> getWantedGames() {    
         wantedGames = new ArrayList<Game>(); 
         List<UserGame> wantedUserGameList = userGameService.getWantedUserGamesByUserId(SessionBean.getUserId());
         for(UserGame ug:wantedUserGameList){
@@ -81,11 +84,17 @@ public class TradeBean {
     public void setWantedGames(List<Game> wantedGames) {
         this.wantedGames = wantedGames;
     }
+    
+   
+    
 
     public boolean noUsersCheck(Game game){
        return (getUsers(game).isEmpty());
-       
-        
+               
     }
+    
+   
+    
+    
     
 }

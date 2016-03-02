@@ -46,7 +46,7 @@ and open the template in the editor.
                         <p:carousel  id="wantedGames"  var="wantedgame" responsive="true" itemStyle="height:150px"
                                      rendered="#{!tradingLoungeBean.noWantedGamesCheck(user)}"
                                     value="#{tradingLoungeBean.getWantedGames(user)}"   numVisible="6">                                                                       
-                             <h:link outcome="aboutGame" includeViewParams="true">
+                                            <h:link outcome="aboutGame" includeViewParams="true">
                                             <f:param value="#{wantedgame.game.uid}" name="id"/>
                                             <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"    
                                                             value="#{wantedgame.game.poster}" />                                            

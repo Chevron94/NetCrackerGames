@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Trade offer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        
+         <h:form>
+            <h:outputStylesheet name="theme.css"/>
+       
+            <h2 align="center"> Trade offer</h2>
+                        
+            
+                <b:row style="margin-top: 10px" > 
+                                     
+                    <b:column span="5" offset="1">
+                        <h3>My offer</h3>
+                        <p:pickList id="myPickList" value="#{tradeOfferBean.myGames}" var="myGame" effect="slide" orientation="vertical"
+                                    itemValue="#{myGame}" itemLabel="#{myGame.name}"  responsive="true" converter="myConverter" >
+                 
+                         <p:column style="width:60%">
+                             <h:outputText value="#{myGame.name}" />
+                         </p:column>  
+                         <p:column style="width:40%">
+                                <p:graphicImage value="#{myGame.poster}"  />
+                         </p:column>                                                          
+                        </p:pickList>    
+                                                                     
+                    </b:column>                    
+                    <b:column span="5" > 
+                        <h3>His offer</h3>
+                        <p:pickList id="userPickList" value="#{tradeOfferBean.tradeUserGames}" var="userGame" effect="slide" orientation="vertical"
+                                    itemValue="#{userGame}" itemLabel="#{userGame.name}"  responsive="true" converter="myConverter">
+                 
+                         <p:column style="width:60%">
+                             <h:outputText value="#{userGame.name}" />
+                         </p:column>  
+                         <p:column style="width:40%">
+                                <p:graphicImage value="#{userGame.poster}" />
+                         </p:column>  
+                                                        
+                        </p:pickList>
+                    </b:column>                      
+                </b:row> 
+            <p:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" />            
+            
+            
+        </h:form>      
+    </h:body>
+</html>
