@@ -70,7 +70,7 @@ public class RobokassaBean {
         return md5Hex;
     }
 
-    public void submit(){
+    public String submit(){
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = context.getViewRoot();
         InputText inputText = (InputText) uiViewRoot.findComponent("outSummform:inputSumm");
@@ -82,5 +82,6 @@ public class RobokassaBean {
         userTransaction.setUser(userService.getUserById(SessionBean.getUserId()));
         userTransactionService.create(userTransaction);
         isOutPay = true;
+        return "robokassa";
     }
 }

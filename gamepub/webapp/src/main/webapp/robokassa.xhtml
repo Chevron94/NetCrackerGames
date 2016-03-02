@@ -55,7 +55,7 @@
                 }
 
             </style>
-            <b:column span="6" offset="3">
+            <b:column span="6" offset="2">
 
                 <div class="form-all">
                     <ul class="form-section page-section">
@@ -80,29 +80,6 @@
 
           <span class="form-sub-label-container" style="vertical-align: top">
 
-
-                  <h:form id="outSummform" rendered="#{!robokassaBean.isOutPay}">
-                      <p:inputText id="inputSumm" styleClass="form-textbox">
-                          <f:convertNumber maxFractionDigits="2"
-                                           groupingUsed="true"
-                                           currencySymbol="$"
-                                           maxIntegerDigits="4"
-                                           type="currency"/>
-                      </p:inputText>
-                      <h:inputText id="money" required="true">
-                          <f:convertNumber maxFractionDigits="2"
-                                           groupingUsed="true"
-                                           currencySymbol="$"
-                                           maxIntegerDigits="4"
-                                           type="currency"/>
-                      </h:inputText>
-
-
-                      <p:commandButton styleClass="form-submit-button"
-                                       actionListener="#{robokassaBean.submit}"
-                                       ajax="false"
-                                       value="Submit"/>
-                  </h:form>
 
             <label class="form-sub-label" for="first_15" id="sublabel_first" style="min-height: 13px;"> RUB </label>
           </span>
