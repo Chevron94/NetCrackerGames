@@ -11,11 +11,11 @@
 <h:body>
     <ui:composition template="/Template/template.xhtml">
         <ui:define name="content">
-            <b:column span="10" offset="1">
+            <b:column span="9" offset="1">
                 <h1>Search</h1>
                 <h:form id="searchForm">
 
-                    <b:row>
+                        <b:row>
                         <b:column span="3">
                             <h3 style="margin-top:0px">Name</h3>
                             <p:inputText id="nameGame" value="#{serachBean.myGame}"/>
@@ -83,14 +83,16 @@
                                         <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
                                                     var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>#{gameplatform.platform.name} - </b> <b>Release date:</b> <b:label
+                                            <span style="font-size:150%"> <b>#{gameplatform.platform.name} - </b> <b>Release date:</b></span>
+                                            <b:label
                                                 severity="primary"
                                                 text="#{gameplatform.releaseDate}"/>
                                         </p:dataList>
                                         <p:dataList value="#{serachBean.getPlatformsFromGame(game)}"
                                                     var="gameplatform"
                                                     styleClass="dataList">
-                                            <b>#{gameplatform.platform.name} - Metacritic:</b> <b:label
+                                            <span style="font-size:150%"> <b>#{gameplatform.platform.name} - Metacritic:</b></span>
+                                            <b:label
                                                 severity="success"
                                                 text="#{gameplatform.metacritic}"/>
                                         </p:dataList>

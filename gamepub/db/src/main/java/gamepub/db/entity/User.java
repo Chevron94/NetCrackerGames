@@ -39,12 +39,17 @@ public class User {
     Boolean active;
     @Column(name = "BANNED")
     Boolean banned;
+
+    @Column(name = "FINE")
+    int fine;
+
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
     @Column(name = "USED_REQUESTS")
     Integer usedRequest;
     @Column(name = "TOKEN_EXPIRE_DATE")
     Date expireDate;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ROLE_ID", nullable = false)
@@ -258,6 +263,15 @@ public class User {
 
     public void setBanned(Boolean banned) {
         this.banned = banned;
+    }
+
+
+    public int getFine(){
+        return fine;
+    }
+
+    public void setFine(int fine) {
+        this.fine = fine;
     }
 
     public String getApiToken() {

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui" xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+
+<h:body>
+    <ui:composition template="Template/template.xhtml">
+        <ui:define name="content">
+            <link rel="alternate" type="application/json+oembed"
+                  href="https://www.jotform.com/oembed/?format=json&amp;url=http%3A%2F%2Fwww.jotform.com%2Fform%2F60551407812854"
+                  title="oEmbed Form"/>
+            <link rel="alternate" type="text/xml+oembed"
+                  href="https://www.jotform.com/oembed/?format=xml&amp;url=http%3A%2F%2Fwww.jotform.com%2Fform%2F60551407812854"
+                  title="oEmbed Form"/>
+            <link href="./Form_files/formCss.css" rel="stylesheet" type="text/css"/>
+            <link type="text/css" rel="stylesheet" href="./Form_files/nova.css"/>
+            <link type="text/css" media="print" rel="stylesheet" href="./Form_files/printForm.css"/>
+            <link type="text/css" rel="stylesheet" href="./Form_files/54a64d6e25d7909c1f8b4567.css"/>
+            <style type="text/css">
+                .form-label-left {
+                    width: 150px !important;
+                }
+
+                .form-line {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                }
+
+                .form-label-right {
+                    width: 150px !important;
+                }
+
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    background: rgba(255, 255, 255, 0);
+                }
+
+                .form-all {
+                    margin: 0px auto;
+                    padding-top: 0px;
+                    width: 454px;
+                    color: rgb(19, 19, 19) !important;
+                    font-family: 'Rambla';
+                    font-size: 16px;
+                }
+
+                .form-radio-item label, .form-checkbox-item label, .form-grading-label, .form-header {
+                    color: #555;
+                }
+
+            </style>
+            <b:column span="6" offset="2">
+
+                <div class="form-all">
+                    <ul class="form-section page-section">
+                        <li id="cid_18" class="form-input-wide" data-type="control_head">
+                            <div class="form-header-group">
+                                <div class="header-text">
+                                    <h1 id="header_18" class="form-header">
+                                        Payment
+                                    </h1>
+
+                                    <div id="subHeader_18" class="form-subHeader">
+                                        Please fill out this form.
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="form-line" data-type="control_fullname" id="id_15">
+                            <label class="form-label form-label-top form-label-auto" id="label_15"
+                                   for="input_15"> Your Payment </label>
+
+                            <div id="cid_15" class="form-input-wide jf-required">
+
+          <span class="form-sub-label-container" style="vertical-align: top">
+
+
+            <label class="form-sub-label" for="first_15" id="sublabel_first" style="min-height: 13px;"> RUB </label>
+          </span>
+
+                            </div>
+                        </li>
+                        <li class="form-line" data-type="control_button" id="id_14">
+                            <div id="cid_14" class="form-input-wide">
+                                <div style="text-align:center" class="form-buttons-wrapper">
+
+
+                                    <h:panelGrid id="payForm" rendered="#{robokassaBean.isOutPay}">
+
+                                        #{robokassaBean.outSumm} RUB
+                                        <!-- http://localhost:8080/gamepub/robokassa/result.xhtml -->
+                                        <form method="post" action="https://merchant.roboxchange.com/Index.aspx">
+
+                                            <input type="hidden" name="MrchLogin" value="#{robokassaBean.mrhLogin}"/>
+                                            <input type="hidden" name="IsTest" value="1"/>
+                                            <input type="hidden" name="OutSum" value="#{robokassaBean.outSumm}"/>
+                                            <input type="hidden" name="InvId" value="#{robokassaBean.invId}"/>
+                                            <input type="hidden" name="Desc" value="#{robokassaBean.invDesc}"/>
+                                            <input type="hidden" name="SignatureValue"
+                                                   value="#{robokassaBean.signature}"/>
+
+                                            <input class="form-submit-button" type="submit" value="Go to robokassa"/>
+                                        </form>
+                                    </h:panelGrid>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </b:column>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
