@@ -27,7 +27,7 @@
         <class>gamepub.db.entity.UserScreenshot</class>
         <class>gamepub.db.entity.OfferingUserTrade</class>
         <class>gamepub.db.entity.ReceivingUserTrade</class>
-        <class>tgamepub.db.entity.Trade</class>
+        <class>gamepub.db.entity.Trade</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL81Dialect"></property>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>

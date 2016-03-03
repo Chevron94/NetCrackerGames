@@ -42,9 +42,14 @@ public class User {
 
     @Column(name = "FINE")
     Integer fine;
+
     @Column(name = "REPUTATION",columnDefinition = "int default 0")
     Integer reputation;
     
+
+    @Column(name = "GOLD")
+    boolean gold;
+
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
     @Column(name = "USED_REQUESTS")
@@ -298,6 +303,14 @@ public class User {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public boolean getGold(){
+        return gold;
+    }
+
+    public void setGold(boolean gold){
+        this.gold = gold;
     }
 
     @Override

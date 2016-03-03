@@ -11,73 +11,77 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:b="http://bootsfaces.net/ui">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <ui:composition template="/Template/template.xhtml">
-        <ui:define name="content">
-            <h:outputStylesheet name="theme.css"/>
-        <h:form>
-            <h2 align="center"> Trading lounge </h2>
-            <b:row>
-                <b:column span="2" offset="1"> 
-                    <h3>Users</h3>
-                </b:column> 
-                <b:column span="4" > 
-                    <h3>Wanted games</h3>
-                </b:column> 
-                <b:column span="4" > 
-                    <h3>Can exchange</h3>
-                </b:column> 
-            </b:row>            
-            <p:dataScroller var="user" value="#{tradingLoungeBean.users}">
-                <b:row style="margin-top: 10px" > 
-                    <b:column span="2" offset="1">                        
-                        
-                        <h:link outcome="profile" includeViewParams="true"  >
-                            <f:param value="#{user.uid}" name="userId"/>
-                            <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}"  style="height: 172px"/>                    
-                        </h:link>     
-                        
-                    </b:column>                    
-                    <b:column span="4" >
-                        <p:carousel  id="wantedGames"  var="wantedgame" responsive="true" itemStyle="height:150px"
-                                     rendered="#{!tradingLoungeBean.noWantedGamesCheck(user)}"
-                                    value="#{tradingLoungeBean.getWantedGames(user)}"   numVisible="6">                                                                       
-                                            <h:link outcome="aboutGame" includeViewParams="true">
-                                            <f:param value="#{wantedgame.game.uid}" name="id"/>
-                                            <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"    
-                                                            value="#{wantedgame.game.poster}" />                                            
-                                            </h:link>                                        
-                     </p:carousel>
-                        <h:outputText rendered="#{tradingLoungeBean.noWantedGamesCheck(user)}"
-                                      style="font-size: medium" value="This user doesn't want any game :(" />
-                        
-                    </b:column>                    
-                    <b:column span="4" >
-                        <p:carousel id="forExchangeGames" var="exchangegame" responsive="true" itemStyle="height:150px"
-                                    rendered="#{!tradingLoungeBean.noExchangeGamesCheck(user)}"
-                                    value="#{tradingLoungeBean.getExchangeGames(user)}" numVisible="6"> 
-                                                                      
-                             <h:link outcome="aboutGame" includeViewParams="true">
-                                            <f:param value="#{exchangegame.game.uid}" name="id"/>
-                                            <b:image name="game" tooltip="#{exchangegame.game.name}" width="100%" height="100%"
-                                                     value="#{exchangegame.game.poster}" />
-                                            
-                                            </h:link>
-                                        
-                     </p:carousel>
-                        <h:outputText rendered="#{tradingLoungeBean.noExchangeGamesCheck(user)}"
-                                      style="font-size: medium" value="This user has no games for exchange :(" />
-                        
+<head>
+    <title>TODO supply a title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<ui:composition template="/Template/template.xhtml">
+    <ui:define name="content">
+        <h:outputStylesheet name="theme.css"/>
+        <b:column span="9" offset="1">
+            <h:form>
+                <h2 align="center"> Trading lounge </h2>
+                <b:row>
+                    <b:column span="2" offset="1">
+                        <h3>Users</h3>
                     </b:column>
-                    
-                </b:row>    
-            </p:dataScroller>
-        </h:form>
-        </ui:define>
-        </ui:composition>
-    </body>
+                    <b:column span="4">
+                        <h3>Wanted games</h3>
+                    </b:column>
+                    <b:column span="4">
+                        <h3>Can exchange</h3>
+                    </b:column>
+                </b:row>
+                <p:dataScroller var="user" value="#{tradingLoungeBean.users}">
+                    <b:row style="margin-top: 10px">
+                        <b:column span="2" offset="1">
+
+                            <h:link outcome="profile" includeViewParams="true">
+                                <f:param value="#{user.uid}" name="userId"/>
+                                <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}"
+                                         style="height: 172px"/>
+                            </h:link>
+
+                        </b:column>
+                        <b:column span="4">
+                            <p:carousel id="wantedGames" var="wantedgame" responsive="true" itemStyle="height:150px"
+                                        rendered="#{!tradingLoungeBean.noWantedGamesCheck(user)}"
+                                        value="#{tradingLoungeBean.getWantedGames(user)}" numVisible="6">
+                                <h:link outcome="aboutGame" includeViewParams="true">
+                                    <f:param value="#{wantedgame.game.uid}" name="id"/>
+                                    <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"
+                                             value="#{wantedgame.game.poster}"/>
+                                </h:link>
+                            </p:carousel>
+                            <h:outputText rendered="#{tradingLoungeBean.noWantedGamesCheck(user)}"
+                                          style="font-size: medium" value="This user doesn't want any game :("/>
+
+                        </b:column>
+                        <b:column span="4">
+                            <p:carousel id="forExchangeGames" var="exchangegame" responsive="true"
+                                        itemStyle="height:150px"
+                                        rendered="#{!tradingLoungeBean.noExchangeGamesCheck(user)}"
+                                        value="#{tradingLoungeBean.getExchangeGames(user)}" numVisible="6">
+
+                                <h:link outcome="aboutGame" includeViewParams="true">
+                                    <f:param value="#{exchangegame.game.uid}" name="id"/>
+                                    <b:image name="game" tooltip="#{exchangegame.game.name}" width="100%" height="100%"
+                                             value="#{exchangegame.game.poster}"/>
+
+                                </h:link>
+
+                            </p:carousel>
+                            <h:outputText rendered="#{tradingLoungeBean.noExchangeGamesCheck(user)}"
+                                          style="font-size: medium" value="This user has no games for exchange :("/>
+
+                        </b:column>
+
+                    </b:row>
+                </p:dataScroller>
+            </h:form>
+        </b:column>
+    </ui:define>
+</ui:composition>
+</body>
 </html>
