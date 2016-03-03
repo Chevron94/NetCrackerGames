@@ -274,6 +274,98 @@
                                     </p:dataGrid>
                                 </h:form>
                             </b:tab>
+                            <b:tab title="Sent trade offers" id="sentOffers">
+                                
+                                    <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
+                                        <h:form id="currentOfferedTrade">
+                                        <b:row style="margin-top: 10px">
+                                            <b:column span="4" offset="1">
+                                                <p:carousel headerText="Your offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
+                                                            responsive="true" itemStyle="height:150px">
+                                                
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA" value="#{offeredGame.offeringGame.poster}" tooltip="#{offeredGame.offeringGame.name}"/>                                                                                                                  
+                                                             <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
+                                                        </h:link>                                                          
+                                                    
+                                               
+                                        </p:carousel>
+                                        </b:column>
+                                            
+                                            <b:column span="4">
+                                                <p:carousel headerText="#{trade.receivingUser.login}'s games" style ="text-align: center" value="#{profileBean.getRecievedGames(trade)}" var="receivedGame"
+                                                            responsive="true" itemStyle="height:150px">
+                                                
+                                                   <h:link outcome="aboutGame" includeViewParams="true">
+                                                       <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
+                                                        
+                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                        </h:link>                                                          
+                                                    
+                                              
+                                        </p:carousel>
+                                        </b:column>
+                                            <b:column span="2">
+                                                <b:commandButton value="Cancel" style="color: #991216" actionListener="#{profileBean.declineOffer(trade)}" oncomplete="window.location.reload();"/>
+                                            
+                                        </b:column>    
+                                            
+                                        </b:row>
+                                        </h:form>
+                                    </p:dataScroller>
+                                                    
+                                
+                            </b:tab>
+                             <b:tab title="Received trade offers" id="receivedOffers">
+                                 
+                                    <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade">
+                                        <h:form id="currentReceivedTrade">
+                                        <b:row style="margin-top: 10px">
+                                            <b:column span="4" offset="1">
+                                                <p:carousel headerText="#{trade.offeringUser.login} offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
+                                                            responsive="true" itemStyle="height:150px">
+                                                
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA" value="#{offeredGame.offeringGame.poster}" tooltip="#{offeredGame.offeringGame.name}"/>                                                                                                                  
+                                                             <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
+                                                        </h:link>                                                          
+                                                    
+                                               
+                                        </p:carousel>
+                                        </b:column>
+                                            
+                                            <b:column span="4">
+                                                <p:carousel  headerText="My games" style ="text-align: center" value="#{profileBean.getRecievedGames(trade)}" var="receivedGame"
+                                                            responsive="true" itemStyle="height:150px">
+                                                
+                                                   <h:link outcome="aboutGame" includeViewParams="true">
+                                                       <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
+                                                        
+                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                        </h:link>                                                          
+                                                    
+                                              
+                                        </p:carousel>
+                                        </b:column>
+                                            <b:column span="3" >
+                                                <b:commandButton value="Accept" rendered="#{profileBean.checkForOpened(trade)}" style="color: #006600"
+                                                                 actionListener="#{profileBean.setInProgress(trade)}" update="currentReceivedTrade"/>
+                                                <b:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}" style="color: #991216" oncomplete="window.location.reload();" 
+                                                                 actionListener="#{profileBean.declineOffer(trade)}" update="currentReceivedTrade"/>
+                                                    <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>  
+                                                    <b:commandButton id="confirmButton" value="Confirm" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50"
+                                                                     actionListener="#{profileBean.setConfirmed(trade)}" update="currentReceivedTrade"/>
+                                                    <b:commandButton id="decline2" value="Decline" rendered="#{profileBean.checkForInProgress(trade)}"
+                                                                     actionListener="#{profileBean.declineOffer(trade)}"  oncomplete="window.location.reload();" style="color: #991216"/>
+                                        </b:column>    
+                                            
+                                        </b:row>
+                                        </h:form>
+                                    </p:dataScroller>
+                                                    
+                                
+                            </b:tab>
                         </b:tabView>
 
 

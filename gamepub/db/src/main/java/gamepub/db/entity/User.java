@@ -41,7 +41,7 @@ public class User {
     Boolean banned;
 
     @Column(name = "FINE")
-    int fine;
+    Integer fine;
 
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
@@ -270,7 +270,7 @@ public class User {
         return fine;
     }
 
-    public void setFine(int fine) {
+    public void setFine(Integer fine) {
         this.fine = fine;
     }
 

@@ -59,7 +59,7 @@ private ArrayList<Game> userWantedGamesTarget;
  public DualListModel<Game> getMyGames() {     
       myWantedGamesSource = new ArrayList<Game>(); 
       myWantedGamesTarget = new ArrayList<Game>(); 
-        List<UserGame> wantedUserGameList = userGameService.getWantedUserGamesByUserId(SessionBean.getUserId());
+        List<UserGame> wantedUserGameList = userGameService.getCanExchangeUserGamesByUserId(SessionBean.getUserId());
         for(UserGame ug:wantedUserGameList){
         myWantedGamesSource.add(ug.getGame());}  
         setMyGames((DualListModel<Game>) new DualListModel(myWantedGamesSource,myWantedGamesTarget));
@@ -69,7 +69,7 @@ private ArrayList<Game> userWantedGamesTarget;
   public DualListModel<Game> getTradeUserGames() {     
       userWantedGamesSource = new ArrayList<Game>(); 
       userWantedGamesTarget = new ArrayList<Game>(); 
-        List<UserGame> wantedUserGameList = userGameService.getWantedUserGamesByUserId(SessionBean.getUserForTradeId());
+        List<UserGame> wantedUserGameList = userGameService.getCanExchangeUserGamesByUserId(SessionBean.getUserForTradeId());
         for(UserGame ug:wantedUserGameList){
         userWantedGamesSource.add(ug.getGame());}  
         setTradeUserGames((DualListModel<Game>) new DualListModel(userWantedGamesSource,userWantedGamesTarget));
@@ -79,8 +79,8 @@ private ArrayList<Game> userWantedGamesTarget;
     public void openOfferDialog(User u){
        SessionBean.getSession().setAttribute("tradeuser",u.getId());
        Map<String,Object> options = new HashMap<String, Object>();
-        options.put("resizable", true);
-        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("draggable", false);
         options.put("contentWidth", 1400);
         options.put("contentHeight", 800);
         options.put("modal", true);         
@@ -89,7 +89,7 @@ private ArrayList<Game> userWantedGamesTarget;
     
     public void sendOffer(){
        Trade trade = new Trade();
-       trade.setStatus(Boolean.TRUE);
+       trade.setStatus("opened");
        trade.setOfferingUser(userService.getUserById(SessionBean.getUserId()));
        trade.setReceivingUser(userService.getUserById(SessionBean.getUserForTradeId()));
        tradeService.create(trade);

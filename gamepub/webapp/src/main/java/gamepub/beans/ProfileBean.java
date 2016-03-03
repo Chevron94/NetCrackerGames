@@ -49,7 +49,12 @@ public class ProfileBean {
     CountryService countryService;
     @EJB
     FriendService friendService;
-
+    @EJB
+    TradeService tradeService;
+    @EJB 
+    OfferingUserTradeService offeringUserTradeService;
+    @EJB 
+    ReceivingUserTradeService receivingUserTradeService;
     private String userId;
 
     @PostConstruct
@@ -298,6 +303,39 @@ public class ProfileBean {
         }
 
     }
+    public List<Trade> getSentTradeOffers(){
+        return tradeService.getTradesByOfferingUserId(SessionBean.getUserId());
+    }
+    public List<Trade> getReceivedTradeOffers(){
+        return tradeService.getTradesByReceivingUserId(SessionBean.getUserId());
+    }
+    public List<OfferingUserTrade> getOfferedGames(Trade trade){
+        return offeringUserTradeService.getOfferingUserTradesByTradeId(trade.getId());
+    }
+    public List<ReceivingUserTrade> getRecievedGames(Trade trade){
+        return receivingUserTradeService.getReceivingUserTradesByTradeId(trade.getId());
+    }
+    public boolean checkForOpened(Trade trade){
+        return trade.getStatus().equals("opened");
+    }
+    public boolean checkForInProgress(Trade trade){
+        return trade.getStatus().equals("inProgress");
+    }
+    public boolean checkForConfirmed(Trade trade){
+        return trade.getStatus().equals("confirmed");
+    }
 
-
+    public void setInProgress(Trade trade){
+        trade.setStatus("inProgress");
+        tradeService.update(trade);
+    }
+    public void setConfirmed(Trade trade){
+        trade.setStatus("confirmed");
+        tradeService.update(trade);
+    }
+    public void declineOffer(Trade trade){
+        receivingUserTradeService.delete(receivingUserTradeService.getReceivingUserTradesByTradeId(trade.getId()));
+        offeringUserTradeService.delete(offeringUserTradeService.getOfferingUserTradesByTradeId(trade.getId()));
+        tradeService.delete(trade.getId());
+    }
 }
