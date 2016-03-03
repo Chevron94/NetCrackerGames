@@ -46,18 +46,19 @@ public class ResultBean {
         Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         outSum = requestParams.get("OutSum");
         invId = requestParams.get("InvId");
+        UserTransaction userTransaction = userTransactionService.getTransactionById(Integer.parseInt(invId));
+        if(!userTransaction.getStatus()) {
+            signatureValue = requestParams.get("SignatureValue");
 
-        signatureValue = requestParams.get("SignatureValue");
-
-        String md5Hex = DigestUtils.md5Hex(
-                outSum + ":" + invId + ":" + mrhPass2
-        ).toUpperCase();
-        System.out.println(outSum + " " + invId + " " + signatureValue + " " + md5Hex);
-        if (signatureValue.equals(md5Hex)) {
-            UserTransaction userTransaction = userTransactionService.getTransactionById(Integer.parseInt(invId));
-            userTransaction.setStatus(true);
-            userTransactionService.update(userTransaction);
-            endTransaction(userTransaction);
+            String md5Hex = DigestUtils.md5Hex(
+                    outSum + ":" + invId + ":" + mrhPass2
+            ).toUpperCase();
+            System.out.println(outSum + " " + invId + " " + signatureValue + " " + md5Hex);
+            if (signatureValue.equals(md5Hex)) {
+                userTransaction.setStatus(true);
+                userTransactionService.update(userTransaction);
+                endTransaction(userTransaction);
+            }
         }
     }
 

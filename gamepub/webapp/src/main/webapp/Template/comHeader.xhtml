@@ -72,7 +72,9 @@
                 <p:autoComplete id="inputSearch" styleClass="water" value="#{lifeSearchBean.request}"
                                 completeMethod="#{lifeSearchBean.searchGame}" var="game"
                                 itemLabel="#{game.name}" itemValue="#{game.name}"
-                                forceSelection="true" scrollHeight="250">
+                                scrollHeight="250" queryDelay="0"
+                                forceSelection="true"
+                                dropdown="false">
 
                     <p:column>
                         <h:link outcome="aboutGame">
