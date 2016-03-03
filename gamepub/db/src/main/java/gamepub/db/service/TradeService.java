@@ -60,6 +60,11 @@ public class TradeService extends TradeDaoImplementation{
         return super.getTradesByReceivingUserId(id);
     }
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<Trade> getTradesByStatus(String status) {
+        return super.getTradesByStatus(status);
+    }
+    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Trade create(Trade trade) {
         return super.create(trade);

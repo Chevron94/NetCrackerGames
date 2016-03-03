@@ -76,6 +76,17 @@ public class TradeDaoImplementation extends BaseDaoImplementation<Trade, Integer
         return result;
     }
 
+    public List<Trade> getTradesByStatus(String status) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Trade> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("status"),status));
+        List result = getEntityManager().createQuery(cq).getResultList();
+        return result;
+    }
+    
+
     
     
 }

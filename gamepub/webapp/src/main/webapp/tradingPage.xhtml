@@ -47,10 +47,8 @@ and open the template in the editor.
                                    numVisible="8">   
                             
                               
-                            <p:commandLink value="Trade Offer" id="exchange"
-                                                    styleClass="gameIcon btn btn-info"
-                                                    actionListener="#{tradeOfferBean.openOfferDialog(user)}">   
-                                <p:ajax event="dialogReturn" listener="#{dfView.onCarChosen}"  />
+                            <p:commandLink value="Trade Offer" id="exchange"                                                    
+                                                    actionListener="#{tradeOfferBean.openOfferDialog(user)}">                                  
                             </p:commandLink>                                                    
                             
                              <h:link outcome="profile" includeViewParams="true">

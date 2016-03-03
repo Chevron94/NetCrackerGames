@@ -19,17 +19,17 @@ public class Trade {
     @JoinColumn(name = "receivingUser",nullable = false)
     User receivingUser;        
     
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "offeringTrade")    
+    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "offeringTrade")    
     List<OfferingUserTrade> offeringUserTrades;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingTrade")    
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingTrade")    
     List<ReceivingUserTrade> receivingUserTrades;        
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "offeringGame")    
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "offeringGame")    
     List<OfferingUserTrade> offeringUserGame;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingGame")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingGame")
     List<ReceivingUserTrade> receivingUserGame;
     
-    @Column(name = "IS_OPENED")
-    Boolean status;
+    @Column(name = "STATUS")
+    String status;
             
     public Trade() {
     }
@@ -60,19 +60,7 @@ public class Trade {
         return id;
     }
     
-    /**
-     * @return the status
-     */
-    public Boolean getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
+    
 
     
 
@@ -159,6 +147,20 @@ public class Trade {
      */
     public void setReceivingUserTrades(List<ReceivingUserTrade> receivingUserTrades) {
         this.receivingUserTrades = receivingUserTrades;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 
   
