@@ -42,7 +42,9 @@ public class User {
 
     @Column(name = "FINE")
     Integer fine;
-
+    @Column(name = "REPUTATION",columnDefinition = "int default 0")
+    Integer reputation;
+    
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
     @Column(name = "USED_REQUESTS")
@@ -356,6 +358,20 @@ public class User {
      */
     public void setReceivingUserTrades(List<Trade> receivingUserTrades) {
         this.receivingUserTrades = receivingUserTrades;
+    }
+
+    /**
+     * @return the reputation
+     */
+    public Integer getReputation() {
+        return reputation;
+    }
+
+    /**
+     * @param reputation the reputation to set
+     */
+    public void setReputation(Integer reputation) {
+        this.reputation = reputation;
     }
 
 

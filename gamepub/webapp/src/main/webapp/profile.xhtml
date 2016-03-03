@@ -89,7 +89,9 @@
 
                         </h:form>
                         <h:form id="info" style="margin-top: 25%">
+                            
                             <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
+                                <h:outputText value="Reputation:#{profileBean.getMyRep()}" style="font-size: medium"/>
                                 City:
                                 <b:label text="#{profileBean.city}" style="font-size:150;"/>
                                 Country:
@@ -275,10 +277,10 @@
                                 </h:form>
                             </b:tab>
                             <b:tab title="Sent trade offers" id="sentOffers">
-                                
+                                 <h:form id="currentOfferedTrade" >
                                     <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
-                                        <h:form id="currentOfferedTrade">
-                                        <b:row style="margin-top: 10px">
+                                       
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="Your offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
                                                             responsive="true" itemStyle="height:150px">
@@ -311,16 +313,16 @@
                                         </b:column>    
                                             
                                         </b:row>
-                                        </h:form>
+                                       
                                     </p:dataScroller>
-                                                    
+                                         </h:form>            
                                 
                             </b:tab>
                              <b:tab title="Received trade offers" id="receivedOffers">
-                                 
-                                    <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade">
-                                        <h:form id="currentReceivedTrade">
-                                        <b:row style="margin-top: 10px">
+                                  <h:form id="currentReceivedTrade" >
+                                    <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
+                                       
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="#{trade.offeringUser.login} offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
                                                             responsive="true" itemStyle="height:150px">
@@ -361,9 +363,9 @@
                                         </b:column>    
                                             
                                         </b:row>
-                                        </h:form>
+                                       
                                     </p:dataScroller>
-                                                    
+                                           </h:form>          
                                 
                             </b:tab>
                         </b:tabView>
