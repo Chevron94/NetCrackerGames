@@ -21,25 +21,33 @@
             <b:navbarLinks styleClass="navbar-left">
 
                 <b:navLink styleClass="btn btn-default my_nav" outcome="allNews" value="Last News"
-                           icon="ui-icon-star"/>
+                           icon="ui-icon-star" rendered="#{!sessionBean.isLogged}"/>
 
                 <b:navLink styleClass="btn btn-default my_nav" outcome="search" value="Extended search"
-                           icon="ui-icon-star"/>
+                           icon="ui-icon-star" rendered="#{!sessionBean.isLogged}"/>
+
+                <b:navLink styleClass="btn btn-default my_nav hidden-md hidden-lg hidden-sm" outcome="allNews" value="Last News"
+                           icon="ui-icon-star" rendered="#{sessionBean.isLogged}"/>
+
+                <b:navLink styleClass="btn btn-default my_nav hidden-md hidden-lg hidden-sm" outcome="search" value="Extended search"
+                           icon="ui-icon-star" rendered="#{sessionBean.isLogged}"/>
 
                 <b:navLink styleClass="btn btn-default my_nav hidden-md hidden-lg hidden-sm " outcome="profile" value="MY PROFILE"
-                          icon="ui-icon-star">
+                          icon="ui-icon-star" rendered="#{sessionBean.isLogged}">
                     <f:param value="my" name="userId"/>
                 </b:navLink>
 
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="profile" value="My Profile"/>
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="gallery" value="My gallery"/>
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="allUsers" value="Users"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"
+                           outcome="gallery" value="My gallery" rendered="#{sessionBean.isLogged}"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"
+                           outcome="allUsers" value="Users" rendered="#{sessionBean.isLogged}"/>
 
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm" outcome="tradingLounge"
-                          value="Trading lounge "/>
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="allMessages" value="Messages"/>
-                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"  outcome="payment"
-                          value="Payments"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"
+                           outcome="tradingLounge" value="Trading lounge " rendered="#{sessionBean.isLogged}"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"
+                           outcome="allMessages" value="Messages" rendered="#{sessionBean.isLogged}"/>
+                <b:navLink class="btn btn-default my_nav hidden-md hidden-lg hidden-sm"
+                           outcome="payment" value="Payments" rendered="#{sessionBean.isLogged}"/>
 
             </b:navbarLinks>
 
@@ -59,7 +67,7 @@
                 </b:navbarLinks>
             </h:form>
 
-            <h:form styleClass="navbar-form navbar-right hidden-md hidden-sm hidden-xs" >
+            <h:form styleClass="navbar-form navbar-right hidden-sm hidden-xs" >
                 <p:growl id="msgs3" showDetail="true"/>
                 <p:autoComplete id="inputSearch" styleClass="water" value="#{lifeSearchBean.request}"
                                 completeMethod="#{lifeSearchBean.searchGame}" var="game"
