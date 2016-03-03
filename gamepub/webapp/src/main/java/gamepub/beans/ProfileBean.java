@@ -338,4 +338,12 @@ public class ProfileBean {
         offeringUserTradeService.delete(offeringUserTradeService.getOfferingUserTradesByTradeId(trade.getId()));
         tradeService.delete(trade.getId());
     }
+
+    public int getFine(){
+        return userService.getUserById(SessionBean.getUserId()).getFine();
+    }
+
+    public boolean getIsGold(){
+        return userService.getUserById(SessionBean.getUserId()).getGold();
+    }
 }

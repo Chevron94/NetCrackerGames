@@ -10,6 +10,10 @@
         <error-code>404</error-code>
         <location>/error/error404.xhtml</location>
     </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/error500.xhtml</location>
+    </error-page>
 
     <context-param>
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>

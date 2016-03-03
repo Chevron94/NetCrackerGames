@@ -30,6 +30,8 @@ public class RobokassaBean {
     UserService userService;
     @EJB
     UserTransactionService userTransactionService;
+    private int goldAcc = 500;
+
 
     private String mrhLogin ="Gamepub";
     private String mrhPass1 = "netcracker1";
@@ -69,15 +71,32 @@ public class RobokassaBean {
         return md5Hex;
     }
 
-    public String submit(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIViewRoot uiViewRoot = context.getViewRoot();
-        InputText inputText = (InputText) uiViewRoot.findComponent("outSummform:inputSumm");
-        outSumm = (String)inputText.getValue();
+    public String submit(int type){
+        int fine = userService.getUserById(SessionBean.getUserId()).getFine();
+        String descr = "fine";
+        switch (type){
+            case 0:
+                FacesContext context = FacesContext.getCurrentInstance();
+                UIViewRoot uiViewRoot = context.getViewRoot();
+                InputText inputText = (InputText) uiViewRoot.findComponent("outSummform:inputSumm");
+                outSumm = (String)inputText.getValue();
+                if (Integer.parseInt(outSumm) <= fine)
+                break;
+            case 1:
+                outSumm = Integer.toString(fine);
+                break;
+
+            case 2:
+                outSumm = Integer.toString(goldAcc);
+                descr = "gold";
+                break;
+        }
+
         UserTransaction userTransaction = new UserTransaction();
         userTransaction.setDate(new Date());
         userTransaction.setOutSumm(Integer.parseInt(outSumm));
         userTransaction.setStatus(false);
+        userTransaction.setDescription(descr);
         userTransaction.setUser(userService.getUserById(SessionBean.getUserId()));
         userTransactionService.create(userTransaction);
         isOutPay = true;

@@ -22,25 +22,25 @@
                         <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
 
                     </b:column>
-                    <b:column span="3" style="margin-top:25%">
+                    <b:column span="3" style="margin-top:10%">
                         <h:form id="outSummform">
                             <p:commandButton styleClass="btn btn-warning"
-                                             action="#{robokassaBean.submit}"
+                                             action="#{robokassaBean.submit(2)}"
                                              ajax="false"
-                                             value="Buy gold account "/>
+                                             value="Buy gold account "/><br/>
 
-                            Your fine - <br/>
+                            Your fine - <b>#{profileBean.fine}</b><br/>
                             <br/>
 
 
                             Pay <p:inputText id="inputSumm" styleClass="form-textbox"/>
 
                             <p:commandButton styleClass="btn btn-primary"
-                                             action="#{robokassaBean.submit}"
+                                             action="#{robokassaBean.submit(0)}"
                                              ajax="false"
                                              value="Submit"/>
                             <p:commandButton styleClass="btn btn-primary"
-                                             action="#{robokassaBean.submit}"
+                                             action="#{robokassaBean.submit(1)}"
                                              ajax="false"
                                              value="Pay for all fine"/>
                         </h:form>

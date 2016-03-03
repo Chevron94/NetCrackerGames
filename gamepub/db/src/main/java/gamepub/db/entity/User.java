@@ -42,6 +42,8 @@ public class User {
 
     @Column(name = "FINE")
     Integer fine;
+    @Column(name = "GOLD")
+    boolean gold;
 
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
@@ -296,6 +298,14 @@ public class User {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public boolean getGold(){
+        return gold;
+    }
+
+    public void setGold(boolean gold){
+        this.gold = gold;
     }
 
     @Override
