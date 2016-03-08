@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 
@@ -330,14 +331,30 @@ public class ProfileBean {
         tradeService.update(trade);
     }
     public void setConfirmed(Trade trade){
+        HashSet<User> hs = new HashSet<User>();
         trade.setStatus("confirmed");
+        User offeringU =  trade.getOfferingUser(); 
+        User receivingU =  trade.getReceivingUser(); 
         tradeService.update(trade);
+         
+                if (receivingU.getId()==SessionBean.getUserId()){ 
+                     hs.add(offeringU);}
+                   
+       offeringU.setReputation(hs.size());
+       userService.update(offeringU);
     }
-    public void declineOffer(Trade trade){
-        receivingUserTradeService.delete(receivingUserTradeService.getReceivingUserTradesByTradeId(trade.getId()));
-        offeringUserTradeService.delete(offeringUserTradeService.getOfferingUserTradesByTradeId(trade.getId()));
+    public void declineOffer(Trade trade){        
         tradeService.delete(trade.getId());
+
     }
+    
+    public Integer getUserRep(User u){
+     return userService.getUserById(u.getId()).getReputation();
+    }
+    public Integer getMyRep(){
+     return userService.getUserById(SessionBean.getUserId()).getReputation();
+    }
+
 
     public int getFine(){
         return userService.getUserById(SessionBean.getUserId()).getFine();

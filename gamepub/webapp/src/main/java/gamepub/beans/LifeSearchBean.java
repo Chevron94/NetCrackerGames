@@ -88,7 +88,7 @@ public class LifeSearchBean {
         Map.Entry<String, Object> param;
         param = new HashMap.SimpleEntry<String, Object>("name", query);
         parametersList.add(param);
-        return gameService.getGamesByCustomParams(parametersList,false,0,1);
+        return gameService.getGamesByCustomParams(parametersList,false,0,10);
     }
 
     public void loadGame(){

@@ -42,6 +42,11 @@ public class User {
 
     @Column(name = "FINE")
     Integer fine;
+
+    @Column(name = "REPUTATION",columnDefinition = "int default 0")
+    Integer reputation;
+    
+
     @Column(name = "GOLD")
     boolean gold;
 
@@ -366,6 +371,20 @@ public class User {
      */
     public void setReceivingUserTrades(List<Trade> receivingUserTrades) {
         this.receivingUserTrades = receivingUserTrades;
+    }
+
+    /**
+     * @return the reputation
+     */
+    public Integer getReputation() {
+        return reputation;
+    }
+
+    /**
+     * @param reputation the reputation to set
+     */
+    public void setReputation(Integer reputation) {
+        this.reputation = reputation;
     }
 
 
