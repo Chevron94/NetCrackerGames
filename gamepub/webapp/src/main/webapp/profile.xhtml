@@ -19,7 +19,12 @@
                 <b:row>
 
                     <b:column span="3" offset="1">
-                        <h2 align="center" id="userName">#{profileBean.name}</h2>
+                        <h:panelGrid columns="2">
+                            <h2 align="center" id="userName">#{profileBean.name}</h2>
+                            <p:graphicImage value="resources/gold.png" style="width: 50px; height:50px"
+                                            rendered="#{profileBean.isGold}"/>
+
+                        </h:panelGrid>
                         <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
                         <h:form>
                             <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
@@ -34,7 +39,8 @@
                             <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
                                              actionListener="#{profileBean.unfollow()}"
                                              rendered="#{profileBean.isSubscribedTo}"/>
-                            <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog" ajax="false"
+                            <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
+                                      ajax="false"
                                       rendered="#{profileBean.isSubscribedTo}">
                                 <f:param value="#{profileBean.userId}" name="receiverId"/>
                             </b:button>
@@ -285,37 +291,47 @@
                                        
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
                                             <b:column span="4" offset="1">
-                                                <p:carousel headerText="Your offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
+                                                <p:carousel headerText="Your offer" style="text-align: center"
+                                                            value="#{profileBean.getOfferedGames(trade)}"
+                                                            var="offeredGame"
                                                             responsive="true" itemStyle="height:150px">
-                                                
+
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA" value="#{offeredGame.offeringGame.poster}" tooltip="#{offeredGame.offeringGame.name}"/>                                                                                                                  
-                                                             <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
-                                                        </h:link>                                                          
-                                                    
-                                               
-                                        </p:carousel>
-                                        </b:column>
-                                            
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{offeredGame.offeringGame.poster}"
+                                                                 tooltip="#{offeredGame.offeringGame.name}"/>
+                                                        <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
+                                                    </h:link>
+
+
+                                                </p:carousel>
+                                            </b:column>
+
                                             <b:column span="4">
-                                                <p:carousel headerText="#{trade.receivingUser.login}'s games" style ="text-align: center" value="#{profileBean.getRecievedGames(trade)}" var="receivedGame"
+                                                <p:carousel headerText="#{trade.receivingUser.login}'s games"
+                                                            style="text-align: center"
+                                                            value="#{profileBean.getRecievedGames(trade)}"
+                                                            var="receivedGame"
                                                             responsive="true" itemStyle="height:150px">
-                                                
-                                                   <h:link outcome="aboutGame" includeViewParams="true">
-                                                       <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
-                                                        
-                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
-                                                        </h:link>                                                          
-                                                    
-                                              
-                                        </p:carousel>
-                                        </b:column>
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{receivedGame.receivingGame.poster}"
+                                                                 tooltip="#{receivedGame.receivingGame.name}"/>
+
+                                                        <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                    </h:link>
+
+
+                                                </p:carousel>
+                                            </b:column>
                                             <b:column span="2">
                                                 <p:commandButton value="Cancel" style="color: #991216" actionListener="#{profileBean.declineOffer(trade)}" update=":tabView:currentOfferedTrade"/>
                                             
                                         </b:column>    
                                             
                                         </b:row>
+
                                        
                                     </p:dataScroller>
                                          </h:form>            
@@ -326,21 +342,29 @@
                                     <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
                                        
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
+
                                             <b:column span="4" offset="1">
-                                                <p:carousel headerText="#{trade.offeringUser.login} offer" style="text-align: center" value="#{profileBean.getOfferedGames(trade)}" var="offeredGame"
+                                                <p:carousel headerText="#{trade.offeringUser.login} offer"
+                                                            style="text-align: center"
+                                                            value="#{profileBean.getOfferedGames(trade)}"
+                                                            var="offeredGame"
                                                             responsive="true" itemStyle="height:150px">
-                                                
+
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA" value="#{offeredGame.offeringGame.poster}" tooltip="#{offeredGame.offeringGame.name}"/>                                                                                                                  
-                                                             <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
-                                                        </h:link>                                                          
-                                                    
-                                               
-                                        </p:carousel>
-                                        </b:column>
-                                            
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{offeredGame.offeringGame.poster}"
+                                                                 tooltip="#{offeredGame.offeringGame.name}"/>
+                                                        <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
+                                                    </h:link>
+
+
+                                                </p:carousel>
+                                            </b:column>
+
                                             <b:column span="4">
-                                                <p:carousel  headerText="My games" style ="text-align: center" value="#{profileBean.getRecievedGames(trade)}" var="receivedGame"
+                                                <p:carousel headerText="My games" style="text-align: center"
+                                                            value="#{profileBean.getRecievedGames(trade)}"
+                                                            var="receivedGame"
                                                             responsive="true" itemStyle="height:150px">
                                                 
                                                    <h:link outcome="aboutGame" includeViewParams="true">
@@ -366,6 +390,7 @@
                                         </b:column>    
                                             
                                         </b:row>
+
                                        
                                     </p:dataScroller>
                                            </h:form>          

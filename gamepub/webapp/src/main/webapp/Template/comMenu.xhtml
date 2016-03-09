@@ -14,23 +14,28 @@
 
     <ui:composition>
         <b:column span="1" style="margin-right:10px" rendered="#{sessionBean.isLogged}">
+
             <h:panelGrid columns="1" style="padding:10px; background-color:#2196f3; " styleClass="hidden-xs" >
+
                 <b:button styleClass="btn btn-primary" style="width:100%;" outcome="profile" value="MY PROFILE"
                            icon="ui-icon-star">
                     <f:param value="my" name="userId"/>
                 </b:button>
+                <b:button class="btn btn-primary" style="width:100%;" outcome="search" value="Extended search"/>
+                <b:button class="btn btn-primary" style="width:100%;" outcome="allNews" value="News"/>
+                <b:button class="btn btn-primary" style="width:100%;" outcome="allUsers" value="Users"/>
+                <b:button class="btn btn-primary" style="width:100%;" outcome="allMessages" value="Messages"/>
                 <b:button class="btn btn-primary" style="width:100%;" outcome="gallery" value="My gallery">
                     <f:param value="my" name="userId"/>
                 </b:button>
-                <b:button class="btn btn-primary" style="width:100%;" outcome="allUsers" value="Users"/>
-
                 <b:button class="btn btn-primary" outcome="tradingLounge" style="width:100%;"
                           value="Trading lounge" />
                 <b:button class="btn btn-primary "  outcome="tradingPage" style="width:100%;"
                            value="#{profileBean.exchangeNotification()}"/>
-                <b:button class="btn btn-primary" style="width:100%;" outcome="allMessages" value="Messages"/>
+
                 <b:button class="btn btn-primary" style="width:100%;" outcome="payments"
                           value="Payments"/>
+
             </h:panelGrid>
         </b:column>
 

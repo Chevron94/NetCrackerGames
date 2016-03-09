@@ -1,6 +1,7 @@
 package gamepub.beans.robokassa;
 
 import gamepub.beans.SessionBean;
+import gamepub.db.entity.User;
 import gamepub.db.entity.UserTransaction;
 import gamepub.db.service.UserService;
 import gamepub.db.service.UserTransactionService;
@@ -40,25 +41,38 @@ public class ResultBean {
     String signatureValue;
 
     @PostConstruct
-    public void initMyBean(){
+    public void initMyBean() {
 
-        Map<String,String> requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         outSum = requestParams.get("OutSum");
         invId = requestParams.get("InvId");
+        UserTransaction userTransaction = userTransactionService.getTransactionById(Integer.parseInt(invId));
+        if(!userTransaction.getStatus()) {
+            signatureValue = requestParams.get("SignatureValue");
 
-        signatureValue = requestParams.get("SignatureValue");
-
-        String md5Hex = DigestUtils.md5Hex(
-                outSum+":"+invId+":" + mrhPass2
-        ).toUpperCase();
-        System.out.println(outSum+" " + invId+" " + signatureValue+" " + md5Hex);
-        if(signatureValue.equals(md5Hex)){
-            UserTransaction userTransaction = userTransactionService.getTransactionById(Integer.parseInt(invId));
-            userTransaction.setStatus(true);
-            userTransactionService.update(userTransaction);
+            String md5Hex = DigestUtils.md5Hex(
+                    outSum + ":" + invId + ":" + mrhPass2
+            ).toUpperCase();
+            System.out.println(outSum + " " + invId + " " + signatureValue + " " + md5Hex);
+            if (signatureValue.equals(md5Hex)) {
+                userTransaction.setStatus(true);
+                userTransactionService.update(userTransaction);
+                endTransaction(userTransaction);
+            }
         }
     }
-    public String getResult(){
+
+    private void endTransaction(UserTransaction userTransaction) {
+        User user = userTransaction.getUser();
+        if (userTransaction.getDescription().equals("fine")) {
+            user.setFine(user.getFine() - userTransaction.getOutSumm());
+        } else if (userTransaction.getDescription().equals("gold"))
+            user.setGold(true);
+
+
+    }
+
+    public String getResult() {
 
         return "result";
     }

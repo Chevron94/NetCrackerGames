@@ -351,7 +351,13 @@ public class ProfileBean {
     public Integer getUserRep(){
      return userService.getUserById(id).getReputation();
     }
-   
-   
-    
+
+
+    public int getFine(){
+        return userService.getUserById(SessionBean.getUserId()).getFine();
+    }
+
+    public boolean getIsGold(){
+        return userService.getUserById(SessionBean.getUserId()).getGold();
+    }
 }
