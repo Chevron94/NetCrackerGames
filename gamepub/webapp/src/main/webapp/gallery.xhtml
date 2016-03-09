@@ -15,17 +15,18 @@
 
     <ui:composition template="/Template/template.xhtml">
         <ui:define name="content">
+            
             <b:column span="9" offset="1">
                 <div align="center">
                     <h:form id="galleryForm" enctype="multipart/form-data">
-                        <h2>#{loginBean.name}'s Gallery </h2>
+                        <h2>#{galleryBean.galleryOwner}</h2>
 
                         <p:contentFlow id="contentF" value="#{galleryBean.images}" var="image">
                             <p:commandLink
                                     styleClass="gameIcon btn btn-danger"
                                     oncomplete="removePicture([{name:'selectedImage',
                                                     value:$('.item.active div.caption').text()}])"
-
+                                                    rendered ="#{galleryBean.checkForMyGallery()}"
 
                             >
                             </p:commandLink>
@@ -35,12 +36,12 @@
 
 
                         </p:contentFlow>
-                        <p:remoteCommand name="removePicture" actionListener="#{galleryBean.deleteImage}"
+                        <p:remoteCommand name="removePicture" actionListener="#{galleryBean.deleteImage}" rendered ="#{galleryBean.checkForMyGallery()}"
                                          update="contentF"/>
 
 
                         <p:growl id="messages" showDetail="true"/>
-                        <p:fileUpload fileUploadListener="#{galleryBean.upload}" mode="advanced" skinSimple="true"
+                        <p:fileUpload fileUploadListener="#{galleryBean.upload}" mode="advanced" skinSimple="true" rendered ="#{galleryBean.checkForMyGallery()}"
                                       oncomplete="window.location.reload();"/>
                     </h:form>
                 </div>

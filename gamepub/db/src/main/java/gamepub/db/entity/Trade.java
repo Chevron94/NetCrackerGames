@@ -19,13 +19,13 @@ public class Trade {
     @JoinColumn(name = "receivingUser",nullable = false)
     User receivingUser;        
     
-    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "offeringTrade",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "offeringTrade",cascade = CascadeType.REMOVE)    
     List<OfferingUserTrade> offeringUserTrades;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingTrade",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingTrade",cascade = CascadeType.REMOVE)    
     List<ReceivingUserTrade> receivingUserTrades;        
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "offeringGame",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "offeringGame",cascade = CascadeType.REMOVE)    
     List<OfferingUserTrade> offeringUserGame;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingGame",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingGame",cascade = CascadeType.REMOVE)
     List<ReceivingUserTrade> receivingUserGame;
     
     @Column(name = "STATUS")

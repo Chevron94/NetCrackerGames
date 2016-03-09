@@ -348,12 +348,10 @@ public class ProfileBean {
 
     }
     
-    public Integer getUserRep(User u){
-     return userService.getUserById(u.getId()).getReputation();
+    public Integer getUserRep(){
+     return userService.getUserById(id).getReputation();
     }
-    public Integer getMyRep(){
-     return userService.getUserById(SessionBean.getUserId()).getReputation();
-    }
+   
    
     
 }
