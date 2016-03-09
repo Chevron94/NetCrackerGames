@@ -37,10 +37,7 @@
                                      actionListener="#{allNewsBean.search}"/>
                 </h:form>
                 <h:form id="dataForm">
-                    <p:dataScroller value="#{allNewsBean.newses}" var="news" chunkSize="10">
-                        <f:facet name="header">
-
-                        </f:facet>
+                    <p:dataScroller value="#{allNewsBean.TNews}" var="news" rowIndexVar="index">
 
                         <h:panelGrid columns="2" styleClass="newsItem">
                             <p:graphicImage value="#{news.game.poster}" style="width:45%; height: 50%;"/>
@@ -48,8 +45,14 @@
                             <h:link outcome="news" value="#{news.name}" includeViewParams="true">
                                 <f:param value="#{news.uid}" name="newsId"/>
                             </h:link>
+
                         </h:panelGrid>
                     </p:dataScroller>
+                    <div align="center">
+                        <p:commandLink styleClass="btn btn-primary" value="More" process="@form" update="@form"
+                                       action="#{allNewsBean.loadMore()}"
+                        />
+                    </div>
                 </h:form>
             </b:column>
         </ui:define>

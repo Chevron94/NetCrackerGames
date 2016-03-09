@@ -49,7 +49,7 @@ public class SerachBean {
     String myGenre;
     String myGame;
     Date date;
-    int startGame = 0, endGame = 10, loadCount = 0;
+    int startGame = 0, endGame = 10, loadCount;
 
     public void setGenres(String genreS) {
         genre = genreS;
@@ -96,7 +96,7 @@ public class SerachBean {
 
     }
 
-    public List<Game> getTGames(){
+    public List<Game> getTGames() {
         return games;
     }
 
@@ -136,19 +136,17 @@ public class SerachBean {
 
 
     public void loadMore() {
-        /*FacesContext context = FacesContext.getCurrentInstance();
-        int startGame = (Integer)context.getExternalContext().getSessionMap().get("startGame");
-        context.getExternalContext().getSessionMap().put("startGame",startGame+10);*/
+        startGame += 4;
+        endGame += 4;
 
-        startGame+=5;
-        endGame+=5;
-        loadCount++;
         games.addAll(getMyGames());
 
     }
 
-    public int getLoadCount(){
-        return loadCount;
+    public String getLoadCount(boolean flag) {
+        if (flag)
+            loadCount++;
+        return "load" + loadCount;
     }
 
     public String goToConcreteGame() {
