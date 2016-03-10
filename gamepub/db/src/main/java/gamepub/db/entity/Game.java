@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "GAME")
-public class Game {
+public class Game implements SearchItem {
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
