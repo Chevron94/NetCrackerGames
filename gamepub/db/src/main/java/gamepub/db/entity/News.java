@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "NEWS")
-public class News {
+public class News implements SearchItem {
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,6 +84,10 @@ public class News {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public String getPoster(){
+        return game.getPoster();
     }
 
     public List<Comment> getComments() {
