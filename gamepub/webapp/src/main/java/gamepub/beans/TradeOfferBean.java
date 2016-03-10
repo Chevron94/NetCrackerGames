@@ -92,6 +92,8 @@ private ArrayList<Game> userWantedGamesTarget;
        trade.setStatus("opened");
        trade.setOfferingUser(userService.getUserById(SessionBean.getUserId()));
        trade.setReceivingUser(userService.getUserById(SessionBean.getUserForTradeId()));
+       trade.setOfferingUserPay(false);
+       trade.setReceivingUserPay(false);
        tradeService.create(trade);
        Trade currentTrade = tradeService.getLastTradeByOfferingUserId(SessionBean.getUserId());
        for(Game g:myGames.getTarget()){

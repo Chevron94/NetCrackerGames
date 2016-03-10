@@ -348,11 +348,8 @@ public class ProfileBean {
 
     }
     
-    public Integer getUserRep(User u){
-     return userService.getUserById(u.getId()).getReputation();
-    }
-    public Integer getMyRep(){
-     return userService.getUserById(SessionBean.getUserId()).getReputation();
+    public Integer getUserRep(){
+     return userService.getUserById(id).getReputation();
     }
 
 
@@ -363,4 +360,5 @@ public class ProfileBean {
     public boolean getIsGold(){
         return userService.getUserById(SessionBean.getUserId()).getGold();
     }
+    
 }

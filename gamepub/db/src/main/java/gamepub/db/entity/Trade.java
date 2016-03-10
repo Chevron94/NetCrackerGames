@@ -1,5 +1,6 @@
 package gamepub.db.entity;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -17,20 +18,32 @@ public class Trade {
     User offeringUser;
     @ManyToOne
     @JoinColumn(name = "receivingUser",nullable = false)
-    User receivingUser;        
+    User receivingUser;            
     
-    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "offeringTrade",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "offeringTrade",cascade = CascadeType.REMOVE)    
     List<OfferingUserTrade> offeringUserTrades;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingTrade",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingTrade",cascade = CascadeType.REMOVE)    
     List<ReceivingUserTrade> receivingUserTrades;        
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "offeringGame",cascade = CascadeType.REMOVE)    
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "offeringGame",cascade = CascadeType.REMOVE)    
     List<OfferingUserTrade> offeringUserGame;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "receivingGame",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "receivingGame",cascade = CascadeType.REMOVE)
     List<ReceivingUserTrade> receivingUserGame;
     
+    
+    @Column(name="OFFERING_USER_PAY",columnDefinition = "boolean default false")
+    Boolean offeringUserPay;
+    @Column(name="RECEIVING_USER_PAY",columnDefinition = "boolean default false")
+    Boolean receivingUserPay;
+    @Column(name="CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)        
+    Date createTime;
     @Column(name = "STATUS")
     String status;
-            
+    
+    @PrePersist
+    protected void onCreate() {
+        setCreateTime(new Date());
+  }
     public Trade() {
     }
 
@@ -161,6 +174,48 @@ public class Trade {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the offeringUserPay
+     */
+    public Boolean getOfferingUserPay() {
+        return offeringUserPay;
+    }
+
+    /**
+     * @param offeringUserPay the offeringUserPay to set
+     */
+    public void setOfferingUserPay(Boolean offeringUserPay) {
+        this.offeringUserPay = offeringUserPay;
+    }
+
+    /**
+     * @return the receivingUserPay
+     */
+    public Boolean getReceivingUserPay() {
+        return receivingUserPay;
+    }
+
+    /**
+     * @param receivingUserPay the receivingUserPay to set
+     */
+    public void setReceivingUserPay(Boolean receivingUserPay) {
+        this.receivingUserPay = receivingUserPay;
+    }
+
+    /**
+     * @return the createTime
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime the createTime to set
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
   
