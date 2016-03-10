@@ -360,4 +360,5 @@ public class ProfileBean {
     public boolean getIsGold(){
         return userService.getUserById(SessionBean.getUserId()).getGold();
     }
+    
 }

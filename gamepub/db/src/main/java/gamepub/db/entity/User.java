@@ -47,8 +47,8 @@ public class User {
     Integer reputation;
     
 
-    @Column(name = "GOLD")
-    boolean gold;
+    @Column(name = "GOLD",columnDefinition = "boolean default false")
+    Boolean gold;
 
     @Column(name = "API_TOKEN", nullable = true)
     String apiToken;
@@ -305,14 +305,7 @@ public class User {
         this.expireDate = expireDate;
     }
 
-    public boolean getGold(){
-        return gold;
-    }
-
-    public void setGold(boolean gold){
-        this.gold = gold;
-    }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -385,6 +378,20 @@ public class User {
      */
     public void setReputation(Integer reputation) {
         this.reputation = reputation;
+    }
+
+    /**
+     * @return the gold
+     */
+    public Boolean getGold() {
+        return gold;
+    }
+
+    /**
+     * @param gold the gold to set
+     */
+    public void setGold(Boolean gold) {
+        this.gold = gold;
     }
 
 

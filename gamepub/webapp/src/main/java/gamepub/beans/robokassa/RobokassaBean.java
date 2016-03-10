@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 import java.util.Date;
 
 /**
- * Created by Анатолий on 24.02.2016.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ on 24.02.2016.
  */
 @ManagedBean
 @SessionScoped
@@ -89,6 +89,10 @@ public class RobokassaBean {
             case 2:
                 outSumm = Integer.toString(goldAcc);
                 descr = "gold";
+                break;
+            case 3:    
+                outSumm = "300";
+                descr = "trade";
                 break;
         }
 

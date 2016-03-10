@@ -326,10 +326,21 @@
                                                 </p:carousel>
                                             </b:column>
                                             <b:column span="2">
-                                                <p:commandButton value="Cancel" style="color: #991216" actionListener="#{profileBean.declineOffer(trade)}" update=":tabView:currentOfferedTrade"/>
-                                            
-                                        </b:column>    
-                                            
+                                                <p:commandButton value="Cancel"
+                                                                 style="color: #991216" 
+                                                                 actionListener="#{profileBean.declineOffer(trade)}" 
+                                                                 update=":tabView:currentOfferedTrade"
+                                                                 rendered="#{profileBean.checkForOpened(trade)}"/>
+                                                
+                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/> 
+                                                    <p:commandButton value="Pay"
+                                                                 style="color: #991216" 
+                                                                 actionListener="#{robokassaBean.submit(3)}" 
+                                                                 update=":tabView:currentOfferedTrade"
+                                                                 rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.offeringUserPay}"/>
+                                        </b:column>                                                
                                         </b:row>
 
                                        
@@ -377,16 +388,18 @@
                                         </p:carousel>
                                         </b:column>
                                             <b:column span="3" >
-                                                <p:commandButton value="Accept" rendered="#{profileBean.checkForOpened(trade)}" style="color: #006600" class="btn btn-warning"
+                                                <p:commandButton value="Accept"
+                                                                 rendered="#{profileBean.checkForOpened(trade)}"
+                                                                 style="color: #006600" class="btn btn-warning"
                                                                  actionListener="#{profileBean.setInProgress(trade)}" update=":tabView:currentReceivedTrade"/>
-                                                <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}" style="color: #991216" oncomplete="window.location.reload();" 
-                                                                 actionListener="#{profileBean.declineOffer(trade)}" update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
+                                                <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
+                                                                 style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
+                                                                 update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
                                                     <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
                                                     <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>  
-                                                    <p:commandButton id="confirmButton" value="Confirm" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
-                                                                     actionListener="#{profileBean.setConfirmed(trade)}" update=":tabView:currentReceivedTrade"/>
-                                                    <p:commandButton id="decline2" value="Decline" rendered="#{profileBean.checkForInProgress(trade)}" class="btn btn-warning"
-                                                                     actionListener="#{profileBean.declineOffer(trade)}" update=":tabView:currentReceivedTrade"  style="color: #991216"/>
+                                                    <p:commandButton id="confirmButton" value="Pay" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
+                                                                     actionListener="#{robokassaBean.submit(3)}" update=":tabView:currentReceivedTrade"/>
+                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.receivingUserPay}"/>
                                         </b:column>    
                                             
                                         </b:row>

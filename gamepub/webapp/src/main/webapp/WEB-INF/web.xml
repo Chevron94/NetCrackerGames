@@ -109,5 +109,10 @@
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
-
+       
+       <listener>
+               <listener-class>
+               gamepub.scheduler.BackgroundJob
+               </listener-class>
+          </listener>
 </web-app>
