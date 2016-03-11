@@ -248,13 +248,30 @@ public class SchedulerJob implements Job {
                 }
             } else {
                 int j = 0;
-                while (!newses.get(0).getDate().equals(new Date(newsJson.getJSONObject(j).getLong("date") * 1000))) {
+                boolean end = false;
+                while (!end) {
                     news = new News();
                     news.setGame(game);
                     news.setName(newsJson.getJSONObject(j).getString("title"));
                     news.setLink(newsJson.getJSONObject(j).getString("url"));
                     news.setDate(new Date(newsJson.getJSONObject(j).getLong("date") * 1000));
-                    newsDaoImplementation.create(news);
+                    List<News> check = newsDaoImplementation.getNewsByName(news.getName(),true,0,0);
+                    if (check == null || check.size()==0) {
+                        newsDaoImplementation.create(news);
+                    }
+                    else{
+                        for(int k = 0; k<check.size() && !end;k++){
+                            News tmp = check.get(k);
+                            if (    tmp.getName().equals(news.getName()) &&
+                                    tmp.getLink().equals(news.getLink()) &&
+                                    tmp.getGame().equals(news.getGame())){
+                                end = true;
+                            }
+                        }
+                        if (!end){
+                            newsDaoImplementation.create(news);
+                        }
+                    }
                     j++;
                 }
             }

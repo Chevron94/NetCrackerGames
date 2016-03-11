@@ -14,7 +14,6 @@
             <b:column span="9" offset="1">
                 <h1>Search</h1>
                 <h:form id="searchForm">
-
                         <b:row>
                         <b:column span="3">
                             <h3 style="margin-top:0px">Name</h3>
@@ -57,8 +56,9 @@
                 <b:row style="width:100%">
 
                     <h:form id="dataForm" >
-                        <p:dataScroller value="#{serachBean.TGames}" var="game" rowIndexVar="index">
-                            <div id="load"></div>
+
+                        <p:dataScroller value="#{serachBean.TGames}" var="game" rowIndexVar="index" >
+                            <div id="#{serachBean.getLoadCount(true)}"></div>
                             <b:row style="width:100%;">
                                 <b:column span="5"
                                           style="margin:10px; height:100%; border: 1px solid #dfdfdf; text-align: center;">
@@ -103,7 +103,7 @@
                         </p:dataScroller>
                         <div align="center">
                         <p:commandLink styleClass="btn btn-primary" value="More" process="@form" update="@form"
-                                       action="#{serachBean.loadMore()}" onclick="javascript:window.location='#load'"
+                                       action="#{serachBean.loadMore()}" onclick="window.location='##{serachBean.getLoadCount(false)}';"
                                        />
                         </div>
                     </h:form>

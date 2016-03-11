@@ -12,6 +12,7 @@ import gamepub.db.service.CityService;
 import gamepub.db.service.UserRoleService;
 import gamepub.db.service.UserService;
 import gamepub.encode.shaCode;
+import gamepub.encode.passwordGenerator;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import java.io.BufferedReader;
@@ -219,7 +220,8 @@ public class VKAuthorizationBean implements Serializable {
                 City city = cityService.getCityById(1);
 
                 user.setAvatarUrl(photo);
-                user.setPassword(shaCode.code(shaCode.code(name) + id));
+                String password= passwordGenerator.generatePassword(10);
+                user.setPassword(shaCode.code(shaCode.code(name) + password));
                 user.setEmail("default email");
                 user.setActive(true);
                 user.setBanned(false);
