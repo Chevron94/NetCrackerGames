@@ -70,13 +70,22 @@
                 <div class="right-sidebar">
                     <h3 align="center">Tournaments</h3>
                     <h:form id="formRight">
-                        <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
+                        <p:tabView id="tournaments">
+                            <p:tab title="Dota 2 matches">
+                                <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
                                     emptyMessage="No matches today">
-                            <f:facet name="header">
-                                Dota2
-                            </f:facet>
-                            #{match.status}: #{match.setTournament(tournament)} - #{match.team1} - #{match.dataScore} - #{match.team2}
-                        </p:dataList>
+                            
+                            #{match.status}: #{match.tournament} - #{match.team1} - #{match.dataScore} - #{match.team2}
+                                </p:dataList>
+                            </p:tab>
+                            <p:tab title="CS:GO matches">
+                                <p:dataList value="#{mainPageBean.getCsMatches()}" var="csmatch" type="ordered"
+                                            emptyMessage="No matches today" >
+                            
+                            #{csmatch.status}: #{csmatch.tournament} - #{csmatch.team1} vs #{csmatch.team2} - #{csmatch.dataScore} 
+                                </p:dataList>
+                            </p:tab> 
+                        </p:tabView>    
                     </h:form>
                 </div><!-- .right-sidebar -->
             </b:column>

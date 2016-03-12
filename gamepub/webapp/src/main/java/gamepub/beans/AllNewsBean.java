@@ -5,9 +5,11 @@ import gamepub.db.entity.News;
 import gamepub.db.service.GameService;
 import gamepub.db.service.NewsService;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.util.*;
 
@@ -16,17 +18,27 @@ import java.util.*;
  */
 @ManagedBean
 @SessionScoped
+@ViewScoped
 public class AllNewsBean {
 
     String newsName;
     String gameId;
     Date date;
+    int startNews = 0, endNews = 10;
+
+    List<News> news;
 
     @EJB
     NewsService newsService;
 
     @EJB
     GameService gameService;
+
+    @PostConstruct
+    public void init() {
+        news = getNewses();
+    }
+
     public List<News> getNewses() {
         List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
         Map.Entry<String, Object> param;
@@ -43,7 +55,11 @@ public class AllNewsBean {
             param = new HashMap.SimpleEntry<String, Object>("date", date);
             parametersList.add(param);
         }
-        return newsService.getNewsByCustomParams(parametersList,true,0,0);
+        return newsService.getNewsByCustomParams(parametersList,false,startNews,endNews);
+    }
+
+    public List<News> getTNews(){
+        return news;
     }
 
     public void search(){
@@ -59,6 +75,13 @@ public class AllNewsBean {
         if(date != null) {
             facesContext.getExternalContext().getSessionMap().put("date", date);
         }
+    }
+
+    public void loadMore() {
+        startNews+=4;
+        endNews+=4;
+        news.addAll(getNewses());
+
     }
 
     public String goToConcreteNews() {

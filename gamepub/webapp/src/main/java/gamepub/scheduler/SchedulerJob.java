@@ -32,7 +32,7 @@ public class SchedulerJob implements Job {
     private static final String NEWS_URL = "http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid="; //news by game
 
     private HashMap<String, Integer> steam = new HashMap<String, Integer>();
-
+    
     private String sendGet(String stringUrl) throws Exception {
         URL url = new URL(stringUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
