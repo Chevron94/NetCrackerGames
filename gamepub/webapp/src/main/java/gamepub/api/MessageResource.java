@@ -70,14 +70,18 @@ public class MessageResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)) {
-                case ALL_REQUESTS_ARE_USED:
-                    return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN:
-                    return "WRONG TOKEN";
-                case BANNED:
-                    return "YOU WAS BANNED";
-                case TOKEN_EXPIRED:
-                    return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK: {
                     PrivateMessage privateMessage = new PrivateMessage();
                     privateMessage.setSender(userService.getUserByApiToken(token));
@@ -85,13 +89,19 @@ public class MessageResource {
                     privateMessage.setDate(new Date());
                     privateMessage.setText(form.getFirst("message"));
                     privateMessageService.create(privateMessage);
-                    return "ok";
+                    return "{" +
+                            " \"STATUS\": \"OK\"," +
+                            "\"message\": \"SUCCESS\"}";
                 }
                 default:
-                    return "error";
+                    return "{" +
+                            " \"STATUS\": \"ERROR\"," +
+                            "\"message\": \"UNKNOWN ERROR\"}";
             }
         } catch (Exception e) {
-            return "error";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
     }
 }

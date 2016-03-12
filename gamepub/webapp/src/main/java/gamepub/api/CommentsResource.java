@@ -39,10 +39,18 @@ public class CommentsResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)){
-                case ALL_REQUESTS_ARE_USED: return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN: return "WRONG TOKEN";
-                case BANNED: return "YOU WAS BANNED";
-                case TOKEN_EXPIRED: return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK:{
                     Comment comment = new Comment();
                     comment.setDate(new Date());
@@ -50,12 +58,18 @@ public class CommentsResource {
                     comment.setText(form.getFirst("text"));
                     comment.setNews(newsService.getNewsById(Integer.valueOf(form.getFirst("newsId"))));
                     commentService.create(comment);
-                    return "OK";
+                    return "{" +
+                            " \"STATUS\": \"OK\"," +
+                            "\"message\": \"SUCCESS\"}";
                 }
-                default: return "FAIL";
+                default: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"UNKNOWN ERROR\"}";
             }
         }catch (Exception e){
-            return "FAIL";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
     }
     @POST
@@ -65,23 +79,39 @@ public class CommentsResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)){
-                case ALL_REQUESTS_ARE_USED: return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN: return "WRONG TOKEN";
-                case BANNED: return "YOU WAS BANNED";
-                case TOKEN_EXPIRED: return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK:{
                     Integer commentId = Integer.valueOf(form.getFirst("commentId"));
                     Comment comment = commentService.getCommentById(commentId);
                     User user = userService.getUserByApiToken(token);
                     if (comment.getUser().equals(user)){
                         commentService.delete(commentId);
-                        return "OK";
-                    }else return "FAIL";
+                        return "{" +
+                                " \"STATUS\": \"OK\"," +
+                                "\"message\": \"SUCCESS\"}";
+                    }else return "{" +
+                            " \"STATUS\": \"ERROR\"," +
+                            "\"message\": \"UNKNOWN ERROR\"}";
                 }
-                default: return "FAIL";
+                default: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"UNKNOWN ERROR\"}";
             }
         }catch (Exception e){
-            return "FAIL";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
     }
 }

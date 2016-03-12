@@ -104,10 +104,18 @@ public class ProfileResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)){
-                case ALL_REQUESTS_ARE_USED: return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN: return "WRONG TOKEN";
-                case BANNED: return "YOU WAS BANNED";
-                case TOKEN_EXPIRED: return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK:{
                     if (userService.getUserByApiToken(token).getId() == userId) {
                         User user = userService.getUserById(userId);
@@ -131,13 +139,21 @@ public class ProfileResource {
                             user.setCity(cityService.getCityById(Integer.valueOf(cityId)));
                         }
                         userService.update(user);
-                        return "OK";
-                    }return "FAIL";
+                        return "{" +
+                                " \"STATUS\": \"OK\"," +
+                                "\"message\": \"SUCCESS\"}";
+                    }return "{" +
+                            " \"STATUS\": \"ERROR\"," +
+                            "\"message\": \"UNKNOWN ERROR\"}";
                 }
-                default: return "FAIL";
+                default: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"UNKNOWN ERROR\"}";
             }
         }catch (Exception e){
-            return "FAIL";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
 
     }

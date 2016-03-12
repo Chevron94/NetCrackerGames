@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package gamepub.api;
-//TODO Ограничение API: неавторизован - 100/день, авторизован - 1000/день, прем - неограниченно
-//TODO Добавить OAuth2
 
 import gamepub.db.entity.Mark;
 import gamepub.db.entity.User;
@@ -42,14 +40,18 @@ public class ReviewsResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)) {
-                case ALL_REQUESTS_ARE_USED:
-                    return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN:
-                    return "WRONG TOKEN";
-                case BANNED:
-                    return "YOU WAS BANNED";
-                case TOKEN_EXPIRED:
-                    return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK: {
                     Mark mark = new Mark();
                     mark.setDate(new Date());
@@ -59,16 +61,24 @@ public class ReviewsResource {
                     if (Integer.parseInt(form.getFirst("mark")) >= 1 && Integer.parseInt(form.getFirst("mark")) <= 5) {
                         mark.setMark(Integer.parseInt(form.getFirst("mark")));
                     } else {
-                        return "incorrect mark";
+                        return "{" +
+                                " \"STATUS\": \"ERROR\"," +
+                                "\"message\": \"INCORRECT MARK\"}";
                     }
                     markService.create(mark);
-                    return "ok";
+                    return "{" +
+                            " \"STATUS\": \"OK\"," +
+                            "\"message\": \"SUCCESS\"}";
                 }
                 default:
-                    return "error";
+                    return "{" +
+                            " \"STATUS\": \"ERROR\"," +
+                            "\"message\": \"UNKNOWN ERROR\"}";
             }
         } catch (Exception e) {
-            return "error";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
     }
 
@@ -79,29 +89,41 @@ public class ReviewsResource {
         try {
             String token = form.getFirst("token");
             switch (authResource.checkToken(token)) {
-                case ALL_REQUESTS_ARE_USED:
-                    return "ALL REQUESTS FOR TODAY ARE USED";
-                case WRONG_TOKEN:
-                    return "WRONG TOKEN";
-                case BANNED:
-                    return "YOU WAS BANNED";
-                case TOKEN_EXPIRED:
-                    return "TOKEN EXPIRED";
+                case ALL_REQUESTS_ARE_USED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"ALL REQUESTS FOR TODAY ARE USED\"}";
+                case WRONG_TOKEN: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"WRONG TOKEN\"}";
+                case BANNED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"YOU WAS BANNED\"}";
+                case TOKEN_EXPIRED: return "{" +
+                        " \"STATUS\": \"ERROR\"," +
+                        "\"message\": \"TOKEN EXPIRED\"}";
                 case OK: {
                     Mark mark = markService.getMarkById(Integer.parseInt(form.getFirst("reviewId")));
                     User user = userService.getUserByApiToken(token);
                     if (mark.getUser().equals(user)) {
                         markService.delete(Integer.parseInt(form.getFirst("reviewId")));
-                        return "ok";
+                        return "{" +
+                                " \"STATUS\": \"OK\"," +
+                                "\"message\": \"SUCCESS\"}";
                     } else {
-                        return "error";
+                        return "{" +
+                                " \"STATUS\": \"ERROR\"," +
+                                "\"message\": \"INCORRECT USER\"}";
                     }
                 }
                 default:
-                    return "error";
+                    return "{" +
+                            " \"STATUS\": \"ERROR\"," +
+                            "\"message\": \"UNKNOWN ERROR\"}";
             }
         } catch (Exception e) {
-            return "error";
+            return "{" +
+                    " \"STATUS\": \"ERROR\"," +
+                    "\"message\": \"UNKNOWN ERROR\"}";
         }
     }
 }

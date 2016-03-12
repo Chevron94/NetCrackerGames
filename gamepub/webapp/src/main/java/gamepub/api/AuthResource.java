@@ -52,8 +52,12 @@ public class AuthResource {
             calendar.add(Calendar.DATE, 1);
             user.setExpireDate(calendar.getTime());
             userService.update(user);
-            return token;
-        }return "Incorrect login, or password, or you was banned";
+            return "{" +
+                    " \"status\": \"OK\"," +
+                    "\"message\": \""+token+"\"}";
+        }return "{" +
+                " \"status\": \"ERROR\"," +
+                "\"message\": \"Incorrect login, or password, or you was banned\"}";
     }
 
     public AUTH checkToken(String token){
@@ -90,7 +94,12 @@ public class AuthResource {
             calendar.add(Calendar.DATE, 1);
             user.setExpireDate(calendar.getTime());
             userService.update(user);
-            return token;
-        }return "Incorrect token or you was banned";
+            return "{" +
+                    " \"status\": \"OK\"," +
+                    "\"message\": \""+token+"\"}";
+        }return "{" +
+                " \"status\": \"ERROR\"," +
+                "\"message\": \"Incorrect token, or you was banned\"}";
+
     }
 }

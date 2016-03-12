@@ -54,8 +54,10 @@ public class Game {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<News> newses;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "offeringGame")
     List<OfferingUserTrade> OfferingUserTrades;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receivingGame")
     List<ReceivingUserTrade> ReceivingUserTrades;
   
