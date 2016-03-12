@@ -30,6 +30,8 @@ public class User {
     String vkInfo;
     @Column(name = "STEAM_INFO", nullable = true)
     String steamInfo;
+    @Column(name = "GOOGLE_INFO", nullable = true)
+    String googleInfo;
     @Column(name = "FB_INFO", nullable = true)
     String fbInfo;
     @Column(name = "TOKEN", nullable = true)
@@ -129,6 +131,14 @@ public class User {
 
     public void setSteamInfo(String steamInfo) {
         this.steamInfo = steamInfo;
+    }
+    
+    public String getGoogleInfo() {
+        return googleInfo;
+    }
+
+    public void setGoogleInfo(String googleInfo) {
+        this.googleInfo = googleInfo;
     }
 
     public String getFbInfo() {
@@ -277,6 +287,7 @@ public class User {
                 ", avatarUrl='" + avatarUrl + '\'' +
                 ", vkInfo='" + vkInfo + '\'' +
                 ", steamInfo='" + steamInfo + '\'' +
+                ", googleInfo='" + googleInfo + '\'' +
                 ", fbInfo='" + fbInfo + '\'' +
                 ", userRole=" + userRole +
                 ", city=" + city +

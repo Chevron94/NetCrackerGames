@@ -76,11 +76,11 @@ public class GoogleAuthorizationBean implements Serializable {
         User user = createUser();
         if (user != null) {
 
-            googleInfo = user.getSteamInfo();
+            googleInfo = user.getGoogleInfo();
 
             User userInBase = null;
             try {
-                userInBase = userService.getUserBySteamInfo(user.getSteamInfo());
+                userInBase = userService.getUserBySteamInfo(user.getGoogleInfo());
             } catch (Exception e) {
 
             }
@@ -98,7 +98,7 @@ public class GoogleAuthorizationBean implements Serializable {
     public void doLogin() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
-        User user = userService.getUserBySteamInfo(googleInfo);
+        User user = userService.getUserByGoogleInfo(googleInfo);
         if(user.getBanned() != true)
         {
             session.setAttribute("userid", user.getId());
@@ -201,7 +201,7 @@ public class GoogleAuthorizationBean implements Serializable {
             User user;
             if (idLoggedUser != null) {
                 user = userService.getUserById(idLoggedUser);
-                user.setSteamInfo(id);
+                user.setGoogleInfo(id);
                 userService.update(user);
             } else {
 

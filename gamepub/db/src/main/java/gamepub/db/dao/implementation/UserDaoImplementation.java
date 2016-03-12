@@ -157,6 +157,23 @@ public class UserDaoImplementation extends BaseDaoImplementation<User,Integer> i
         }
         return result;
     }
+    
+        public User getUserByGoogleInfo(String googleInfo) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<User> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("googleInfo"), googleInfo));
+        User result;
+        try {
+            result = (User)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
 
     public User getUserByFbInfo(String fbInfo) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
