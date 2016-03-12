@@ -8,6 +8,11 @@ package gamepub.parse;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -16,14 +21,35 @@ import org.jsoup.select.Elements;
  *
  * @author fitok
  */
+@Startup
+@Singleton
 public class Tournament {
+     Elements currentTournaments;
+        Elements previousTournaments;
+        Elements futureTournaments;
+        ArrayList<Match> matches;
+        ArrayList<Match> csmatches;
+        Document doc;
+        Document doc2; 
+        
+    @PostConstruct
+    public void setConnections(){
+         
+        
+         try {  
+             doc = Jsoup.connect("http://dota2.ru/matches/").get();
+             doc2 = Jsoup.connect("http://game-tournaments.com/csgo/matches").get();
+         } catch (IOException ex) {
+             Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    
     public ArrayList<Match> getMatches() {
-       Elements currentTournaments=null;
-        Elements previousTournaments=null;
-        Elements futureTournaments=null;
-   ArrayList<Match> matches = new ArrayList<Match>();
+      matches = new ArrayList<Match>();
+  
        try{
-        Document doc = Jsoup.connect("http://dota2.ru/matches/").get();
+           
+       
         
        for(int i=0;i<5;i+=2){
            if(doc.select("div.matches-list").get(0).children().get(i).html().equals("Прошедшие матчи")){
@@ -74,11 +100,27 @@ public class Tournament {
         catch(IndexOutOfBoundsException e){m.setDataScore("finished");}
         matches.add(m);
    
-   }}
-       
-   
-   
+   }}   
 
 return matches;    
 }
+    public ArrayList<Match> getCsMatches(){
+        csmatches = new ArrayList<Match>();
+         for(int i=0;i<40;i++){
+      Match csmatch = new Match();
+      csmatch.setDataScore(doc2.select("td.mtime").get(i).select("span.live-in").text());
+      csmatch.setTeam1(doc2.select("a.mlink").get(i).select("span.teamname.c1").text());
+      csmatch.setTeam2(doc2.select("a.mlink").get(i).select("span.teamname.c2").text());
+      csmatch.setTournament(doc2.select("td.tournament").get(i).select("a.ta.odtip").attr("title"));
+      if(doc2.select("td.tournament").get(i).parents().get(4).select("h2").text().contains("Прошедшие матчи")){             
+      csmatch.setStatus("Previous match");      
+      }
+      else {csmatch.setStatus("Future match");
+      
+      }
+      csmatches.add(csmatch);
+  }
+         return csmatches;
+    }
+    
 }

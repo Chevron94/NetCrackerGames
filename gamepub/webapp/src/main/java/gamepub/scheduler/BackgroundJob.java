@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package gamepub.scheduler;
-
+import javax.servlet.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebListener;
  *
  * @author fitok
  */
-
+@WebListener
 public class BackgroundJob implements ServletContextListener{
     private ScheduledExecutorService scheduler;
 
@@ -24,7 +24,7 @@ public class BackgroundJob implements ServletContextListener{
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("INITIALIZED");
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new TradeJob(), 0, 1, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new TradeJob(), 0, 1, TimeUnit.MINUTES);
     }
     @Override
     public void contextDestroyed(ServletContextEvent sce) {

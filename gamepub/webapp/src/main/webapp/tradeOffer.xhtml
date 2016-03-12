@@ -54,10 +54,17 @@ and open the template in the editor.
                                                         
                         </p:pickList>
                     </b:column>                      
-                </b:row> 
-            <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" />            
+                </b:row>
+            <b:row style="margin-top: 20px">
+                <b:column span="6" offset="1"> 
             
-            
+            <h:panelGrid columns="3" cellpadding="5">
+                <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" style="margin-right: 10px"/>            
+                <h:outputText value="Hand-to-hand:  " style="font-size: medium"/>
+            <b:switch value="#num"  />
+            </h:panelGrid>
+                </b:column>
+            </b:row>
         </h:form>      
     </h:body>
 </html>

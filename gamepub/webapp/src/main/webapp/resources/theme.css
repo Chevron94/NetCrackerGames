@@ -7565,6 +7565,13 @@ background-image: none;
   height:auto;
   max-height: 200px;
 }
+.imgB {
+    
+  width:auto;
+  max-width:200px;
+  height:auto;
+  max-height:100%;
+}
 .ui-carousel-item{
   height: 500px;
 }
