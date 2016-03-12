@@ -60,7 +60,7 @@ public class LifeSearchBean {
         if(request != null && request.length()>0) {
             param = new HashMap.SimpleEntry<String, Object>("name", request);
             parametersList.add(param);
-            return newsService.getNewsByCustomParams(parametersList,true,0,0);
+            return newsService.getNewsByCustomParams(parametersList,false,0,10);
         }
         return null;
     }
@@ -70,7 +70,7 @@ public class LifeSearchBean {
         if(request != null && request.length()>0) {
             param = new HashMap.SimpleEntry<String, Object>("name", request);
             parametersList.add(param);
-            return gameService.getGamesByCustomParams(parametersList,true,0,0);
+            return gameService.getGamesByCustomParams(parametersList,false,0,10);
         }
         return null;
     }
