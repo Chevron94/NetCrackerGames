@@ -11,16 +11,19 @@
 <h:body>
     <div class="wrapper">
         <b:row styleClass="header">
-
+            <b:column span="12">
                 <ui:insert name="header">
                     <ui:include src="comHeader.xhtml"/>
                 </ui:insert>
-
+            </b:column>
             <!-- .header-->
         </b:row>
 
         <b:row styleClass="middle">
 
+            <ui:insert name="menu">
+                <ui:include src="comMenu.xhtml"/>
+            </ui:insert>
             <ui:insert name="content">
                 <ui:include src="comContent.xhtml"/>
             </ui:insert>

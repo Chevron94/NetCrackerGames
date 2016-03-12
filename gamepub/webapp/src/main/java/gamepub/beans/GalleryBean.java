@@ -39,14 +39,18 @@ import org.primefaces.model.UploadedFile;
  * @author fitok
  */
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class GalleryBean {
    
    @EJB
     UserService userService; 
    @EJB
    UserScreenshotService userScreenshotService;
-private User user;   
+   
+   @ManagedProperty(value = "#{param.userId}")
+    private String userId;
+
+private List<UserScreenshot> userScreens;   
 private List<String> images;
 private UploadedFile file;
 private Map uploadResult;
@@ -83,7 +87,12 @@ public UploadedFile getFile() {
      */
     public List<String> getImages() {
         images = new ArrayList<String>();  
-        List<UserScreenshot> userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());
+        
+        if(checkForMyGallery()){
+        userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());}
+        if(!checkForMyGallery()){
+            User user = userService.getUserByUid(userId);
+        userScreens = userScreenshotService.getScreenshotsByUserId(user.getId());}
     if (userScreens.isEmpty()){
         images.add("/Template/404g.png");
     }else{                              
@@ -97,10 +106,14 @@ public UploadedFile getFile() {
     
     public void deleteImage(){
         Map<String,String[]> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap(); 
-        String[] selectedImage = params.get("selectedImage");
-        List<UserScreenshot> userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());
-        for (UserScreenshot us:userScreens){
-      if(us.getLink().equals(selectedImage[0])) userScreenshotService.delete(us.getId());}
+        String[] selectedImage = params.get("selectedImage");        
+        if(checkForMyGallery()){
+        userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());}
+        if(!checkForMyGallery()){
+           User user = userService.getUserByUid(userId);
+        userScreens = userScreenshotService.getScreenshotsByUserId(user.getId());}        
+            for (UserScreenshot us:userScreens){
+                if(us.getLink().equals(selectedImage[0])) userScreenshotService.delete(us.getId());}
     }
     
     /**
@@ -116,8 +129,29 @@ public UploadedFile getFile() {
     public void setNoScreensForUser(boolean noScreensForUser) {
         this.noScreensForUser = noScreensForUser;
     }
-    
-      
-    
+
+    /**
+     * @return the userId
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public Boolean checkForMyGallery(){        
+        return userId.equals("my");
+    }
+    public String getGalleryOwner(){
+        if (userId.equals("my")) {return "My gallery";}
+        else{ User user = userService.getUserByUid(userId);
+         return user.getLogin()+"'s gallery";                
+    }
+           
+   }
     
 }

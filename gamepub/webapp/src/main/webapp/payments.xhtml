@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+</h:head>
+<h:body>
+
+
+    <ui:composition template="/Template/template.xhtml">
+
+        <ui:define name="content">
+            <h:outputStylesheet name="theme.css"/>
+            <b:column span="9" offset="1">
+                <b:row>
+                    <b:column span="3" offset="1">
+                        <h2 align="center" id="userName">#{profileBean.name}</h2>
+                        <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
+
+                    </b:column>
+                    <b:column span="3" style="margin-top:10%">
+                        <h:form id="outSummform">
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(2)}"
+                                             ajax="false"
+                                             value="Buy gold account "/><br/><br/>
+
+                            Your fine - <b>#{profileBean.fine}</b><br/>
+                            <br/>
+
+
+                            Pay <p:inputText id="inputSumm" styleClass="form-textbox"/>
+
+                            <p:commandButton styleClass="btn btn-primary"
+                                             action="#{robokassaBean.submit(0)}"
+                                             ajax="false"
+                                             value="Submit"/>
+                            <br/><br/>
+                            <p:commandButton styleClass="btn btn-primary"
+                                             action="#{robokassaBean.submit(1)}"
+                                             ajax="false"
+                                             value="Pay for all fine"/>
+                        </h:form>
+
+
+                    </b:column>
+                </b:row>
+
+            </b:column>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

@@ -28,7 +28,7 @@ public class Main {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GAME_URL = "http://api.steampowered.com/ISteamApps/GetAppList/v2"; //all games
     private static final String NEWS_URL = "http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid="; //news by game
-
+/*
     public static void load(String filename, String platformName) throws Exception {
         GameDaoImplementation gameDaoImplementation = new GameDaoImplementation();
         PlatformDaoImplementation platformDaoImplementation = new PlatformDaoImplementation();
@@ -563,7 +563,7 @@ public class Main {
         }
         loader.checkNewses();
         System.exit(0);
-  */
+
     }
 
     private void checkNewses() {
@@ -638,5 +638,5 @@ public class Main {
         input.close();
         return response.toString();
     }
-
+*/
 }

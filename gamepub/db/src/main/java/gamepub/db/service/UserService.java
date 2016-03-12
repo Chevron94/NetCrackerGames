@@ -108,6 +108,12 @@ public class UserService extends UserDaoImplementation {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public User getUserByApiToken(String token) {
+        return super.getUserByApiToken(token);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<User> getUsersByCustomParams(List<HashMap.Entry<String, Object>> parameterList) {
         return super.getUsersByCustomParams(parameterList);
     }

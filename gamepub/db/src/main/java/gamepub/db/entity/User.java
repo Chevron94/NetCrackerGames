@@ -3,6 +3,7 @@ package gamepub.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,23 @@ public class User {
     @Column(name = "BANNED")
     Boolean banned;
 
+    @Column(name = "FINE")
+    Integer fine;
+
+    @Column(name = "REPUTATION",columnDefinition = "int default 0")
+    Integer reputation;
+    
+
+    @Column(name = "GOLD",columnDefinition = "boolean default false")
+    Boolean gold;
+
+    @Column(name = "API_TOKEN", nullable = true)
+    String apiToken;
+    @Column(name = "USED_REQUESTS")
+    Integer usedRequest;
+    @Column(name = "TOKEN_EXPIRE_DATE")
+    Date expireDate;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ROLE_ID", nullable = false)
@@ -51,7 +69,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    List<PrivateMessage> sendedPrivateMessages;
+    List<PrivateMessage> sentPrivateMessages;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     List<PrivateMessage> receivedPrivateMessages;
@@ -73,7 +91,10 @@ public class User {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Comment> comments;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "offeringUser")
+    List<Trade> offeringUserTrades;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receivingUser")
+    List<Trade> receivingUserTrades;
     public User() {
     }
 
@@ -165,12 +186,12 @@ public class User {
         this.city = city;
     }
 
-    public List<PrivateMessage> getSendedPrivateMessages() {
-        return sendedPrivateMessages;
+    public List<PrivateMessage> getSentPrivateMessages() {
+        return sentPrivateMessages;
     }
 
-    public void setSendedPrivateMessages(List<PrivateMessage> sendedPrivateMessages) {
-        this.sendedPrivateMessages = sendedPrivateMessages;
+    public void setSentPrivateMessages(List<PrivateMessage> sentPrivateMessages) {
+        this.sentPrivateMessages = sentPrivateMessages;
     }
 
     public List<PrivateMessage> getReceivedPrivateMessages() {
@@ -261,6 +282,40 @@ public class User {
         this.banned = banned;
     }
 
+
+    public int getFine(){
+        return fine;
+    }
+
+    public void setFine(Integer fine) {
+        this.fine = fine;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public Integer getUsedRequest() {
+        return usedRequest;
+    }
+
+    public void setUsedRequest(Integer usedRequest) {
+        this.usedRequest = usedRequest;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -293,4 +348,69 @@ public class User {
                 ", city=" + city +
                 '}';
     }
+
+    /**
+     * @return the offeringUserTrades
+     */
+    public List<Trade> getOfferingUserTrades() {
+        return offeringUserTrades;
+    }
+
+    /**
+     * @param offeringUserTrades the offeringUserTrades to set
+     */
+    public void setOfferingUserTrades(List<Trade> offeringUserTrades) {
+        this.offeringUserTrades = offeringUserTrades;
+    }
+
+    /**
+     * @return the receivingUserTrades
+     */
+    public List<Trade> getReceivingUserTrades() {
+        return receivingUserTrades;
+    }
+
+    /**
+     * @param receivingUserTrades the receivingUserTrades to set
+     */
+    public void setReceivingUserTrades(List<Trade> receivingUserTrades) {
+        this.receivingUserTrades = receivingUserTrades;
+    }
+
+    /**
+     * @return the reputation
+     */
+    public Integer getReputation() {
+        return reputation;
+    }
+
+    /**
+     * @param reputation the reputation to set
+     */
+    public void setReputation(Integer reputation) {
+        this.reputation = reputation;
+    }
+
+    /**
+     * @return the gold
+     */
+    public Boolean getGold() {
+        return gold;
+    }
+
+    /**
+     * @param gold the gold to set
+     */
+    public void setGold(Boolean gold) {
+        this.gold = gold;
+    }
+
+
+    
+
+    
+
+    
+
+   
 }

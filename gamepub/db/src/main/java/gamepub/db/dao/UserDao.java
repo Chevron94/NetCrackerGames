@@ -19,7 +19,9 @@ public interface UserDao extends BaseDao<User, Integer> {
     public User getUserBySteamInfo(String steamInfo);
     public User getUserByGoogleInfo(String steamInfo);
     public User getUserByFbInfo(String fbInfo);
-
+    public User getUserByApiToken(String token);
+    public void refreshRequestsCount();
+    
     public List<User> getUsersByUserRoleId(Integer id);
     public List<User> getUsersByCityId(Integer id);
     public List<User> getUsersByCountryId(Integer id);

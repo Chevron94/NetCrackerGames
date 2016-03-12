@@ -22,6 +22,8 @@ public class UserTransaction {
     boolean status;
     @Column(name = "PAYMENT_DATE", nullable = false)
     Date date;
+    @Column(name = "DESCRIPTION")
+    String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -65,6 +67,14 @@ public class UserTransaction {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
     @Override

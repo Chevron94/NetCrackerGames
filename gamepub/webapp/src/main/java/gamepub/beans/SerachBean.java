@@ -10,6 +10,7 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -42,14 +43,21 @@ public class SerachBean {
     @EJB
     PlatformService platformService;
 
+    List<Game> games;
+
     String[] platform;
     String myGenre;
     String myGame;
     Date date;
-    int startGame = 11;
+    int startGame = 0, endGame = 10, loadCount;
 
     public void setGenres(String genreS) {
         genre = genreS;
+    }
+
+    @PostConstruct
+    public void init() {
+        games = getMyGames();
     }
 
     public List<Game> getMyGames() {
@@ -83,9 +91,13 @@ public class SerachBean {
             param = new HashMap.SimpleEntry<String, Object>("dateGame", context.getExternalContext().getSessionMap().get("dateGame"));
             parametersList.add(param);
         }
+        List<Game> games = gameService.getGamesByCustomParams(parametersList, false, startGame, endGame);
+        return games;
 
-        return gameService.getGamesByCustomParams(parametersList, false, 0, startGame);
+    }
 
+    public List<Game> getTGames() {
+        return games;
     }
 
     public List<Genre> getGenre() {
@@ -119,16 +131,23 @@ public class SerachBean {
         if (date != null) {
             facesContext.getExternalContext().getSessionMap().put("dateGame", date);
         }
+        games = getMyGames();
     }
 
 
     public void loadMore() {
-        /*FacesContext context = FacesContext.getCurrentInstance();
-        int startGame = (Integer)context.getExternalContext().getSessionMap().get("startGame");
-        context.getExternalContext().getSessionMap().put("startGame",startGame+10);*/
-        startGame+=11;
+        startGame += 4;
+        endGame += 4;
+
+        games.addAll(getMyGames());
+
     }
 
+    public String getLoadCount(boolean flag) {
+        if (flag)
+            loadCount++;
+        return "load" + loadCount;
+    }
 
     public String goToConcreteGame() {
         return "game?faces-redirect=true";

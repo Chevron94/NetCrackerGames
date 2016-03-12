@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "GAME")
-public class Game {
+public class Game implements SearchItem {
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,7 @@ public class Game {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GamePlatform> gamePlatforms;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<GameScreenshot> gameScreenshots;
 
@@ -53,8 +54,11 @@ public class Game {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     List<News> newses;
-
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "offeringGame")
+    List<OfferingUserTrade> OfferingUserTrades;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receivingGame")
+    List<ReceivingUserTrade> ReceivingUserTrades;
+  
     public Game() {
     }
 
@@ -206,4 +210,34 @@ public class Game {
                 ", steamId=" + steamId +
                 '}';
     }
+
+    /**
+     * @return the OfferingUserTrades
+     */
+    public List<OfferingUserTrade> getOfferingUserTrades() {
+        return OfferingUserTrades;
+    }
+
+    /**
+     * @param OfferingUserTrades the OfferingUserTrades to set
+     */
+    public void setOfferingUserTrades(List<OfferingUserTrade> OfferingUserTrades) {
+        this.OfferingUserTrades = OfferingUserTrades;
+    }
+
+    /**
+     * @return the ReceivingUserTrades
+     */
+    public List<ReceivingUserTrade> getReceivingUserTrades() {
+        return ReceivingUserTrades;
+    }
+
+    /**
+     * @param ReceivingUserTrades the ReceivingUserTrades to set
+     */
+    public void setReceivingUserTrades(List<ReceivingUserTrade> ReceivingUserTrades) {
+        this.ReceivingUserTrades = ReceivingUserTrades;
+    }
+
+   
 }

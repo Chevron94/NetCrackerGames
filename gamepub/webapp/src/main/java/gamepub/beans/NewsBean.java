@@ -11,10 +11,7 @@ import gamepub.dto.NewsDto;
 import java.io.IOException;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

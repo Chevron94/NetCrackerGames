@@ -7,6 +7,7 @@ package gamepub.beans;
 
 import gamepub.db.entity.Game;
 import gamepub.db.entity.News;
+import gamepub.db.entity.SearchItem;
 import gamepub.db.entity.User;
 import gamepub.db.service.GameService;
 import gamepub.db.service.NewsService;
@@ -36,7 +37,8 @@ public class LifeSearchBean {
     @EJB
     UserService userService;
 
-    private int startGame  = 0;
+    private int startGame  = 10;
+    private String whatSearch;
 
     public String getRequest(){
         return request;
@@ -88,8 +90,33 @@ public class LifeSearchBean {
         Map.Entry<String, Object> param;
         param = new HashMap.SimpleEntry<String, Object>("name", query);
         parametersList.add(param);
-        return gameService.getGamesByCustomParams(parametersList,false,0,startGame);
+        return gameService.getGamesByCustomParams(parametersList,false,0,10);
     }
+
+    public List<SearchItem> searchItems(String query){
+        List<HashMap.Entry<String, Object>> parametersList = new ArrayList<HashMap.Entry<String, Object>>();
+        Map.Entry<String, Object> param;
+        param = new HashMap.SimpleEntry<String, Object>("name", query);
+        parametersList.add(param);
+        if(whatSearch.equals("game"))
+            return new ArrayList<SearchItem>(gameService.getGamesByCustomParams(parametersList,false,0,10));
+        else
+            return new ArrayList<SearchItem>(newsService.getNewsByCustomParams(parametersList,false,0,10));
+    }
+
+    public String getWhatSearch(){
+        if(whatSearch == null)
+            whatSearch = "game";
+        return whatSearch;
+    }
+
+    public void change(){
+        if (whatSearch.equals("game"))
+            whatSearch = "news";
+        else
+            whatSearch = "game";
+    }
+
 
     public void loadGame(){
         startGame+=10;

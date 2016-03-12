@@ -23,6 +23,8 @@ public class MainPageBean {
     List<Game> myGames;
     @EJB
     GameService gameService;
+    @EJB
+    Tournament tournamentService;
 
     public List<Game> getMyGames() {
         /*myGames = gameService.findAll();
@@ -48,8 +50,10 @@ public class MainPageBean {
      * @return the matches
      * @throws java.net.UnknownHostException
      */
-    public List<Match> getMatches() throws Exception {
-        Tournament tournament = new Tournament();
-        return tournament.getMatches();        
+    public List<Match> getMatches() throws Exception {       
+        return tournamentService.getMatches();        
+    }
+    public List<Match> getCsMatches() throws Exception {       
+        return tournamentService.getCsMatches();        
     }
 }

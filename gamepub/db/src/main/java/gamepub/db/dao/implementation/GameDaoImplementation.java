@@ -114,8 +114,11 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
                 } else {
                     if (param.getKey().equals("genre")) {
                         jpa += " AND g.genre= :genre";
-                    } else jpa += " AND gp.releaseDate<= :dateGame";
-                    parameters.put(param.getKey(), param.getValue());
+                        parameters.put(param.getKey(), param.getValue());
+                    } else {
+                        jpa += " AND gp.releaseDate<= :dateGame";
+                        parameters.put(param.getKey(), param.getValue());
+                    }
                 }
 
             }
@@ -123,7 +126,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         if (all)
             return this.executeQuery(jpa, parameters);
         else {
-            return this.executeQuery(jpa,start,count);
+            return this.executeQuery(jpa,parameters,start,count);
         }
     }
 

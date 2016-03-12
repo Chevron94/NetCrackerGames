@@ -11,10 +11,9 @@
 <h:body>
 
     <ui:composition template="/Template/template.xhtml">
-
         <ui:define name="content">
 
-            <b:column span="3">
+            <b:column span="#{3-sessionBean.mainOffset}" offset="#{sessionBean.mainOffset}">
                 <div class="left-sidebar">
                     <h3 align="center">Top of the week</h3>
                     <h:form id="formLeft">
@@ -37,17 +36,19 @@
                 </div><!-- .left-sidebar -->
             </b:column>
 
-            <b:column span="6">
+            <b:column span="#{sessionBean.mainWidth}">
                 <div class="content">
                     <h3 align="center">Hot games</h3>
                     <h:form>
                         <p:carousel value="#{mainPageBean.myGames}" var="game"
-                                    itemStyle="text-align:center" responsive="true" style="height: 60%; " numVisible="2">
-                            <p:panelGrid columns="2" style="width:100%;height:100%; text-align: center; margin:10px 0px" columnClasses="label,value"
+                                    itemStyle="text-align:center" responsive="true" style="height: 60%; "
+                                    numVisible="2">
+                            <p:panelGrid columns="2" style="width:100%;height:100%; text-align: center; margin:10px 0px"
+                                         columnClasses="label,value"
                                          layout="grid" styleClass="ui-panelgrid-blank">
 
                                 <f:facet name="header">
-                                        <p:graphicImage value="#{game.poster}" styleClass="imgA"/>
+                                    <p:graphicImage value="#{game.poster}" styleClass="imgA"/>
                                 </f:facet>
 
 
@@ -65,17 +66,26 @@
                 </div>
             </b:column>
 
-            <b:column span="3">
+            <b:column span="#{3-sessionBean.mainOffset}">
                 <div class="right-sidebar">
                     <h3 align="center">Tournaments</h3>
                     <h:form id="formRight">
-                        <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
+                        <p:tabView id="tournaments">
+                            <p:tab title="Dota 2 matches">
+                                <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
                                     emptyMessage="No matches today">
-                            <f:facet name="header">
-                                Dota2
-                            </f:facet>
-                            #{match.status}: #{match.setTournament(tournament)} - #{match.team1} - #{match.dataScore} - #{match.team2}
-                        </p:dataList>
+                            
+                            #{match.status}: #{match.tournament} - #{match.team1} - #{match.dataScore} - #{match.team2}
+                                </p:dataList>
+                            </p:tab>
+                            <p:tab title="CS:GO matches">
+                                <p:dataList value="#{mainPageBean.getCsMatches()}" var="csmatch" type="ordered"
+                                            emptyMessage="No matches today" >
+                            
+                            #{csmatch.status}: #{csmatch.tournament} - #{csmatch.team1} vs #{csmatch.team2} - #{csmatch.dataScore} 
+                                </p:dataList>
+                            </p:tab> 
+                        </p:tabView>    
                     </h:form>
                 </div><!-- .right-sidebar -->
             </b:column>
