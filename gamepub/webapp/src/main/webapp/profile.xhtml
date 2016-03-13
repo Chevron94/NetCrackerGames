@@ -52,7 +52,7 @@
                             <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >
                                 <f:param value="#{profileBean.userId}" name="userId"/>
                             </b:button>
-                            
+
                         </h:form>
                         <h:panelGrid rendered="#{profileBean.isMy and
                         (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
@@ -103,7 +103,7 @@
 
                         </h:form>
                         <h:form id="info" style="margin-top: 25%">
-                            
+
                             <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
                                 <h:outputText value="Reputation:#{profileBean.getUserRep()}" style="font-size: medium"/>
                                 City:
@@ -291,9 +291,9 @@
                                 </h:form>
                             </p:tab>
                             <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy}">
-                                 <h:form id="currentOfferedTrade" >
+                                <h:form id="currentOfferedTrade" >
                                     <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
-                                       
+
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="Your offer" style="text-align: center"
@@ -332,31 +332,31 @@
                                             </b:column>
                                             <b:column span="2">
                                                 <p:commandButton value="Cancel"
-                                                                 style="color: #991216" 
-                                                                 actionListener="#{profileBean.declineOffer(trade)}" 
+                                                                 style="color: #991216"
+                                                                 actionListener="#{profileBean.declineOffer(trade)}"
                                                                  update=":tabView:currentOfferedTrade"
                                                                  rendered="#{profileBean.checkForOpened(trade)}"/>
-                                                
+
                                                 <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/> 
-                                                    <p:commandButton value="Pay"
-                                                                 style="color: #991216" 
-                                                                 actionListener="#{robokassaBean.submit(3)}" 
+                                                <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <p:commandButton value="Pay"
+                                                                 style="color: #991216"
+                                                                 actionListener="#{robokassaBean.submit(3)}"
                                                                  update=":tabView:currentOfferedTrade"
                                                                  rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.offeringUserPay}"/>
-                                        </b:column>                                                
+                                                <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.offeringUserPay}"/>
+                                            </b:column>
                                         </b:row>
 
-                                       
+
                                     </p:dataScroller>
-                                         </h:form>            
-                                
+                                </h:form>
+
                             </p:tab>
                             <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy}">
-                                  <h:form id="currentReceivedTrade" >
+                                <h:form id="currentReceivedTrade" >
                                     <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
-                                       
+
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
 
                                             <b:column span="4" offset="1">
@@ -382,16 +382,16 @@
                                                             value="#{profileBean.getRecievedGames(trade)}"
                                                             var="receivedGame"
                                                             responsive="true" itemStyle="height:150px">
-                                                
-                                                   <h:link outcome="aboutGame" includeViewParams="true">
-                                                       <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
-                                                        
-                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
-                                                        </h:link>                                                          
-                                                    
-                                              
-                                        </p:carousel>
-                                        </b:column>
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />
+
+                                                        <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                    </h:link>
+
+
+                                                </p:carousel>
+                                            </b:column>
                                             <b:column span="3" >
                                                 <p:commandButton value="Accept"
                                                                  rendered="#{profileBean.checkForOpened(trade)}"
@@ -400,19 +400,19 @@
                                                 <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
                                                                  style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
                                                                  update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
-                                                    <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>  
-                                                    <p:commandButton id="confirmButton" value="Pay" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
-                                                                     actionListener="#{robokassaBean.submit(3)}" update=":tabView:currentReceivedTrade"/>
-                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.receivingUserPay}"/>
-                                        </b:column>    
-                                            
+                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <p:commandButton id="confirmButton" value="Pay" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
+                                                                 actionListener="#{robokassaBean.submit(3)}" update=":tabView:currentReceivedTrade"/>
+                                                <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.receivingUserPay}"/>
+                                            </b:column>
+
                                         </b:row>
 
-                                       
+
                                     </p:dataScroller>
-                                           </h:form>          
-                                
+                                </h:form>
+
                             </p:tab>
                         </p:tabView>
 
