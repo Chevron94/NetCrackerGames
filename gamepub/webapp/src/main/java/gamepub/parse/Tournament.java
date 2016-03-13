@@ -106,6 +106,7 @@ return matches;
 }
     public ArrayList<Match> getCsMatches(){
         csmatches = new ArrayList<Match>();
+        try{
          for(int i=0;i<40;i++){
       Match csmatch = new Match();
       csmatch.setDataScore(doc2.select("td.mtime").get(i).select("span.live-in").text());
@@ -118,8 +119,10 @@ return matches;
       else {csmatch.setStatus("Future match");
       
       }
+         
       csmatches.add(csmatch);
   }
+        }catch(Exception e){}
          return csmatches;
     }
     

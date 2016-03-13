@@ -22,8 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
@@ -55,7 +57,7 @@ private ArrayList<Game> myWantedGamesSource;
 private ArrayList<Game> myWantedGamesTarget;
 private ArrayList<Game> userWantedGamesSource;
 private ArrayList<Game> userWantedGamesTarget;
-
+private boolean handtohand;
  public DualListModel<Game> getMyGames() {     
       myWantedGamesSource = new ArrayList<Game>(); 
       myWantedGamesTarget = new ArrayList<Game>(); 
@@ -88,12 +90,18 @@ private ArrayList<Game> userWantedGamesTarget;
     }
     
     public void sendOffer(){
-       Trade trade = new Trade();
-       trade.setStatus("opened");
+        Trade trade = new Trade();
+        if(handtohand==true){
+            trade.setStatus("handtohand");
+        }
+        else {       
+       trade.setStatus("opened");}
        trade.setOfferingUser(userService.getUserById(SessionBean.getUserId()));
        trade.setReceivingUser(userService.getUserById(SessionBean.getUserForTradeId()));
        trade.setOfferingUserPay(false);
        trade.setReceivingUserPay(false);
+       trade.setReceivedByOfferingUser(false);
+       trade.setReceivedByReceivingUser(false);
        tradeService.create(trade);
        Trade currentTrade = tradeService.getLastTradeByOfferingUserId(SessionBean.getUserId());
        for(Game g:myGames.getTarget()){
@@ -112,6 +120,7 @@ private ArrayList<Game> userWantedGamesTarget;
               
        SessionBean.getSession().removeAttribute("tradeuser");             
         RequestContext.getCurrentInstance().closeDialog("tradeOffer");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Trade offer has been sent"));
     }
 
     /**
@@ -127,8 +136,25 @@ private ArrayList<Game> userWantedGamesTarget;
     public void setTradeUserGames(DualListModel<Game> tradeUserGames) {
         this.tradeUserGames = tradeUserGames;
     }
-    
-         
+
+    /**
+     * @return the handtohand
+     */
+    public boolean isHandtohand() {
+        return handtohand;
+    }
+
+    /**
+     * @param handtohand the handtohand to set
+     */
+    public void setHandtohand(boolean handtohand) {
+        this.handtohand = handtohand;
+    }
+    public void addMsg(){
+        String res = handtohand ? "Hand-to-hand offer has been chosen":"Remote exchange has been chosen";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(res));
+    }
+       
         
     }
     
