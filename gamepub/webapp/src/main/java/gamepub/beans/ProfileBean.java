@@ -341,24 +341,36 @@ public class ProfileBean {
     public boolean checkForConfirmed(Trade trade){
         return trade.getStatus().equals("confirmed");
     }
-
+    public boolean checkForHandtohand(Trade trade){
+        return trade.getStatus().equals("handtohand");
+    }
+    public void setFraud(){
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please contact with us and we'll resolve your problem!"));
+    }
+    public void setReceived(Trade trade){
+        if (trade.getOfferingUser().getId()==SessionBean.getUserId()){
+            trade.setReceivedByOfferingUser(Boolean.TRUE);
+            tradeService.update(trade);
+        }
+        if (trade.getReceivingUser().getId()==SessionBean.getUserId()){
+            trade.setReceivedByReceivingUser(Boolean.TRUE);
+            tradeService.update(trade);
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours!"));
+    }
+    public void setBothReceived(Trade trade){        
+            trade.setReceivedByOfferingUser(Boolean.TRUE);
+            trade.setReceivedByReceivingUser(Boolean.TRUE);
+            tradeService.update(trade);                
+            
+                   
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours!"));
+    }
     public void setInProgress(Trade trade){
         trade.setStatus("inProgress");
         tradeService.update(trade);
     }
-    public void setConfirmed(Trade trade){
-        HashSet<User> hs = new HashSet<User>();
-        trade.setStatus("confirmed");
-        User offeringU =  trade.getOfferingUser(); 
-        User receivingU =  trade.getReceivingUser(); 
-        tradeService.update(trade);
-         
-                if (receivingU.getId()==SessionBean.getUserId()){ 
-                     hs.add(offeringU);}
-                   
-       offeringU.setReputation(hs.size());
-       userService.update(offeringU);
-    }
+    
     public void declineOffer(Trade trade){        
         tradeService.delete(trade.getId());
 

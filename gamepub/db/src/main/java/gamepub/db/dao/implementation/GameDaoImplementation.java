@@ -83,7 +83,7 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
 
     public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameterList, boolean all, Integer start, Integer count) {
         String jpa = "Select DISTINCT g.game FROM GameGenre g, GamePlatform gp WHERE gp.game=g.game AND g.game.poster != ''";
-        if (parameterList.size() == 0) {
+        if (parameterList == null || parameterList.size() == 0) {
             if (all)
                 return this.executeQuery(jpa);
             else {

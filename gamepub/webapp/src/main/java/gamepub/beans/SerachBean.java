@@ -91,8 +91,7 @@ public class SerachBean {
             param = new HashMap.SimpleEntry<String, Object>("dateGame", context.getExternalContext().getSessionMap().get("dateGame"));
             parametersList.add(param);
         }
-        List<Game> games = gameService.getGamesByCustomParams(parametersList, false, startGame, endGame);
-        return games;
+        return gameService.getGamesByCustomParams(parametersList, false, startGame, endGame);
 
     }
 
@@ -138,7 +137,7 @@ public class SerachBean {
     public void loadMore() {
         startGame += 4;
         endGame += 4;
-
+        //games = getMyGames();
         games.addAll(getMyGames());
 
     }

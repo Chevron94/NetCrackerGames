@@ -32,22 +32,37 @@ public class TradeJob extends TimerTask{
         try{
        List<Trade> trades = tdi.getTradesByStatus("inProgress");
        for (Trade trade:trades){
-           if (curDate.getTime() - trade.getCreateTime().getTime() > 300000){
+           if (curDate.getTime() - trade.getCreateTime().getTime() > 400000){
                
                if(trade.getOfferingUserPay()==false && trade.getReceivingUserPay()==true){
                    User offUser = trade.getOfferingUser();
-                   offUser.setFine(400);
+                   offUser.setFine(200);
                    offUser.setReputation(udi.getUserById(offUser.getId()).getReputation()-1);
+                   tdi.delete(trade.getId());
                    /* money back to receivingUser*/
                }
                if(trade.getReceivingUserPay()==false && trade.getOfferingUserPay()==true){
                    User recUser = trade.getReceivingUser();
-                   trade.getReceivingUser().setFine(400);
+                   trade.getReceivingUser().setFine(200);
                    recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()-1);
+                   tdi.delete(trade.getId());
                    /* money back to offeringUser*/
                }    
-               if(trade.getOfferingUserPay()==true && trade.getReceivingUserPay()==true){                   
+               if(trade.getReceivedByOfferingUser()==true && trade.getReceivedByReceivingUser()==true){                   
                    trade.setStatus("confirmed");
+                   User recUser = trade.getReceivingUser();
+                   User offUser = trade.getOfferingUser();
+                   List<Trade> confirmedTrades = tdi.getTradesByStatus("confirmed");
+                   for(Trade tr:confirmedTrades){
+                       if(!((tr.getOfferingUser().getId()==recUser.getId() && tr.getReceivingUser().getId()==offUser.getId())
+                               || tr.getOfferingUser().getId()==offUser.getId() && tr.getReceivingUser().getId()==recUser.getId())){
+                           recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()+1);
+                   recUser.setReputation(udi.getUserById(offUser.getId()).getReputation()+1);
+                   udi.update(offUser);
+                   udi.update(recUser);
+                       }
+                   }
+                   
                    tdi.update(trade);
                    
                }

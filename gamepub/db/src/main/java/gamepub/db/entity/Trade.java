@@ -39,6 +39,10 @@ public class Trade {
     Date createTime;
     @Column(name = "STATUS")
     String status;
+    @Column(name = "RECEIVED_BY_OFFERING_USER",columnDefinition = "boolean default false")
+    Boolean receivedByOfferingUser;
+    @Column(name = "RECEIVED_BY_RECEIVING_USER",columnDefinition = "boolean default false")
+    Boolean receivedByReceivingUser;
     
     @PrePersist
     protected void onCreate() {
@@ -216,6 +220,34 @@ public class Trade {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * @return the receivedByOfferingUser
+     */
+    public Boolean getReceivedByOfferingUser() {
+        return receivedByOfferingUser;
+    }
+
+    /**
+     * @param receivedByOfferingUser the receivedByOfferingUser to set
+     */
+    public void setReceivedByOfferingUser(Boolean receivedByOfferingUser) {
+        this.receivedByOfferingUser = receivedByOfferingUser;
+    }
+
+    /**
+     * @return the receivedByReceivingUser
+     */
+    public Boolean getReceivedByReceivingUser() {
+        return receivedByReceivingUser;
+    }
+
+    /**
+     * @param receivedByReceivingUser the receivedByReceivingUser to set
+     */
+    public void setReceivedByReceivingUser(Boolean receivedByReceivingUser) {
+        this.receivedByReceivingUser = receivedByReceivingUser;
     }
 
   
