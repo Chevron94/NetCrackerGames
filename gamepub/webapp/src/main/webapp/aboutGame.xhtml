@@ -16,10 +16,6 @@
                 <b:row>
                     <b:column span="3" offset="2">
                         <p:graphicImage value="#{aboutGameBean.game.poster}" style="max-height: 400px; max-width: 600px;"/>
-                        <p:contentFlow value="#{aboutGameBean.images}" var="image">
-                            <p:graphicImage name="#{image}" styleClass="content" />
-                            <div class="caption">#{image}</div>
-                        </p:contentFlow>
                     </b:column>
                     <b:column span="4" offset="1">
                         <b>Platform and system requirements:</b>
@@ -47,20 +43,19 @@
 
                 <b:row>
                     <b:column span="8" offset="2">
-
                         <h:form id="statusForm">
-                            <p:commandButton value=" " id="notstarted" update="statusForm"
-                                             actionListener="#{aboutGameBean.addStatus(1)}" styleClass="btn btn-primary"
-                                             icon="fa fa-fw fa-unchecked" title="not started" rendered="#{aboutGameBean.drawStatus}"/>
-                            <p:commandButton value=" " id="passed" update="statusForm"
-                                             actionListener="#{aboutGameBean.addStatus(2)}" styleClass="btn btn-primary"
-                                             icon="fa fa-fw  fa-ok-circle" title="passed" rendered="#{aboutGameBean.drawStatus}"/>
-                            <p:commandButton value=" " id="duringpassage" update="statusForm"
-                                             actionListener="#{aboutGameBean.addStatus(3)}" styleClass="btn btn-primary"
-                                             icon="fa fa-fw  fa-adjust" title="during passage" rendered="#{aboutGameBean.drawStatus}"/>
-                            <p:commandButton value=" " id="abandoned" update="statusForm"
-                                             actionListener="#{aboutGameBean.addStatus(4)}" styleClass="btn btn-primary"
-                                             icon="fa fa-fw  fa-remove-circle" title="abandoned" rendered="#{aboutGameBean.drawStatus}"/>
+                            <p:commandButton value="" id="notstarted" update="statusForm"
+                                             actionListener="#{aboutGameBean.addStatus(1)}"
+                                             icon="ui-icon-radio-on" title="not started" style="width:30px;height:30px" styleClass="btn btn-default" rendered="#{aboutGameBean.drawStatus}"/>
+                            <p:commandButton value="" id="passed" update="statusForm"
+                                             actionListener="#{aboutGameBean.addStatus(2)}"
+                                             icon="ui-icon-circle-check" title="passed" style="width:30px;height:30px" styleClass="btn btn-success" rendered="#{aboutGameBean.drawStatus}"/>
+                            <p:commandButton value="" id="duringpassage" update="statusForm"
+                                             actionListener="#{aboutGameBean.addStatus(3)}"
+                                             icon="ui-icon-circle-plus" title="during passage" style="width:30px;height:30px" styleClass="btn btn-primary" rendered="#{aboutGameBean.drawStatus}"/>
+                            <p:commandButton value="" id="abandoned" update="statusForm"
+                                             actionListener="#{aboutGameBean.addStatus(4)}"
+                                             icon="ui-icon-circle-close" title="abandoned" style="width:30px;height:30px" styleClass="btn btn-danger" rendered="#{aboutGameBean.drawStatus}"/>
                         </h:form>
                         <br/>
                         <br/>
