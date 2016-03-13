@@ -2,6 +2,7 @@ package gamepub.beans;
 
 import gamepub.db.entity.PrivateMessage;
 import gamepub.db.entity.User;
+import gamepub.db.service.FriendService;
 import gamepub.db.service.PrivateMessageService;
 import gamepub.db.service.UserService;
 
@@ -29,6 +30,8 @@ public class OneMessageBean {
     UserService userService;
     @EJB
     PrivateMessageService privateMessageService;
+    @EJB
+    FriendService friendService;
 
     public int getReceiverId() {
         return receiverId;
@@ -95,16 +98,18 @@ public class OneMessageBean {
 
 
     public String sendMessage() {
-        PrivateMessage privateMessage = new PrivateMessage();
-        privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
-        privateMessage.setReceiver(userService.getUserByLogin(userLogin));
-        privateMessage.setDate(new Date());
-        privateMessage.setText(message);
-        privateMessageService.create(privateMessage);
-        receiverId = 0;
-        message = null;
-        userLogin = null;
-        receiver = null;
+        if(!isBlock()) {
+            PrivateMessage privateMessage = new PrivateMessage();
+            privateMessage.setSender(userService.getUserById(SessionBean.getUserId()));
+            privateMessage.setReceiver(userService.getUserByLogin(userLogin));
+            privateMessage.setDate(new Date());
+            privateMessage.setText(message);
+            privateMessageService.create(privateMessage);
+            receiverId = 0;
+            message = null;
+            userLogin = null;
+            receiver = null;
+        }
         return "allMessages";
     }
 
@@ -116,4 +121,9 @@ public class OneMessageBean {
         return userService.getUsersByCustomParams(parametersList);
     }
 
+    public boolean isBlock(){
+
+        return friendService.getFriendBySubIdToId(receiver.getId(),SessionBean.getUserId()) != null &&
+                friendService.getFriendBySubIdToId(receiver.getId(),SessionBean.getUserId()).getBlock();
+    }
 }

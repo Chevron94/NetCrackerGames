@@ -52,11 +52,13 @@ public class FriendDaoImplementation extends BaseDaoImplementation<Friend, Integ
 
 
     public List<Friend> getSubscribersByUserId(Integer id) {
+        Boolean tr = true;
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Friend> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.equal(root.<User>get("subscribedTo").<Integer>get("id"), id));
+        cq.where(cb.and(cb.equal(root.<User>get("subscribedTo").<Integer>get("id"), id),
+                cb.isFalse(root.<Boolean>get("block"))));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;
@@ -67,7 +69,8 @@ public class FriendDaoImplementation extends BaseDaoImplementation<Friend, Integ
         CriteriaQuery cq = cb.createQuery();
         Root<Friend> root = cq.from(instance);
         cq.select(root);
-        cq.where(cb.equal(root.<User>get("subscriber").<Integer>get("id"), id));
+        cq.where(cb.and(cb.equal(root.<User>get("subscriber").<Integer>get("id"), id),
+                cb.isFalse(root.<Boolean>get("block"))));
         List result = getEntityManager().createQuery(cq).getResultList();
         closeEntityManager();
         return result;
