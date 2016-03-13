@@ -30,6 +30,11 @@
                             <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
                                              actionListener="#{profileBean.edit()}"
                                              rendered="#{profileBean.isMy}"/>
+                            <br/>
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(2)}"
+                                             ajax="false"
+                                             value="Buy gold account "/>
                         </h:form>
                         <!-- Follow -->
                         <h:form id="follow" rendered="#{!profileBean.isMy}">
@@ -47,7 +52,7 @@
                             <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >
                                 <f:param value="#{profileBean.userId}" name="userId"/>
                             </b:button>
-                            
+
                         </h:form>
                         <h:panelGrid rendered="#{profileBean.isMy and
                         (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
@@ -98,7 +103,7 @@
 
                         </h:form>
                         <h:form id="info" style="margin-top: 25%">
-                            
+
                             <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
                                 <h:outputText value="Reputation:#{profileBean.getUserRep()}" style="font-size: medium"/>
                                 City:
@@ -286,9 +291,9 @@
                                 </h:form>
                             </p:tab>
                             <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy}">
-                                 <h:form id="currentOfferedTrade" >
+                                <h:form id="currentOfferedTrade" >
                                     <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
-                                       
+
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="Your offer" style="text-align: center"
@@ -327,11 +332,11 @@
                                             </b:column>
                                             <b:column span="2">
                                                 <p:commandButton value="Cancel"
-                                                                 style="color: #991216" 
-                                                                 actionListener="#{profileBean.declineOffer(trade)}" 
+                                                                 style="color: #991216"
+                                                                 actionListener="#{profileBean.declineOffer(trade)}"
                                                                  update=":tabView:currentOfferedTrade"
                                                                  rendered="#{profileBean.checkForOpened(trade)}"/>
-                                                
+
                                                 <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
                                                     <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/> 
                                                     <p:commandButton value="Pay"
@@ -350,16 +355,16 @@
                                         </b:column>                                                
                                         </b:row>
 
-                                       
+
                                     </p:dataScroller>
-                                         </h:form>            
-                                
+                                </h:form>
+
                             </p:tab>
                             <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy}">
                                   <h:form id="currentReceivedTrade" >
                                       
                                     <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
-                                       
+
                                         <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
 
                                             <b:column span="4" offset="1">
@@ -385,16 +390,16 @@
                                                             value="#{profileBean.getRecievedGames(trade)}"
                                                             var="receivedGame"
                                                             responsive="true" itemStyle="height:150px">
-                                                
-                                                   <h:link outcome="aboutGame" includeViewParams="true">
-                                                       <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
-                                                        
-                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
-                                                        </h:link>                                                          
-                                                    
-                                              
-                                        </p:carousel>
-                                        </b:column>
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />
+
+                                                        <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                    </h:link>
+
+
+                                                </p:carousel>
+                                            </b:column>
                                             <b:column span="3" >
                                                 
                                                 <p:commandButton value="Accept"
@@ -432,7 +437,7 @@
                                             
                                         </b:row>
 
-                                       
+
                                     </p:dataScroller>
                                      
                                            </h:form>          

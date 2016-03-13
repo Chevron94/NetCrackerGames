@@ -75,6 +75,7 @@ public class AllNewsBean {
         if(date != null) {
             facesContext.getExternalContext().getSessionMap().put("date", date);
         }
+        news=getNewses();
     }
 
     public void loadMore() {
