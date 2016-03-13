@@ -100,8 +100,16 @@ metadata-complete="false">
         <servlet-name>resteasy-servlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-	
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>gamepub</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
        
        <listener>
                <listener-class>
