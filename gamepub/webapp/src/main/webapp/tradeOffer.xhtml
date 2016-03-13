@@ -19,6 +19,7 @@ and open the template in the editor.
     <h:body>
         
          <h:form>
+             <p:growl id="msg">
             <h:outputStylesheet name="theme.css"/>
        
             <h2 align="center"> Trade offer</h2>
@@ -61,10 +62,13 @@ and open the template in the editor.
             <h:panelGrid columns="3" cellpadding="5">
                 <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" style="margin-right: 10px"/>            
                 <h:outputText value="Hand-to-hand:  " style="font-size: medium"/>
-            <b:switch value="#num"  />
+                <b:switch value="#{tradeOfferBean.handtohand}"  >
+                    <p:ajax listener="#{tradeOfferBean.addMsg}" update="msg"/>
+                </b:switch>>
             </h:panelGrid>
                 </b:column>
             </b:row>
+             </p:growl>
         </h:form>      
     </h:body>
 </html>
