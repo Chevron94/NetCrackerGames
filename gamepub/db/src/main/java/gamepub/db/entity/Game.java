@@ -2,7 +2,6 @@ package gamepub.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -183,6 +182,23 @@ public class Game implements SearchItem {
     public void setGameScreenshots(List<GameScreenshot> gameScreenshots) {
         this.gameScreenshots = gameScreenshots;
     }
+    @JsonIgnore
+    public List<OfferingUserTrade> getOfferingUserTrades() {
+        return OfferingUserTrades;
+    }
+
+    public void setOfferingUserTrades(List<OfferingUserTrade> OfferingUserTrades) {
+        this.OfferingUserTrades = OfferingUserTrades;
+    }
+    @JsonIgnore
+    public List<ReceivingUserTrade> getReceivingUserTrades() {
+        return ReceivingUserTrades;
+    }
+
+    public void setReceivingUserTrades(List<ReceivingUserTrade> ReceivingUserTrades) {
+        this.ReceivingUserTrades = ReceivingUserTrades;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -211,34 +227,6 @@ public class Game implements SearchItem {
                 ", poster='" + poster + '\'' +
                 ", steamId=" + steamId +
                 '}';
-    }
-
-    /**
-     * @return the OfferingUserTrades
-     */
-    public List<OfferingUserTrade> getOfferingUserTrades() {
-        return OfferingUserTrades;
-    }
-
-    /**
-     * @param OfferingUserTrades the OfferingUserTrades to set
-     */
-    public void setOfferingUserTrades(List<OfferingUserTrade> OfferingUserTrades) {
-        this.OfferingUserTrades = OfferingUserTrades;
-    }
-
-    /**
-     * @return the ReceivingUserTrades
-     */
-    public List<ReceivingUserTrade> getReceivingUserTrades() {
-        return ReceivingUserTrades;
-    }
-
-    /**
-     * @param ReceivingUserTrades the ReceivingUserTrades to set
-     */
-    public void setReceivingUserTrades(List<ReceivingUserTrade> ReceivingUserTrades) {
-        this.ReceivingUserTrades = ReceivingUserTrades;
     }
 
    

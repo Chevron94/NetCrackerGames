@@ -101,7 +101,7 @@ metadata-complete="false">
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 	
-	<!--security-constraint>
+	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>gamepub</web-resource-name>
 			<url-pattern>/*</url-pattern>
@@ -109,7 +109,7 @@ metadata-complete="false">
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-	</security-constraint-->
+	</security-constraint>
        
        <listener>
                <listener-class>
