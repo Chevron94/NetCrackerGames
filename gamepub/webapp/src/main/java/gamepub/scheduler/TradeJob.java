@@ -32,7 +32,7 @@ public class TradeJob extends TimerTask{
         try{
        List<Trade> trades = tdi.getTradesByStatus("inProgress");
        for (Trade trade:trades){
-           if (curDate.getTime() - trade.getCreateTime().getTime() > 400000){
+           if (curDate.getTime() - trade.getCreateTime().getTime() > 300000){
                
                if(trade.getOfferingUserPay()==false && trade.getReceivingUserPay()==true){
                    User offUser = trade.getOfferingUser();
@@ -57,7 +57,7 @@ public class TradeJob extends TimerTask{
                        if(!((tr.getOfferingUser().getId()==recUser.getId() && tr.getReceivingUser().getId()==offUser.getId())
                                || tr.getOfferingUser().getId()==offUser.getId() && tr.getReceivingUser().getId()==recUser.getId())){
                            recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()+1);
-                   recUser.setReputation(udi.getUserById(offUser.getId()).getReputation()+1);
+                   offUser.setReputation(udi.getUserById(offUser.getId()).getReputation()+1);
                    udi.update(offUser);
                    udi.update(recUser);
                        }
