@@ -50,4 +50,16 @@ public class CityDaoImplementation extends BaseDaoImplementation<City,Integer> i
         closeEntityManager();
         return result;
     }
+
+    public List<City> getCitiesByNameAndCountryId(Integer id, String name) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<City> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<Country>get("country").<Integer>get("id"), id), cb.like(root.<String>get("name"),name+"%"));
+        cq.orderBy(cb.asc(root.<String>get("name")));
+        List<City> result = getEntityManager().createQuery(cq).getResultList();
+        closeEntityManager();
+        return result;
+    }
 }
