@@ -1,8 +1,10 @@
 package gamepub.beans.robokassa;
 
 import gamepub.beans.SessionBean;
+import gamepub.db.entity.Trade;
 import gamepub.db.entity.User;
 import gamepub.db.entity.UserTransaction;
+import gamepub.db.service.TradeService;
 import gamepub.db.service.UserService;
 import gamepub.db.service.UserTransactionService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -18,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Created by Анатолий on 24.02.2016.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ on 24.02.2016.
  */
 @ManagedBean
 @RequestScoped
@@ -26,7 +28,8 @@ import java.util.Map;
 public class ResultBean {
     @EJB
     UserService userService;
-
+    @EJB
+    TradeService tradeService;
     @EJB
     UserTransactionService userTransactionService;
     private String mrhPass2 = "NetCracker1";
@@ -68,7 +71,18 @@ public class ResultBean {
             user.setFine(user.getFine() - userTransaction.getOutSumm());
         } else if (userTransaction.getDescription().equals("gold"))
             user.setGold(true);
-
+        
+        if(userTransaction.getDescription().contains("trade")){
+           Integer tradeId = Integer.parseInt(userTransaction.getDescription().substring(5));                      
+           Trade tr = tradeService.getTradeById(tradeId);
+           if(tr.getOfferingUser().getId()==SessionBean.getUserId()){
+           tr.setOfferingUserPay(Boolean.TRUE);
+           }
+           if(tr.getReceivingUser().getId()==SessionBean.getUserId()){
+           tr.setReceivingUserPay(Boolean.TRUE);
+           }
+        }
+        
 
     }
 
