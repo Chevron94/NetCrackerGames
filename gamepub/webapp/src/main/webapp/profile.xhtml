@@ -30,6 +30,11 @@
                             <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
                                              actionListener="#{profileBean.edit()}"
                                              rendered="#{profileBean.isMy}"/>
+                            <br/>
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(2)}"
+                                             ajax="false"
+                                             value="Buy gold account "/>
                         </h:form>
                         <!-- Follow -->
                         <h:form id="follow" rendered="#{!profileBean.isMy}">
