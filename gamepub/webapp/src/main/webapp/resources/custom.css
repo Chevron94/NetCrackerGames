@@ -12,3 +12,11 @@
 .ui-autocomplete-panel .ui-autocomplete-table td{
     border: 0px;
 }
+.water{
+    color:#fff;
+    padding:5px;
+}
+.water::-webkit-input-placeholder{
+    color:#fff;
+
+}

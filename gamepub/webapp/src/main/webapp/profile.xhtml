@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -8,414 +8,419 @@
       xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 
-    <h:body>
-        <ui:composition template="/Template/template.xhtml">
-            <ui:define name="content">
-                <b:column span="10">
-                    <h:outputStylesheet name="theme.css"/>
-                    <f:metadata>
-                        <f:viewParam name="userId" value="#{profileBean.userId}"/>
-                    </f:metadata>
-                    <b:row>
+<h:body>
+    <ui:composition template="/Template/template.xhtml">
+        <ui:define name="content">
+            <b:column span="10">
+                <h:outputStylesheet name="theme.css"/>
+                <f:metadata>
+                    <f:viewParam name="userId" value="#{profileBean.userId}"/>
+                </f:metadata>
+                <b:row>
 
-                        <b:column span="3" offset="1">
-                            <h:panelGrid columns="2">
-                                <h2 align="center" id="userName">#{profileBean.name}</h2>
-                                <p:graphicImage value="resources/gold.png" style="width: 50px; height:50px"
-                                                rendered="#{profileBean.isGold}"/>
+                    <b:column span="3" offset="1">
+                        <h:panelGrid columns="2">
+                            <h2 align="center" id="userName">#{profileBean.name}</h2>
+                            <p:graphicImage value="resources/gold.png" style="width: 50px; height:50px"
+                                            rendered="#{profileBean.isGold}"/>
 
+                        </h:panelGrid>
+                        <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
+                        <h:form>
+                            <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
+                                             actionListener="#{profileBean.edit()}"
+                                             rendered="#{profileBean.isMy}"/>
+                            <br/>
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(2)}"
+                                             ajax="false"
+                                             value="Buy gold account "/>
+                        </h:form>
+                        <!-- Follow -->
+                        <h:form id="follow" rendered="#{!profileBean.isMy}">
+                            <b:commandButton style="width:100%;" class="btn btn-primary" value="Follow" ajax="false"
+                                             actionListener="#{profileBean.follow()}"
+                                             rendered="#{!profileBean.isSubscribedTo}"/>
+                            <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
+                                             actionListener="#{profileBean.unfollow()}"
+                                             rendered="#{profileBean.isSubscribedTo}"/>
+                            <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
+                                      ajax="false"
+                                      rendered="#{profileBean.isSubscribedTo}">
+                                <f:param value="#{profileBean.userId}" name="receiverId"/>
+                            </b:button>
+                            <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >
+                                <f:param value="#{profileBean.userId}" name="userId"/>
+                            </b:button>
+
+                        </h:form>
+                        <h:panelGrid rendered="#{profileBean.isMy and
+                        (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
+                            <br/>Connect with:
+                            <h:form rendered="#{!profileBean.isVk()}">
+
+                                <a href="#{vKAuthorizationBean.userUrl}"><img
+                                        src="http://baltcompany.ru/images/vkontakte.png" height="30"
+                                        width="110"/></a>
+                            </h:form>
+                            <h:form rendered="#{!profileBean.isFacebook()}">
+                                <a href="#{faceBookAuthorizationBean.userUrl}"><img
+                                        src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
+                                        height="30" width="110"/></a>
+                            </h:form>
+                            <h:form rendered="#{!profileBean.isGoogle()}">
+                                <a href="#{googleAuthorizationBean.userUrl}"><img
+                                        src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
+                                        width="110"/></a>
+                            </h:form>
+                        </h:panelGrid>
+                    </b:column>
+
+                    <!--Edit Information about user -->
+                    <b:column span="3">
+                        <h:form id="infoedit" enctype="multipart/form-data">
+                            <h:panelGrid columns="1" cellpadding="10"
+                                         rendered="#{profileBean.isEdit and profileBean.isMy}">
+                                Login:
+                                <p:inputText id="login" value="#{profileBean.login}"/>
+                                <p:outputLabel for="city"/>
+                                <b:selectOneMenu id="city" value="#{profileBean.cityId}">
+                                    <f:selectItems value="#{profileBean.cities}" var="city" itemLabel="#{city.name}"
+                                                   itemValue="#{city.id}"/>
+                                </b:selectOneMenu>
+                                <p:outputLabel for="email" value="Email:"/>
+                                <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
+                                    <f:validateLength minimum="5"/>
+                                </p:inputText>
+                                <p:outputLabel for="fbInfo" value="FbInfo:"/>
+                                <b:inputText id="fbInfo" value="#{profileBean.fbInfo}"/>
+                                <p:outputLabel for="up" value="Choose image:"/>
+                                <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
+                                              skinSimple="true"/>
+                                <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
+                                                 actionListener="#{profileBean.confirmEdit()}"/>
                             </h:panelGrid>
-                            <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
-                            <h:form>
-                                <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
-                                                 actionListener="#{profileBean.edit()}"
-                                                 rendered="#{profileBean.isMy}"/>
-                            </h:form>
-                            <!-- Follow -->
-                            <h:form id="follow" rendered="#{!profileBean.isMy}">
-                                <b:commandButton style="width:100%;" class="btn btn-primary" value="Follow" ajax="false"
-                                                 actionListener="#{profileBean.follow()}"
-                                                 rendered="#{!profileBean.isSubscribedTo}"/>
-                                <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
-                                                 actionListener="#{profileBean.unfollow()}"
-                                                 rendered="#{profileBean.isSubscribedTo}"/>
-                                <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
-                                          ajax="false"
-                                          rendered="#{profileBean.isSubscribedTo}">
-                                    <f:param value="#{profileBean.userId}" name="receiverId"/>
-                                </b:button>
-                                <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >
-                                    <f:param value="#{profileBean.userId}" name="userId"/>
-                                </b:button>
 
-                            </h:form>
-                            <h:panelGrid rendered="#{profileBean.isMy and
-                                                     (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
-                                <br/>Connect with:
-                                <h:form rendered="#{!profileBean.isVk()}">
+                        </h:form>
+                        <h:form id="info" style="margin-top: 25%">
 
-                                    <a href="#{vKAuthorizationBean.userUrl}"><img
-                                            src="http://baltcompany.ru/images/vkontakte.png" height="30"
-                                            width="110"/></a>
-                                </h:form>
-                                <h:form rendered="#{!profileBean.isFacebook()}">
-                                    <a href="#{faceBookAuthorizationBean.userUrl}"><img
-                                            src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
-                                            height="30" width="110"/></a>
-                                </h:form>
-                                <h:form rendered="#{!profileBean.isGoogle()}">
-                                    <a href="#{googleAuthorizationBean.userUrl}"><img
-                                            src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
-                                            width="110"/></a>
-                                </h:form>
-                            </h:panelGrid>
-                        </b:column>
-
-                        <!--Edit Information about user -->
-                        <b:column span="3">
-                            <h:form id="infoedit" enctype="multipart/form-data">
-                                <h:panelGrid columns="1" cellpadding="10"
-                                             rendered="#{profileBean.isEdit and profileBean.isMy}">
-                                    Login:
-                                    <p:inputText id="login" value="#{profileBean.login}"/>
-                                    <p:outputLabel for="city"/>
-                                    <b:selectOneMenu id="city" value="#{profileBean.cityId}">
-                                        <f:selectItems value="#{profileBean.cities}" var="city" itemLabel="#{city.name}"
-                                                       itemValue="#{city.id}"/>
-                                    </b:selectOneMenu>
-                                    <p:outputLabel for="email" value="Email:"/>
-                                    <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
-                                        <f:validateLength minimum="5"/>
-                                    </p:inputText>
-                                    <p:outputLabel for="fbInfo" value="FbInfo:"/>
-                                    <b:inputText id="fbInfo" value="#{profileBean.fbInfo}"/>
-                                    <p:outputLabel for="up" value="Choose image:"/>
-                                    <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
-                                                  skinSimple="true"/>
-                                    <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
-                                                     actionListener="#{profileBean.confirmEdit()}"/>
-                                </h:panelGrid>
-
-                            </h:form>
-                            <h:form id="info" style="margin-top: 25%">
-
-                                <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
-                                    <h:outputText value="Reputation:#{profileBean.getUserRep()}" style="font-size: medium"/>
-                                    City:
-                                    <b:label text="#{profileBean.city}" style="font-size:150;"/>
-                                    Country:
-                                    <b:label text="#{profileBean.country}"/>
-                                    Email:
-                                    <b:label text="#{profileBean.email}"/>
-                                    FbInfo:
-                                    <p:layout
+                            <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
+                                <h:outputText value="Reputation:#{profileBean.getUserRep()}" style="font-size: medium"/>
+                                City:
+                                <b:label text="#{profileBean.city}" style="font-size:150;"/>
+                                Country:
+                                <b:label text="#{profileBean.country}"/>
+                                Email:
+                                <b:label text="#{profileBean.email}"/>
+                                FbInfo:
+                                <p:layout
                                         style="max-width:100px; max-height:100px; min-height: 50px; position: relative;"
                                         rendered="#{profileBean.haveFbInfo}">
-                                        About me:
-                                        <p:layoutUnit position="center">
-                                            #{profileBean.fbInfo}
-                                        </p:layoutUnit>
-                                    </p:layout>
+                                    About me:
+                                    <p:layoutUnit position="center">
+                                        #{profileBean.fbInfo}
+                                    </p:layoutUnit>
+                                </p:layout>
 
-                                </h:panelGrid>
-
-
-                            </h:form>
-
-                        </b:column>
-                        <!-- List of friends -->
-                        <b:column span="3" rendered="#{profileBean.isMy}">
-                            <h5>My subscription</h5>
-                            <p:dataScroller value="#{profileBean.subscribedTo}" var="sub" chunkSize="10"
-                                            style="max-height: 300px">
-                                <h:panelGrid columns="2" styleClass="newsItem">
-                                    <p:graphicImage value="#{sub.subscribedTo.avatarUrl}"
-                                                    style="width:50px; height: 50px;"/>
-
-                                    <h:link outcome="profile" value="#{sub.subscribedTo.login}" includeViewParams="true">
-                                        <f:param value="#{sub.subscribedTo.uid}" name="userId"/>
-                                    </h:link>
-                                </h:panelGrid>
-                            </p:dataScroller>
-                        </b:column>
-                    </b:row>
-
-                    <b:row>
-                        <!-- Buttons and games-->
-                        <b:column span="10" offset="1">
+                            </h:panelGrid>
 
 
-                            <!-- Games -->
-                            <p:tabView id="tabView">
-                                <p:tab title="My games">
-                                    <h:form id="myGamesForm">
-                                        <p:dataGrid id="myGamesGrid" var="mygame"
-                                                    value="#{profileBean.simpleAndFavouriteGames}" columns="3"
-                                                    layout="grid"
-                                                    rows="12" paginator="true"
-                                                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                    >
+                        </h:form>
 
-                                            <p:panel style="text-align:center" header="#{mygame.gameStatus.name}">
-                                                <f:facet name="actions">
-                                                    <p:commandLink
+                    </b:column>
+                    <!-- List of friends -->
+                    <b:column span="3" rendered="#{profileBean.isMy}">
+                        <h5>My subscription</h5>
+                        <p:dataScroller value="#{profileBean.subscribedTo}" var="sub" chunkSize="10"
+                                        style="max-height: 300px">
+                            <h:panelGrid columns="2" styleClass="newsItem">
+                                <p:graphicImage value="#{sub.subscribedTo.avatarUrl}"
+                                                style="width:50px; height: 50px;"/>
+
+                                <h:link outcome="profile" value="#{sub.subscribedTo.login}" includeViewParams="true">
+                                    <f:param value="#{sub.subscribedTo.uid}" name="userId"/>
+                                </h:link>
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </b:column>
+                </b:row>
+
+                <b:row>
+                    <!-- Buttons and games-->
+                    <b:column span="10" offset="1">
+
+
+                        <!-- Games -->
+                        <p:tabView id="tabView">
+                            <p:tab title="My games">
+                                <h:form id="myGamesForm">
+                                    <p:dataGrid id="myGamesGrid" var="mygame"
+                                                value="#{profileBean.simpleAndFavouriteGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                    >
+
+                                        <p:panel style="text-align:center" header="#{mygame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                         styleClass="gameIcon btn btn-danger"
                                                         actionListener="#{profileBean.deleteMyGame(mygame)}"
                                                         update=":tabView:myGamesForm">
-                                                    </p:commandLink>
-                                                </f:facet>
-                                                <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                    <p:graphicImage styleClass="imgA"
-                                                                    value="#{mygame.game.poster}"/>
-                                                    <h:link outcome="aboutGame" value="#{mygame.game.name} "
-                                                            includeViewParams="true">
-                                                        <f:param value="#{mygame.game.uid}" name="id"/>
-                                                    </h:link>
-                                                </h:panelGrid>
-                                            </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
+                                                <p:graphicImage styleClass="imgA"
+                                                                value="#{mygame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{mygame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{mygame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                        </p:dataGrid>
-                                    </h:form>
-                                </p:tab>
-                                <p:tab title="Wanted games">
-                                    <h:form id="wantedForm">
-                                        <p:dataGrid var="wantedgame" value="#{profileBean.wantedGames}" columns="3"
-                                                    layout="grid"
-                                                    rows="12" paginator="true"
-                                                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                    >
+                                    </p:dataGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="Wanted games">
+                                <h:form id="wantedForm">
+                                    <p:dataGrid var="wantedgame" value="#{profileBean.wantedGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                    >
 
-                                            <p:panel style="text-align:center" header="#{wantedgame.gameStatus.name}">
-                                                <f:facet name="actions">
-                                                    <p:commandLink
+                                        <p:panel style="text-align:center" header="#{wantedgame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                         styleClass="gameIcon btn btn-danger"
                                                         actionListener="#{profileBean.deleteMyGame(wantedgame)}"
                                                         update=":tabView:wantedForm">
-                                                    </p:commandLink>
-                                                </f:facet>
-                                                <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                    <p:graphicImage styleClass="imgA"
-                                                                    value="#{wantedgame.game.poster}"/>
-                                                    <h:link outcome="aboutGame" value="#{wantedgame.game.name} "
-                                                            includeViewParams="true">
-                                                        <f:param value="#{wantedgame.game.uid}" name="id"/>
-                                                    </h:link>
-                                                </h:panelGrid>
-                                            </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
+                                                <p:graphicImage styleClass="imgA"
+                                                                value="#{wantedgame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{wantedgame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{wantedgame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                        </p:dataGrid>
-                                    </h:form>
-                                </p:tab>
-                                <p:tab title="Favourite games">
-                                    <h:form id="favouriteForm">
-                                        <p:dataGrid var="favouritegame" value="#{profileBean.favouriteGames}" columns="3"
-                                                    layout="grid"
-                                                    rows="12" paginator="true" id="favouriteGames"
-                                                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                    rowsPerPageTemplate="6,12,18">
+                                    </p:dataGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="Favourite games">
+                                <h:form id="favouriteForm">
+                                    <p:dataGrid var="favouritegame" value="#{profileBean.favouriteGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="favouriteGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
 
-                                            <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
-                                                <f:facet name="actions">
-                                                    <p:commandLink
+                                        <p:panel style="text-align:center" header="#{favouritegame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                         styleClass="gameIcon btn btn-danger"
                                                         actionListener="#{profileBean.deleteMyGame(favouritegame)}"
                                                         update=":tabView:favouriteForm">
-                                                    </p:commandLink>
-                                                </f:facet>
-                                                <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                    <p:graphicImage styleClass="imgA"
-                                                                    value="#{favouritegame.game.poster}"/>
-                                                    <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
-                                                            includeViewParams="true">
-                                                        <f:param value="#{favouritegame.game.uid}" name="id"/>
-                                                    </h:link>
-                                                </h:panelGrid>
-                                            </p:panel>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
+                                                <p:graphicImage styleClass="imgA"
+                                                                value="#{favouritegame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{favouritegame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{favouritegame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
 
-                                        </p:dataGrid>
-                                    </h:form>
-                                </p:tab>
-                                <p:tab title="Exchange games">
-                                    <h:form id="exchangeForm">
-                                        <p:dataGrid var="exchangegame" value="#{profileBean.exchangeGames}" columns="3"
-                                                    layout="grid"
-                                                    rows="12" paginator="true" id="exchangeGames"
-                                                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                    rowsPerPageTemplate="6,12,18">
+                                    </p:dataGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="Exchange games">
+                                <h:form id="exchangeForm">
+                                    <p:dataGrid var="exchangegame" value="#{profileBean.exchangeGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="exchangeGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
 
-                                            <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
-                                                <f:facet name="actions">
-                                                    <p:commandLink
+                                        <p:panel style="text-align:center" header="#{exchangegame.gameStatus.name}">
+                                            <f:facet name="actions">
+                                                <p:commandLink
                                                         styleClass="gameIcon btn btn-danger"
                                                         actionListener="#{profileBean.deleteMyGame(exchangegame)}"
                                                         update=":tabView:exchangeForm">
-                                                    </p:commandLink>
-                                                </f:facet>
-                                                <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                    <p:graphicImage styleClass="imgA"
-                                                                    value="#{exchangegame.game.poster}"/>
-                                                    <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
-                                                            includeViewParams="true">
-                                                        <f:param value="#{exchangegame.game.uid}" name="id"/>
+                                                </p:commandLink>
+                                            </f:facet>
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
+                                                <p:graphicImage styleClass="imgA"
+                                                                value="#{exchangegame.game.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{exchangegame.game.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{exchangegame.game.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
+
+                                    </p:dataGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="Recomendation" id="tabRecomendation">
+                                <h:form>
+                                    <p:dataGrid var="recomendGame" value="#{profileBean.recomendGames}" columns="3"
+                                                layout="grid"
+                                                rows="12" paginator="true" id="recomendGames"
+                                                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                rowsPerPageTemplate="6,12,18">
+
+                                        <p:panel style="text-align:center">
+                                            <h:panelGrid columns="1" style="width:100%; height: 250px">
+                                                <p:graphicImage styleClass="imgA" value="#{recomendGame.poster}"/>
+                                                <h:link outcome="aboutGame" value="#{recomendGame.name} "
+                                                        includeViewParams="true">
+                                                    <f:param value="#{recomendGame.uid}" name="id"/>
+                                                </h:link>
+                                            </h:panelGrid>
+                                        </p:panel>
+
+                                    </p:dataGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy}">
+                                <h:form id="currentOfferedTrade" >
+                                    <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
+
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
+                                            <b:column span="4" offset="1">
+                                                <p:carousel headerText="Your offer" style="text-align: center"
+                                                            value="#{profileBean.getOfferedGames(trade)}"
+                                                            var="offeredGame"
+                                                            responsive="true" itemStyle="height:150px">
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{offeredGame.offeringGame.poster}"
+                                                                 tooltip="#{offeredGame.offeringGame.name}"/>
+                                                        <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
                                                     </h:link>
-                                                </h:panelGrid>
-                                            </p:panel>
 
-                                        </p:dataGrid>
-                                    </h:form>
-                                </p:tab>
-                                <p:tab title="Recomendation" id="tabRecomendation">
-                                    <h:form>
-                                        <p:dataGrid var="recomendGame" value="#{profileBean.recomendGames}" columns="3"
-                                                    layout="grid"
-                                                    rows="12" paginator="true" id="recomendGames"
-                                                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                    rowsPerPageTemplate="6,12,18">
 
-                                            <p:panel style="text-align:center">
-                                                <h:panelGrid columns="1" style="width:100%; height: 250px">
-                                                    <p:graphicImage styleClass="imgA" value="#{recomendGame.poster}"/>
-                                                    <h:link outcome="aboutGame" value="#{recomendGame.name} "
-                                                            includeViewParams="true">
-                                                        <f:param value="#{recomendGame.uid}" name="id"/>
+                                                </p:carousel>
+                                            </b:column>
+
+                                            <b:column span="4">
+                                                <p:carousel headerText="#{trade.receivingUser.login}'s games"
+                                                            style="text-align: center"
+                                                            value="#{profileBean.getRecievedGames(trade)}"
+                                                            var="receivedGame"
+                                                            responsive="true" itemStyle="height:150px">
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{receivedGame.receivingGame.poster}"
+                                                                 tooltip="#{receivedGame.receivingGame.name}"/>
+
+                                                        <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
                                                     </h:link>
-                                                </h:panelGrid>
-                                            </p:panel>
-
-                                        </p:dataGrid>
-                                    </h:form>
-                                </p:tab>
-                                <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy}">
-                                    <h:form id="currentOfferedTrade" >
-                                        <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
-
-                                            <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
-                                                <b:column span="4" offset="1">
-                                                    <p:carousel headerText="Your offer" style="text-align: center"
-                                                                value="#{profileBean.getOfferedGames(trade)}"
-                                                                var="offeredGame"
-                                                                responsive="true" itemStyle="height:150px">
-
-                                                        <h:link outcome="aboutGame" includeViewParams="true">
-                                                            <b:image name="game" styleClass="imgA"
-                                                                     value="#{offeredGame.offeringGame.poster}"
-                                                                     tooltip="#{offeredGame.offeringGame.name}"/>
-                                                            <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
-                                                        </h:link>
 
 
-                                                    </p:carousel>
-                                                </b:column>
+                                                </p:carousel>
+                                            </b:column>
+                                            <b:column span="2">
+                                                <p:commandButton value="Cancel"
+                                                                 style="color: #991216"
+                                                                 actionListener="#{profileBean.declineOffer(trade)}"
+                                                                 update=":tabView:currentOfferedTrade"
+                                                                 rendered="#{profileBean.checkForOpened(trade)}"/>
 
-                                                <b:column span="4">
-                                                    <p:carousel headerText="#{trade.receivingUser.login}'s games"
-                                                                style="text-align: center"
-                                                                value="#{profileBean.getRecievedGames(trade)}"
-                                                                var="receivedGame"
-                                                                responsive="true" itemStyle="height:150px">
-
-                                                        <h:link outcome="aboutGame" includeViewParams="true">
-                                                            <b:image name="game" styleClass="imgA"
-                                                                     value="#{receivedGame.receivingGame.poster}"
-                                                                     tooltip="#{receivedGame.receivingGame.name}"/>
-
-                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
-                                                        </h:link>
-
-
-                                                    </p:carousel>
-                                                </b:column>
-                                                <b:column span="2">
-                                                    <p:commandButton value="Cancel"
-                                                                     style="color: #991216" 
-                                                                     actionListener="#{profileBean.declineOffer(trade)}" 
-                                                                     update=":tabView:currentOfferedTrade"
-                                                                     rendered="#{profileBean.checkForOpened(trade)}"/>
-
-                                                    <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/> 
-                                                    <p:commandButton value="Pay"
-                                                                     style="color: #991216" 
-                                                                     actionListener="#{robokassaBean.submit(3)}" 
-                                                                     update=":tabView:currentOfferedTrade"
-                                                                     rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.offeringUserPay}"/>
-                                                </b:column>                                                
-                                            </b:row>
+                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <p:commandButton value="Pay"
+                                                                 style="color: #991216"
+                                                                 actionListener="#{robokassaBean.submit(3)}"
+                                                                 update=":tabView:currentOfferedTrade"
+                                                                 rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.offeringUserPay}"/>
+                                            </b:column>
+                                        </b:row>
 
 
-                                        </p:dataScroller>
-                                    </h:form>            
+                                    </p:dataScroller>
+                                </h:form>
 
-                                </p:tab>
-                                <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy}">
-                                    <h:form id="currentReceivedTrade" >
-                                        <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
+                            </p:tab>
+                            <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy}">
+                                <h:form id="currentReceivedTrade" >
+                                    <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
 
-                                            <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
 
-                                                <b:column span="4" offset="1">
-                                                    <p:carousel headerText="#{trade.offeringUser.login} offer"
-                                                                style="text-align: center"
-                                                                value="#{profileBean.getOfferedGames(trade)}"
-                                                                var="offeredGame"
-                                                                responsive="true" itemStyle="height:150px">
+                                            <b:column span="4" offset="1">
+                                                <p:carousel headerText="#{trade.offeringUser.login} offer"
+                                                            style="text-align: center"
+                                                            value="#{profileBean.getOfferedGames(trade)}"
+                                                            var="offeredGame"
+                                                            responsive="true" itemStyle="height:150px">
 
-                                                        <h:link outcome="aboutGame" includeViewParams="true">
-                                                            <b:image name="game" styleClass="imgA"
-                                                                     value="#{offeredGame.offeringGame.poster}"
-                                                                     tooltip="#{offeredGame.offeringGame.name}"/>
-                                                            <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
-                                                        </h:link>
-
-
-                                                    </p:carousel>
-                                                </b:column>
-
-                                                <b:column span="4">
-                                                    <p:carousel headerText="My games" style="text-align: center"
-                                                                value="#{profileBean.getRecievedGames(trade)}"
-                                                                var="receivedGame"
-                                                                responsive="true" itemStyle="height:150px">
-
-                                                        <h:link outcome="aboutGame" includeViewParams="true">
-                                                            <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />                                                          
-
-                                                            <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
-                                                        </h:link>                                                          
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA"
+                                                                 value="#{offeredGame.offeringGame.poster}"
+                                                                 tooltip="#{offeredGame.offeringGame.name}"/>
+                                                        <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
+                                                    </h:link>
 
 
-                                                    </p:carousel>
-                                                </b:column>
-                                                <b:column span="3" >
-                                                    <p:commandButton value="Accept"
-                                                                     rendered="#{profileBean.checkForOpened(trade)}"
-                                                                     style="color: #006600" class="btn btn-warning"
-                                                                     actionListener="#{profileBean.setInProgress(trade)}" update=":tabView:currentReceivedTrade"/>
-                                                    <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
-                                                                     style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
-                                                                     update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
-                                                    <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>  
-                                                    <p:commandButton id="confirmButton" value="Pay" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
-                                                                     actionListener="#{robokassaBean.submit(3)}" update=":tabView:currentReceivedTrade"/>
-                                                    <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.receivingUserPay}"/>
-                                                </b:column>    
+                                                </p:carousel>
+                                            </b:column>
 
-                                            </b:row>
+                                            <b:column span="4">
+                                                <p:carousel headerText="My games" style="text-align: center"
+                                                            value="#{profileBean.getRecievedGames(trade)}"
+                                                            var="receivedGame"
+                                                            responsive="true" itemStyle="height:150px">
+
+                                                    <h:link outcome="aboutGame" includeViewParams="true">
+                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />
+
+                                                        <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
+                                                    </h:link>
 
 
-                                        </p:dataScroller>
-                                    </h:form>          
+                                                </p:carousel>
+                                            </b:column>
+                                            <b:column span="3" >
+                                                <p:commandButton value="Accept"
+                                                                 rendered="#{profileBean.checkForOpened(trade)}"
+                                                                 style="color: #006600" class="btn btn-warning"
+                                                                 actionListener="#{profileBean.setInProgress(trade)}" update=":tabView:currentReceivedTrade"/>
+                                                <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
+                                                                 style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
+                                                                 update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
+                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                <p:commandButton id="confirmButton" value="Pay" rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
+                                                                 actionListener="#{robokassaBean.submit(3)}" update=":tabView:currentReceivedTrade"/>
+                                                <h:outputText value="Paid" style="font-size: medium" rendered="#{trade.receivingUserPay}"/>
+                                            </b:column>
 
-                                </p:tab>
-                            </p:tabView>
+                                        </b:row>
 
 
-                        </b:column>
-                    </b:row>
-                </b:column>
-            </ui:define>
-        </ui:composition>
-    </h:body>
+                                    </p:dataScroller>
+                                </h:form>
+
+                            </p:tab>
+                        </p:tabView>
+
+
+                    </b:column>
+                </b:row>
+            </b:column>
+        </ui:define>
+    </ui:composition>
+</h:body>
 </html>

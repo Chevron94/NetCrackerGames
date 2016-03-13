@@ -9,11 +9,11 @@ metadata-complete="false">
 
     <error-page>
         <error-code>404</error-code>
-        <location>/error/error404.xhtml</location>
+        <location>/error404.xhtml</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/error/error500.xhtml</location>
+        <location>/error500.xhtml</location>
     </error-page>
 
     <context-param>
@@ -101,15 +101,7 @@ metadata-complete="false">
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 	
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>gamepub</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
+
        
        <listener>
                <listener-class>
