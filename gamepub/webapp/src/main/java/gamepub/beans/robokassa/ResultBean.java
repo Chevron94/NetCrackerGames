@@ -75,10 +75,10 @@ public class ResultBean {
         if(userTransaction.getDescription().contains("trade")){
            Integer tradeId = Integer.parseInt(userTransaction.getDescription().substring(5));                      
            Trade tr = tradeService.getTradeById(tradeId);
-           if(tr.getOfferingUser().getId()==SessionBean.getUserId()){
+           if(tr.getOfferingUser().getId()==userTransaction.getUser().getId()){
            tr.setOfferingUserPay(Boolean.TRUE);
            }
-           if(tr.getReceivingUser().getId()==SessionBean.getUserId()){
+           if(tr.getReceivingUser().getId()==userTransaction.getUser().getId()){
            tr.setReceivingUserPay(Boolean.TRUE);
            }
         }

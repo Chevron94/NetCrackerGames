@@ -57,7 +57,7 @@ private ArrayList<Game> myWantedGamesSource;
 private ArrayList<Game> myWantedGamesTarget;
 private ArrayList<Game> userWantedGamesSource;
 private ArrayList<Game> userWantedGamesTarget;
-private boolean handtohand;
+private boolean handtohand=false;
  public DualListModel<Game> getMyGames() {     
       myWantedGamesSource = new ArrayList<Game>(); 
       myWantedGamesTarget = new ArrayList<Game>(); 
@@ -140,6 +140,8 @@ private boolean handtohand;
     /**
      * @return the handtohand
      */
+    
+    
     public boolean isHandtohand() {
         return handtohand;
     }
