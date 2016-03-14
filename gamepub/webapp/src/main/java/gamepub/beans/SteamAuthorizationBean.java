@@ -60,6 +60,7 @@ import java.util.regex.Pattern;
 @SessionScoped
 public class SteamAuthorizationBean implements Serializable {
 
+    /*
     @EJB
     private UserService userService;
     @EJB
@@ -145,13 +146,7 @@ public class SteamAuthorizationBean implements Serializable {
     private static final String STEAM_URL = "http://steamcommunity.com/openid";
     private static final String API_URL = "https://oauth.vk.com/access_token";
 
-    public SteamAuthorizationBean() {
-        //clientId = "5282358";
-        clientKey = "E7E8233934F1B806E7F3DEEDDD14C58F";
-        redirectUri = "http://193.124.180.79:8080/gamepub/steam.xhtml";
-        userInfoUrl = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
-        isError = false;
-        
+    public SteamAuthorizationBean() {        
         System.setProperty("org.apache.commons.logging.Log",
                 "org.apache.commons.logging.impl.NoOpLog");
         try {
@@ -284,6 +279,7 @@ public class SteamAuthorizationBean implements Serializable {
      * @return Returns the URL of the OpenID login page. You should
      * redirect your user to this.
      */
+    /*
     public String login(String callbackUrl) {
         if (this.discovered == null) {
             return null;
@@ -306,6 +302,7 @@ public class SteamAuthorizationBean implements Serializable {
      * @param responseMap  A {@link Map} that contains the response values from the login.
      * @return Returns the Steam Community ID as a string.
      */
+    /*
     public String verify(String receivingUrl, Map responseMap) {
         if (this.discovered == null) {
             return null;
@@ -327,4 +324,5 @@ public class SteamAuthorizationBean implements Serializable {
         }
         return null;
     }
+    */
 }
