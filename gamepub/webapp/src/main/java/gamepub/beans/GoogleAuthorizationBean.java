@@ -90,7 +90,7 @@ public class GoogleAuthorizationBean implements Serializable {
                 userService.create(user);
             }
         } else {
-            context.redirect("http://localhost:8080/gamepub/registr.xhtml");
+            context.redirect("https://gamepub.tk/registr.xhtml");
         }
     }
 
@@ -100,7 +100,7 @@ public class GoogleAuthorizationBean implements Serializable {
         User user = userService.getUserBySteamInfo(googleInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
-        context.redirect("http://localhost:8080/gamepub/");
+        context.redirect("https://gamepub.tk/");
         logged = true;
     }
 
@@ -132,7 +132,7 @@ public class GoogleAuthorizationBean implements Serializable {
     public GoogleAuthorizationBean() {
         clientId = "270725871227-jpi8j7oo4qj85b3ngd6fat60n800md8u.apps.googleusercontent.com";
         clientSecret = "tuwSM6l3VKpT7cpxnNEoBr70";
-        redirectUri = "http://localhost:8080/gamepub/google.xhtml";
+        redirectUri = "https://gamepub.tk/google.xhtml";
         userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
         isError = false;
     }
