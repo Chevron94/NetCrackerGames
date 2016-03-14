@@ -47,17 +47,17 @@ and open the template in the editor.
                         </b:column>
                         <b:column span="5">
                             <p:carousel id="users" var="user" value="#{tradeBean.getUsers(game)}" responsive="true"
-                                        itemStyle="height: 150px" rendered="#{!tradeBean.noUsersCheck(game)}"
-                                        numVisible="8">
+                                        itemStyle="height: 150px;" rendered="#{!tradeBean.noUsersCheck(game)}"
+                                        numVisible="5">
 
 
-                                <p:commandLink value="Trade Offer" id="exchange"
+                                <p:commandLink value="Trade Offer" id="exchange" rendered="#{profileBean.canTrade()}"
                                                actionListener="#{tradeOfferBean.openOfferDialog(user)}">
                                 </p:commandLink>
 
                                 <h:link outcome="profile" includeViewParams="true">
                                     <f:param value="#{user.uid}" name="userId"/>
-                                    <b:image name="user" tooltip="#{user.login}" width="100%" height="100%"
+                                    <b:image name="user" tooltip="#{user.login}" width="100%" height="100%" 
                                              value="#{user.avatarUrl}"/>
                                 </h:link>
                             </p:carousel>

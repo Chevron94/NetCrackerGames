@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import org.jsoup.Jsoup;
@@ -22,6 +24,7 @@ import org.jsoup.select.Elements;
  * @author fitok
  */
 @Startup
+@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
 @Singleton
 public class Tournament {
      Elements currentTournaments;
