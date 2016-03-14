@@ -14,8 +14,10 @@ import gamepub.encode.shaCode;
 import org.primefaces.model.UploadedFile;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.RequestScoped;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
@@ -101,13 +104,15 @@ public class RegistrBean {
             user.setUserRole(ur);
             user.setActive(true);
             user.setBanned(false);
+            user.setFine(0);
+            user.setGold(false);
+            user.setReputation(0);
             userService.create(user);
-
+            loginIn();
             FacesMessage regMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Success",
                     "Welcome " + name + "! Login now.");
             RequestContext.getCurrentInstance().showMessageInDialog(regMes);
-
         } else {
             FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Error",
@@ -116,4 +121,16 @@ public class RegistrBean {
         }
 
     }
+
+    public void loginIn() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+            String hashPass = shaCode.code(shaCode.code(name) + password);
+            HttpSession ses = SessionBean.getSession();
+
+            user = userService.getUserByLoginAndPassword(name, hashPass);
+            ses.setAttribute("userid", user.getId());
+            ses.setAttribute("username", getName());
+
+    }
+
 }

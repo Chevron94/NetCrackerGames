@@ -10,7 +10,7 @@
     <h:body>
         <ui:composition template="/Template/template.xhtml">
             <ui:define name="content">
-                <b:column span="12">
+                <b:column span="9" offset="1">
                     <h:form>
                         
                         <b:panel id="panel" title="Registration">
@@ -52,7 +52,7 @@
                                 </p:selectOneMenu>
                             </h:panelGrid>
                             <p:captcha label="Captcha" />
-                            <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save}" icon="ui-icon-check" update="panel"/>                        
+                            <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save()}" action="#{loginBean.registrLogin()}" icon="ui-icon-check" update="panel"/>
 
                         </b:panel>
 

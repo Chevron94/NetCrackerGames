@@ -84,7 +84,8 @@ public class ProfileBean {
             context.getExternalContext().getSessionMap().put("edit", false);
         }
         User user;
-        if (!userId.equals("my")) {
+        if (userId != null && !userId.equals("my")) {
+
             user = userService.getUserByUid(userId);
             id = user.getId();
         } else {
@@ -157,7 +158,8 @@ public class ProfileBean {
     }
 
     public boolean getIsMy() {
-        return userId.equals("my");
+        return !(userId != null && !userId.equals("my")) ||
+                (userId != null && userId.equals(userService.getUserById(SessionBean.getUserId()).getUid()));
     }
 
     public List<Game> getRecomendGames() {

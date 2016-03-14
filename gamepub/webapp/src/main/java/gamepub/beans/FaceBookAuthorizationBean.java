@@ -244,6 +244,9 @@ public class FaceBookAuthorizationBean implements Serializable {
                 user.setActive(true);
                 user.setBanned(false);
                 user.setFbInfo(id);
+                user.setFine(0);
+                user.setGold(false);
+                user.setReputation(0);
                 user.setLogin(nickname);
                 user.setCity(city);
                 user.setUserRole(ur);

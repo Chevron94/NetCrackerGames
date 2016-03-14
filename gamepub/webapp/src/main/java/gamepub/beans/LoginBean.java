@@ -117,5 +117,15 @@ private boolean logged;
     public void setLogged(boolean logged) {
         this.logged = logged;
     }
+
+    public String registrLogin(){
+        HttpSession ses = SessionBean.getSession();
+        if(ses.getAttribute("userid")!=null)
+        {
+            logged = true;
+            return "profile.xhtml?userId=my";
+        }
+        return "registr";
+    }
 }
 
