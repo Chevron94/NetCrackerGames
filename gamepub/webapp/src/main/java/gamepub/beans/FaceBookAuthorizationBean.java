@@ -83,7 +83,7 @@ public class FaceBookAuthorizationBean implements Serializable {
                 userService.create(user);
             }
         } else {
-            context.redirect("http://localhost:8080/gamepub/registr.xhtml");
+            context.redirect("https://gamepub.tk/registr.xhtml");
         }
     }
 
@@ -93,7 +93,7 @@ public class FaceBookAuthorizationBean implements Serializable {
         User user = userService.getUserByFbInfo(fBInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
-        context.redirect("http://localhost:8080/gamepub/");
+        context.redirect("https://gamepub.tk/");
         logged = true;
     }
 
@@ -123,7 +123,7 @@ public class FaceBookAuthorizationBean implements Serializable {
     public FaceBookAuthorizationBean() {
         clientId = "1689596507984950";
         clientSecret = "e5b0079865e552362437c361aeea01b7";
-        redirectUri = "http://localhost:8080/gamepub/facebook.xhtml";
+        redirectUri = "https://gamepub.tk/facebook.xhtml";
         userInfoUrl = "https://graph.facebook.com/me";
         isError = false;
     }
@@ -235,7 +235,7 @@ public class FaceBookAuthorizationBean implements Serializable {
 
                 user = new User();
                 UserRole ur = userRoleService.getUserRoleById(1);
-                City city = cityService.getCityById(1);
+                City city = cityService.getCityById(2235395);
 
                 user.setAvatarUrl(photo);
                 String password= passwordGenerator.generatePassword(10);
