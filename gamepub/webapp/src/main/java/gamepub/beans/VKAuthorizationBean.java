@@ -228,6 +228,9 @@ public class VKAuthorizationBean implements Serializable {
                 user.setVkInfo(id);
                 user.setLogin(nickname);
                 user.setCity(city);
+                user.setFine(0);
+                user.setGold(false);
+                user.setReputation(0);
                 user.setUserRole(ur);
             }
             return user;

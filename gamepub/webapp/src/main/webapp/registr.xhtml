@@ -10,7 +10,7 @@
     <h:body>
         <ui:composition template="/Template/template.xhtml">
             <ui:define name="content">
-                <b:column span="12">
+                <b:column span="9" offset="1">
                     <h:form>
                         
                         <b:panel id="panel" title="Registration">
@@ -44,15 +44,24 @@
                                 </p:inputText>
                                 <p:message for="email" style="color:red" />
 
-                                <p:outputLabel for="console" value="City:" />
-                                <p:selectOneMenu  id="console" value="#{registrBean.city}">
-                                    <f:selectItems value="#{registrBean.cities}" var="city" itemLabel="#{city.name}"
-                                                   itemValue="#{city.id}"/>
+                                <p:autoComplete id="inputSearch" styleClass="water" value="#{registrBean.cityName}"
+                                                completeMethod="#{registrBean.getCities}" var="city"
+                                                itemLabel="#{city.name}" itemValue="#{city.name}"
+                                                scrollHeight="250" queryDelay="0"
+                                                forceSelection="true"
+                                                dropdown="false">
 
-                                </p:selectOneMenu>
+                                    <p:column>
+                                            <h:outputText value="#{city.name}"/>
+                                    </p:column>
+                                    <p:ajax event="itemSelect" listener="#{registrBean.onItemSelect(city.name)}" update="msgs" />
+                                </p:autoComplete>
+
+
+
                             </h:panelGrid>
                             <p:captcha label="Captcha" />
-                            <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save}" icon="ui-icon-check" update="panel"/>                        
+                            <b:commandButton value="Apply" ajax="false" actionListener="#{registrBean.save()}" action="#{loginBean.registrLogin()}" icon="ui-icon-check" update="panel"/>
 
                         </b:panel>
 

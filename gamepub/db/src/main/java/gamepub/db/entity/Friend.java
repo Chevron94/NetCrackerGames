@@ -13,6 +13,9 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
+    @Column(name = "BLOCK", columnDefinition = "boolean default false")
+    Boolean block;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SUBSCRIBER_ID", nullable = false)
     User subscriber;
@@ -45,6 +48,14 @@ public class Friend {
 
     public void setSubscribedTo(User subscribedTo) {
         this.subscribedTo = subscribedTo;
+    }
+
+    public Boolean getBlock(){
+        return block;
+    }
+
+    public void setBlock(Boolean block){
+        this.block = block;
     }
 
     @Override

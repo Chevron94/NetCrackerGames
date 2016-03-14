@@ -52,13 +52,13 @@
             </b:navbarLinks>
 
             <b:navbarLinks styleClass="navbar-right"
-                           rendered="#{!loginBean.logged &amp;&amp; !vKAuthorizationBean.logged &amp;&amp; !faceBookAuthorizationBean.logged &amp;&amp; !googleAuthorizationBean.logged}">
+                           rendered="#{!loginBean.logged and !vKAuthorizationBean.logged and !faceBookAuthorizationBean.logged and !googleAuthorizationBean.logged}">
 
                 <a id="atrigger" class="btn btn-success btn-lg" href="#amodal"
                    data-toggle="modal"><b:icon name="log-in"/> Sign in</a>
             </b:navbarLinks>
 
-            <h:form rendered="#{loginBean.logged || vKAuthorizationBean.logged || faceBookAuthorizationBean.logged || googleAuthorizationBean.logged}">
+            <h:form rendered="#{loginBean.logged or vKAuthorizationBean.logged or faceBookAuthorizationBean.logged or googleAuthorizationBean.logged}">
 
                 <b:navbarLinks styleClass="navbar-right">
 
@@ -161,7 +161,7 @@
                                  actionListener="#{loginBean.check}"
                                  ajax="false"/>
 
-                <b:button styleClass="btn btn-default" outcome="registr" value="Sig Up"/>
+                <b:button styleClass="btn btn-default" outcome="registr" value="Sign Up"/>
             </h:form>
         </b:modal>
 
