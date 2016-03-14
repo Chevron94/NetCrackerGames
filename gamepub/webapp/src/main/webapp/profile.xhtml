@@ -93,11 +93,7 @@
                                          rendered="#{profileBean.isEdit and profileBean.isMy}">
                                 Login:
                                 <p:inputText id="login" value="#{profileBean.login}"/>
-                                <p:outputLabel for="city"/>
-                                <b:selectOneMenu id="city" value="#{profileBean.cityId}">
-                                    <f:selectItems value="#{profileBean.cities}" var="city" itemLabel="#{city.name}"
-                                                   itemValue="#{city.id}"/>
-                                </b:selectOneMenu>
+
                                 <p:outputLabel for="email" value="Email:"/>
                                 <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
                                     <f:validateLength minimum="5"/>
