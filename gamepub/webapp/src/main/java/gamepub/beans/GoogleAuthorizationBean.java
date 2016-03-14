@@ -199,7 +199,7 @@ public class GoogleAuthorizationBean implements Serializable {
 
                 user = new User();
                 UserRole ur = userRoleService.getUserRoleById(1);
-                City city = cityService.getCityById(1);
+                City city = cityService.getCityById(2235395);
 
                 user.setAvatarUrl(photo);
                 String password= passwordGenerator.generatePassword(10);
