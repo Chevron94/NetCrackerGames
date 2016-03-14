@@ -40,14 +40,14 @@ and open the template in the editor.
                             <h:link outcome="profile" includeViewParams="true">
                                 <f:param value="#{user.uid}" name="userId"/>
                                 <b:image name="avatar" tooltip="#{user.login}" value="#{user.avatarUrl}"
-                                         style="height: 172px"/>
+                                          styleClass="imgA"/>
                             </h:link>
 
                         </b:column>
                         <b:column span="4">
                             <p:carousel id="wantedGames" var="wantedgame" responsive="true" itemStyle="height:150px"
                                         rendered="#{!tradingLoungeBean.noWantedGamesCheck(user)}"
-                                        value="#{tradingLoungeBean.getWantedGames(user)}" numVisible="6">
+                                        value="#{tradingLoungeBean.getWantedGames(user)}" numVisible="5">
                                 <h:link outcome="aboutGame" includeViewParams="true">
                                     <f:param value="#{wantedgame.game.uid}" name="id"/>
                                     <b:image name="game" tooltip="#{wantedgame.game.name}" width="100%" height="100%"
@@ -62,7 +62,7 @@ and open the template in the editor.
                             <p:carousel id="forExchangeGames" var="exchangegame" responsive="true"
                                         itemStyle="height:150px"
                                         rendered="#{!tradingLoungeBean.noExchangeGamesCheck(user)}"
-                                        value="#{tradingLoungeBean.getExchangeGames(user)}" numVisible="6">
+                                        value="#{tradingLoungeBean.getExchangeGames(user)}" numVisible="5">
 
                                 <h:link outcome="aboutGame" includeViewParams="true">
                                     <f:param value="#{exchangegame.game.uid}" name="id"/>
