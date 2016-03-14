@@ -11,4 +11,5 @@ public interface CityDao extends BaseDao<City,Integer>{
     public City getCityById(Integer id);
     public List<City> getCitiesById(Integer id);
     public  List<City> getCitiesByNameAndCountryId(Integer id, String name);
+    City getCityByName(String name);
 }

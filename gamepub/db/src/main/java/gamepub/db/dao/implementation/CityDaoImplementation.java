@@ -62,4 +62,20 @@ public class CityDaoImplementation extends BaseDaoImplementation<City,Integer> i
         closeEntityManager();
         return result;
     }
+    public City getCityByName(String name) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<City> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("name"), name));
+        City result;
+        try {
+            result = (City)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
 }

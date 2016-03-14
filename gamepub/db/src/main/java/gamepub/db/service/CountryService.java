@@ -34,6 +34,12 @@ public class CountryService extends CountryDaoImplementation {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public Country getCountryByName(String name) {
+        return super.getCountryByName(name);
+    }
+
+    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Country create(Country country) {
         return super.create(country);

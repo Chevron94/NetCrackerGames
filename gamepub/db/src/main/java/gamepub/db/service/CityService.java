@@ -2,6 +2,7 @@ package gamepub.db.service;
 
 import gamepub.db.dao.implementation.CityDaoImplementation;
 import gamepub.db.entity.City;
+import gamepub.db.entity.Country;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,6 +36,12 @@ public class CityService extends CityDaoImplementation {
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<City> getCitiesByNameAndCountryId(Integer id, String name) {
         return super.getCitiesByNameAndCountryId(id, name);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public City getCityByName(String name) {
+        return super.getCityByName(name);
     }
 
     @Override
