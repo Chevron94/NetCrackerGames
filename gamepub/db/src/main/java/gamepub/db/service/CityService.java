@@ -32,9 +32,16 @@ public class CityService extends CityDaoImplementation {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<City> getCitiesByNameAndCountryId(Integer id, String name) {
+        return super.getCitiesByNameAndCountryId(id, name);
+    }
+
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
+
 
     @Override
     protected void closeEntityManager() {
