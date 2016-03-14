@@ -350,8 +350,25 @@ public class ProfileBean {
     public boolean checkForHandtohand(Trade trade){
         return trade.getStatus().equals("handtohand");
     }
-    public void setFraud(){
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please contact with us and we'll resolve your problem!"));
+    public boolean checkForFraud(Trade trade){
+        return trade.getStatus().equals("fraud");
+    }
+    public boolean canTrade(){
+        if(userService.getUserById(id).getGold()==true){
+            return userService.getUserById(id).getReputation()<11;
+        }else {
+        return userService.getUserById(id).getReputation()<4;}
+    }
+    public Integer tradesLeft(){
+        if(userService.getUserById(id).getGold()==true){
+            return 10 - userService.getUserById(id).getReputation();
+        }else
+       return 3 - userService.getUserById(id).getReputation();        
+    }
+    public void setFraud(Trade trade){
+        trade.setStatus("fraud");
+        tradeService.update(trade);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("We will contact with you resolve your problem!"));
     }
     public void setReceived(Trade trade){
         if (trade.getOfferingUser().getId()==SessionBean.getUserId()){
@@ -367,6 +384,7 @@ public class ProfileBean {
     public void setBothReceived(Trade trade){        
             trade.setReceivedByOfferingUser(Boolean.TRUE);
             trade.setReceivedByReceivingUser(Boolean.TRUE);
+            trade.setStatus("confirmed");
             tradeService.update(trade);                
             
                    
@@ -379,7 +397,7 @@ public class ProfileBean {
     
     public void declineOffer(Trade trade){        
         tradeService.delete(trade.getId());
-
+    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Offer was deleted"));
     }
     
     public Integer getUserRep(){

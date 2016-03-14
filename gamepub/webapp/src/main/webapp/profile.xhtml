@@ -116,6 +116,8 @@
 
                             <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
                                 <h:outputText value="Reputation:#{profileBean.getUserRep()}" style="font-size: medium"/>
+                                <h:outputText value="Trades left:#{profileBean.tradesLeft()}" style="font-size: medium"/>
+                                <h:outputText value="Buy gold account to trade more" rendered="#{!profileBean.canTrade()}" style="font-size: medium"/>
                                 City:
                                 <b:label text="#{profileBean.city}" style="font-size:150;"/>
                                 Country:
@@ -300,11 +302,12 @@
                                     </p:dataGrid>
                                 </h:form>
                             </p:tab>
-                            <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy}">
+                            <p:tab title="Sent trade offers" id="sentOffers" rendered="#{profileBean.isMy and profileBean.canTrade()}" >
                                 <h:form id="currentOfferedTrade" >
+                                    <p:growl id="sentMsg" />
                                     <p:dataScroller value="#{profileBean.getSentTradeOffers()}" var="trade">
 
-                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade) and !profileBean.checkForFraud(trade)}">
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="Your offer" style="text-align: center"
                                                             value="#{profileBean.getOfferedGames(trade)}"
@@ -341,27 +344,40 @@
                                                 </p:carousel>
                                             </b:column>
                                             <b:column span="2">
+                                                
+                                                    
                                                 <p:commandButton value="Cancel"
                                                                  style="color: #991216"
-                                                                 actionListener="#{profileBean.declineOffer(trade)}"
-                                                                 update=":tabView:currentOfferedTrade"
-                                                                 rendered="#{profileBean.checkForOpened(trade)}"/>
+                                                                  
+                                                                update=":tabView:currentOfferedTrade"
+                                                                 
+                                                                 rendered="#{profileBean.checkForOpened(trade)}"
+                                                                 actionListener="#{profileBean.declineOffer(trade)}"  />
+                                                    
+                                                
 
-                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade)}"/>
-                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade)}"/> 
+                                                <b:iconAwesome name="circle-o-notch" spin="true" size="3x" rendered="#{profileBean.checkForInProgress(trade) and !trade.offeringUserPay}"/>
+                                                    <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade) and !trade.offeringUserPay}"/> 
                                                     <p:commandButton value="Pay"
                                                                  style="color: #991216" 
                                                                  action="#{robokassaBean.tradeSubmit(trade.id)}" 
                                                                  update=":tabView:currentOfferedTrade"
-                                                                 rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                                 rendered="#{profileBean.checkForInProgress(trade) and !trade.offeringUserPay}"/>
+                                                    
                                                     <h:outputText value="Paid.Wait for another participant payment" style="font-size: medium"
-                                                                  rendered="#{trade.offeringUserPay and profileBean.checkForInProgress(trade)}"/>
+                                                                  rendered="#{trade.offeringUserPay and !trade.receivingUserPay and profileBean.checkForInProgress(trade)}"/>
+                                                    
                                                     <p:commandButton id="confirmReceiving" value="Got it!" actionListener="#{profileBean.setReceived(trade)}"
-                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
+                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay and !trade.receivedByOfferingUser}"  style="color: #4caf50" class="btn btn-warning"
                                                                       update=":tabView:currentOfferedTrade"/>
                                                     <p:commandButton id="fraud" value="Fraud!" 
-                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
-                                                                     action="#{profileBean.setFraud}" update=":tabView:currentOfferedTrade"/>
+                                                                      rendered="#{(!trade.receivedByOfferingUser and !profileBean.checkForFraud(trade))
+                                                                                 and trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
+                                                                     update=":tabView:currentOfferedTrade">
+                                                        <p:ajax listener="#{profileBean.setFraud(trade)}" />
+                                                    </p:commandButton>
+                                                   
+                                                
                                         </b:column>                                                
                                         </b:row>
 
@@ -370,12 +386,12 @@
                                 </h:form>
 
                             </p:tab>
-                            <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy}">
+                            <p:tab title="Received trade offers" id="receivedOffers" rendered="#{profileBean.isMy and profileBean.canTrade()}">
                                   <h:form id="currentReceivedTrade" >
-                                      
+                                      <p:growl id="receivedMsg" />
                                     <p:dataScroller value="#{profileBean.getReceivedTradeOffers()}" var="trade" >
 
-                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade)}">
+                                        <b:row style="margin-top: 10px" rendered="#{!profileBean.checkForConfirmed(trade) and !profileBean.checkForFraud(trade)}">
 
                                             <b:column span="4" offset="1">
                                                 <p:carousel headerText="#{trade.offeringUser.login} offer"
@@ -428,21 +444,26 @@
                                                 <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
                                                                  style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
                                                                  update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
+                                                
                                                     <b:iconAwesome name="circle-o-notch" spin="true" size="3x"
-                                                                   rendered="#{profileBean.checkForInProgress(trade)}"/>
+                                                                   rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay }"/>
                                                     <h:outputText value="In progress" style="font-size: medium" 
-                                                                  rendered="#{profileBean.checkForInProgress(trade)}"/>  
+                                                                  rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay}"/>  
                                                     <p:commandButton id="confirmButton" value="Pay" 
-                                                                     rendered="#{profileBean.checkForInProgress(trade)}" style="color: #4caf50" class="btn btn-warning"
+                                                                     rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay}" style="color: #4caf50" class="btn btn-warning"
                                                                      action="#{robokassaBean.tradeSubmit(trade.id)}" update=":tabView:currentReceivedTrade"/>
+                                                    
                                                     <h:outputText value="Paid.Wait for another participant payment" style="font-size: medium"
-                                                                  rendered="#{trade.receivingUserPay and profileBean.checkForInProgress(trade)}"/>
+                                                                  rendered="#{trade.receivingUserPay and !trade.offeringUserPay and profileBean.checkForInProgress(trade)}"/>
+                                                    
                                                     <p:commandButton id="confirmReceiving" value="Got it!" actionListener="${profileBean.setReceived(trade)}" 
-                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
+                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay and !trade.receivedByReceivingUser}" 
+                                                                     style="color: #4caf50" class="btn btn-warning"
                                                                       update=":tabView:currentReceivedTrade"/>
                                                     <p:commandButton id="fraud" value="Fraud!" 
-                                                                     rendered="#{trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
-                                                                     action="#{profileBean.setFraud}" update=":tabView:currentReceivedTrade"/>
+                                                                     rendered="#{(!trade.receivedByReceivingUser and !profileBean.checkForFraud(trade))
+                                                                                 and trade.receivingUserPay and trade.offeringUserPay}" style="color: #4caf50" class="btn btn-warning"
+                                                                     action="#{profileBean.setFraud(trade)}" update=":tabView:currentReceivedTrade"/>
                                         </b:column>    
                                             
                                         </b:row>

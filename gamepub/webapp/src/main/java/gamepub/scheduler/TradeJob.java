@@ -12,6 +12,7 @@ import gamepub.db.service.TradeService;
 import gamepub.db.service.UserService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TimerTask;
 import javax.ejb.EJB;
@@ -53,16 +54,32 @@ public class TradeJob extends TimerTask{
                    User recUser = trade.getReceivingUser();
                    User offUser = trade.getOfferingUser();
                    List<Trade> confirmedTrades = tdi.getTradesByStatus("confirmed");
-                   for(Trade tr:confirmedTrades){
-                       if(!((tr.getOfferingUser().getId()==recUser.getId() && tr.getReceivingUser().getId()==offUser.getId())
-                               || tr.getOfferingUser().getId()==offUser.getId() && tr.getReceivingUser().getId()==recUser.getId())){
-                           recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()+1);
-                   offUser.setReputation(udi.getUserById(offUser.getId()).getReputation()+1);
-                   udi.update(offUser);
-                   udi.update(recUser);
+                   HashSet<Integer> offSet;
+                   HashSet<Integer> recSet;
+                   for(User tradeUser:udi.findAll()){
+                       offSet=new HashSet<Integer>();
+                       recSet=new HashSet<Integer>();
+                       if(tdi.getTradesByOfferingUserId(tradeUser.getId())!=null){
+                      List<Trade> offUserTrades = tdi.getTradesByOfferingUserId(tradeUser.getId());
+                      for(Trade ot:offUserTrades){
+                          User ou = ot.getReceivingUser();                          
+                          if(ot.getStatus().equals("confirmed")){
+                          offSet.add(ou.getId());}               
+                      }
+                      }
+                       if(tdi.getTradesByReceivingUserId(tradeUser.getId())!=null){
+                      List<Trade> recUserTrades = tdi.getTradesByReceivingUserId(tradeUser.getId());
+                      for(Trade rc:recUserTrades){
+                          User ru = rc.getOfferingUser();
+                          if(rc.getStatus().equals("confirmed")){
+                          recSet.add(ru.getId());}                          
+                      }
                        }
+                      tradeUser.setReputation(offSet.size()+recSet.size());
+                      udi.update(tradeUser);
+                       
                    }
-                   
+                    /*money back to bothUsers*/
                    tdi.update(trade);
                    
                }
