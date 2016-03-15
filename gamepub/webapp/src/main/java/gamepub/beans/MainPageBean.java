@@ -26,7 +26,7 @@ public class MainPageBean {
     @EJB
     Tournament tournamentService;
 
-    public List<Game> getMyGames() {
+    public List<Game> getTopMetacriticGames() {
         /*myGames = gameService.findAll();
 
         List<Game> tmp= new ArrayList<Game>(4);
@@ -40,6 +40,11 @@ public class MainPageBean {
                 result.add(games.get(i));
         }
         return result;
+    }
+
+    public List<Game> getTopUserGames(){
+        List<Game> test = gameService.getGamesOrderByUserMarks(6);
+        return gameService.getGamesOrderByUserMarks(6);
     }
 
     public String goToConcreteGame() {

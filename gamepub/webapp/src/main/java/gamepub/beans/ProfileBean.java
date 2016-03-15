@@ -434,5 +434,8 @@ public class ProfileBean {
     public int getBlockId(){
         return id;
     }
-    
+
+    public User getMyUser(){
+        return userService.getUserById(SessionBean.getUserId());
+    }
 }

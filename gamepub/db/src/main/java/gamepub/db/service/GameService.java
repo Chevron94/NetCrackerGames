@@ -65,6 +65,12 @@ public class GameService extends GameDaoImplementation {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<Game> getGamesOrderByUserMarks(int maxValue) {
+        return super.getGamesOrderByUserMarks(maxValue);
+    }
+
+    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Game create(Game game) {
         return super.create(game);
