@@ -10,7 +10,7 @@ package gamepub.parse;
  * @author fitok
  */
 public class Match {
-    private String team1,team2,dataScore,tournament,status;
+    private String team1,team2,dataScore,tournament,status,link;
 
     /**
      * @return the team1
@@ -80,6 +80,20 @@ public class Match {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the link
+     */
+    public String getLink() {
+        return link;
+    }
+
+    /**
+     * @param link the link to set
+     */
+    public void setLink(String link) {
+        this.link = link;
     }
 
 }

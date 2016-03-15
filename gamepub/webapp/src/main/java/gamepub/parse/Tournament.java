@@ -112,6 +112,7 @@ return matches;
         try{
          for(int i=0;i<40;i++){
       Match csmatch = new Match();
+      csmatch.setLink("http://game-tournaments.com"+doc2.select("a.mlink").get(i).attr("href"));
       csmatch.setDataScore(doc2.select("td.mtime").get(i).select("span.live-in").text());
       csmatch.setTeam1(doc2.select("a.mlink").get(i).select("span.teamname.c1").text());
       csmatch.setTeam2(doc2.select("a.mlink").get(i).select("span.teamname.c2").text());
