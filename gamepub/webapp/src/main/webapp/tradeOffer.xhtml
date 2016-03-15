@@ -59,12 +59,14 @@ and open the template in the editor.
             <b:row style="margin-top: 20px">
                 <b:column span="6" offset="1"> 
             
-            <h:panelGrid columns="3" cellpadding="5">
+            <h:panelGrid columns="4" cellpadding="5">
                 <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" style="margin-right: 10px"/>            
+                <p:inputText value="#{tradeOfferBean.deposit}"/>
                 <h:outputText value="Hand-to-hand:  " style="font-size: medium"/>
                 <p:inputSwitch value="#{tradeOfferBean.handtohand}">
                     <p:ajax listener="#{tradeOfferBean.addMsg}" update="msg"/>
                 </p:inputSwitch>
+                
             </h:panelGrid>
                 </b:column>
             </b:row>
