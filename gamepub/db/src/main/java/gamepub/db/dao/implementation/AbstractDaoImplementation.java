@@ -42,6 +42,17 @@ public abstract class AbstractDaoImplementation<T, PK> {
         return result;
     }
 
+    protected Double executeScalarQuery(String jpql, Map<String,Object> parameters){
+        em = getEntityManager();
+        Query query = em.createQuery(jpql);
+        for(Map.Entry<String,Object> entry : parameters.entrySet()){
+            query.setParameter(entry.getKey(),entry.getValue());
+        }
+        Double result = (Double)query.getSingleResult();
+        closeEntityManager();
+        return result;
+    }
+
 
     protected List<T> executeQuery(String jpql, Integer start, Integer count){
         em = getEntityManager();

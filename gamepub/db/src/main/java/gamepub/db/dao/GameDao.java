@@ -15,4 +15,5 @@ public interface GameDao extends BaseDao<Game,Integer> {
     public List<Game> getGamesByName(String name, boolean all, Integer start, Integer count);
     public List<Game> getGamesByCustomParams(List<HashMap.Entry<String, Object>> parameters, boolean all, Integer start, Integer count);
     public List<Game> getGamesOrderByMarks(int maxValue);
+    public List<Game> getGamesOrderByUserMarks(int maxValue);
 }

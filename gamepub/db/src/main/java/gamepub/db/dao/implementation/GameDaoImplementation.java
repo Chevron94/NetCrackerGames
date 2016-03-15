@@ -135,9 +135,15 @@ public class GameDaoImplementation extends BaseDaoImplementation<Game, Integer> 
         return this.executeQuery(jpa,0,6*maxValue);
     }
 
+    public List<Game> getGamesOrderByUserMarks(int maxValue) {
+        String jpa = "Select g from Game g order by g.avgMark DESC";
+        return this.executeQuery(jpa,0,maxValue);
+    }
+
     @Override
     public Game create(Game game) {
         game.setUid(UUID.randomUUID().toString());
+        game.setAvgMark(0.0);
         return super.create(game);
     }
 }

@@ -29,6 +29,9 @@ public class Game implements SearchItem {
 
     @Column(name = "STEAM_ID", nullable = true)
     int steamId;
+
+    @Column(name = "AVG_USER_MARK", nullable = true)
+    Double avgMark;
     
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
@@ -193,6 +196,15 @@ public class Game implements SearchItem {
     @JsonIgnore
     public List<ReceivingUserTrade> getReceivingUserTrades() {
         return ReceivingUserTrades;
+    }
+
+
+    public Double getAvgMark() {
+        return avgMark;
+    }
+
+    public void setAvgMark(Double avgMark) {
+        this.avgMark = avgMark;
     }
 
     public void setReceivingUserTrades(List<ReceivingUserTrade> ReceivingUserTrades) {
