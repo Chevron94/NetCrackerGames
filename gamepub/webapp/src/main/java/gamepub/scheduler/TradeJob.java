@@ -48,6 +48,7 @@ public class TradeJob extends TimerTask{
                    User offUser = trade.getOfferingUser();
                    offUser.setFine(200);
                    offUser.setReputation(udi.getUserById(offUser.getId()).getReputation()-1);
+                   udi.update(offUser);
                    tdi.delete(trade.getId());
                    /* money back to receivingUser*/
                }
@@ -55,6 +56,7 @@ public class TradeJob extends TimerTask{
                    User recUser = trade.getReceivingUser();
                    trade.getReceivingUser().setFine(200);
                    recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()-1);
+                   udi.update(recUser);
                    tdi.delete(trade.getId());
                    /* money back to offeringUser*/
                }    
