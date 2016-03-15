@@ -88,7 +88,7 @@ public class ResultBean {
         }
         if(userTransaction.getDescription().contains("unblock")){
             Integer userId = Integer.parseInt(userTransaction.getDescription().substring(7));
-            Friend friend = friendService.getFriendBySubIdToId(user.getId(),userId);
+            Friend friend = friendService.getFriendBySubIdToId(userId,user.getId());
             friend.setBlock(false);
             friendService.update(friend);
         }
