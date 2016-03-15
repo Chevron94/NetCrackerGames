@@ -43,7 +43,7 @@
                                 <p:commandButton class="btn btn-primary" value="Send" update="dialogForm messageForm"
                                                  actionListener="#{messageBean.sendDialog}"
                                                  rendered="#{!messageBean.isBlock}"/>
-                                <p:button styleClass="btn btn-danger"
+                                <p:commandButton styleClass="btn btn-danger"
                                           action="#{robokassaBean.blockSubmit(messageBean.receiver.id)}"
                                           value="This user has blocked you" rendered="#{messageBean.isBlock}"/>
                             </h:panelGrid>

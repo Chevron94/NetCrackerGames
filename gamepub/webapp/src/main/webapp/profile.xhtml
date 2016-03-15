@@ -41,7 +41,7 @@
                                              rendered="#{profileBean.isMy}"/>
                         </h:form>
                         <!-- Follow -->
-                        <p:button styleClass="btn btn-danger" value="This user has blocked you"
+                        <p:commandButton styleClass="btn btn-danger" value="This user has blocked you"
                                   action="#{robokassaBean.blockSubmit(profileBean.blockId)}" rendered="#{profileBean.isBlockYou}" />
                         <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBlockYou and !profileBean.isBanned}">
 
