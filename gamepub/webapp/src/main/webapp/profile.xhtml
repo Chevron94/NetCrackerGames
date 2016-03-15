@@ -27,6 +27,9 @@
                         </h:panelGrid>
                         <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
                         <h:form>
+
+                            <br/>
+
                             <p:commandButton styleClass="btn btn-warning"
                                              action="#{robokassaBean.submit(2)}"
                                              ajax="false"
@@ -40,7 +43,7 @@
                         <!-- Follow -->
                         <p:button styleClass="btn btn-danger" value="This user has blocked you"
                                   rendered="#{profileBean.isBlockYou}" />
-                        <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBlockYou}">
+                        <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBlockYou and !profileBean.isBanned}">
 
                             <b:commandButton style="width:100%;" class="btn btn-primary" value="Follow" ajax="false"
                                              actionListener="#{profileBean.follow()}"
@@ -64,50 +67,70 @@
                             </b:button>
 
                         </h:form>
-                        <h:panelGrid rendered="#{profileBean.isMy and
-                        (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
-                            <br/>Connect with:
-                            <h:form rendered="#{!profileBean.isVk()}">
+                        <!-- Ban -->
+                            <h:form id="ban" rendered="#{!profileBean.isMy}">
+                                <b:commandButton class="btn btn-primary" value="Ban" ajax="false"
+                                         actionListener="#{profileBean.ban()}"
+                                         rendered="#{!profileBean.isBanned and profileBean.isAdmin}"/>
+                                <b:commandButton class="btn btn-danger" value="UnBan" ajax="false"
+                                         actionListener="#{profileBean.unban()}"
+                                         rendered="#{profileBean.isBanned and profileBean.isAdmin}"/>
+                            </h:form>
+                        <!--Connect with-->
+                        <h:panelGrid rendered="#{profileBean.isMy and !profileBean.isBanned and
+                                                     (!profileBean.isVk() or !profileBean.isFacebook() or !profileBean.isGoogle())}">
+                                <br/>Connect with:
+                                <h:form rendered="#{!profileBean.isVk()}">
 
-                                <a href="#{vKAuthorizationBean.userUrl}"><img
-                                        src="http://baltcompany.ru/images/vkontakte.png" height="30"
-                                        width="110"/></a>
-                            </h:form>
-                            <h:form rendered="#{!profileBean.isFacebook()}">
-                                <a href="#{faceBookAuthorizationBean.userUrl}"><img
-                                        src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
-                                        height="30" width="110"/></a>
-                            </h:form>
-                            <h:form rendered="#{!profileBean.isGoogle()}">
-                                <a href="#{googleAuthorizationBean.userUrl}"><img
-                                        src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
-                                        width="110"/></a>
-                            </h:form>
-                        </h:panelGrid>
+                                    <a href="#{vKAuthorizationBean.userUrl}"><img
+                                            src="http://baltcompany.ru/images/vkontakte.png" height="30"
+                                            width="110"/></a>
+                                </h:form>
+                                <h:form rendered="#{!profileBean.isFacebook()}">
+                                    <a href="#{faceBookAuthorizationBean.userUrl}"><img
+                                            src="http://hungrybeardeliandcafe.com/wp-content/uploads/2015/06/Facebook-Button.gif"
+                                            height="30" width="110"/></a>
+                                </h:form>
+                                <h:form rendered="#{!profileBean.isGoogle()}">
+                                    <a href="#{googleAuthorizationBean.userUrl}"><img
+                                            src="http://stlk.com.ua/images/Red-signin_Google_base_44dp.png" height="30"
+                                            width="110"/></a>
+                                </h:form>
+                            </h:panelGrid>
                     </b:column>
 
                     <!--Edit Information about user -->
-                    <b:column span="3">
-                        <h:form id="infoedit" enctype="multipart/form-data">
-                            <h:panelGrid columns="1" cellpadding="10"
-                                         rendered="#{profileBean.isEdit and profileBean.isMy}">
-                                Login:
-                                <p:inputText id="login" value="#{profileBean.login}"/>
+                        <b:column span="3">
+                            <h:form id="infoedit" enctype="multipart/form-data">
+                                <b:panel id="panel" rendered="#{profileBean.isEdit and profileBean.isMy}">
+                                     <h:panelGrid id ="panelgrid" columns="1" cellpadding="10">
+                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                        <p:outputLabel for="login" value="Login:"/>
+                                        <p:inputText id="login" value="#{profileBean.login}" required="true"/>
+                            
+                                        <p:outputLabel for="city"/>
+                                        <b:selectOneMenu id="city" value="#{profileBean.cityId}">
+                                        <f:selectItems value="#{profileBean.cities}" var="city" itemLabel="#{city.name}"
+                                               itemValue="#{city.id}"/>
+                                        </b:selectOneMenu>
+                            
+                                        <p:outputLabel for="email" value="Email:"/>
+                                        <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
+                                        <f:validateLength minimum="5"/>
+                                        </p:inputText>
+                            
+                                        <p:outputLabel for="fbInfo" value="FbInfo:"/>
+                                        <b:inputText id="fbInfo" value="#{profileBean.fbInfo}"/>
+                                        <p:outputLabel for="up" value="Choose image:"/>
+                                        <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
+                                          skinSimple="true"/>
+                                    </h:panelGrid>
+                            
+                            <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
+                                             actionListener="#{profileBean.confirmEdit()}" update="panel"/>
+                                </b:panel>
 
-                                <p:outputLabel for="email" value="Email:"/>
-                                <p:inputText id="email" value="#{profileBean.email}" label="Email" required="true">
-                                    <f:validateLength minimum="5"/>
-                                </p:inputText>
-                                <p:outputLabel for="fbInfo" value="FbInfo:"/>
-                                <b:inputText id="fbInfo" value="#{profileBean.fbInfo}"/>
-                                <p:outputLabel for="up" value="Choose image:"/>
-                                <p:fileUpload id="up" fileUploadListener="#{profileBean.upload}" mode="advanced"
-                                              skinSimple="true"/>
-                                <p:commandButton class="btn btn-danger" value="Submit" ajax="false"
-                                                 actionListener="#{profileBean.confirmEdit()}"/>
-                            </h:panelGrid>
-
-                        </h:form>
+                            </h:form>
                         <h:form id="info" style="margin-top: 25%">
 
                             <h:panelGrid columns="1" styleClass="table_info" rendered="#{!profileBean.isEdit}">
@@ -115,7 +138,7 @@
                                 <h:outputText value="Trades left:#{profileBean.tradesLeft()}" style="font-size: medium"/>
                                 <h:outputText value="Buy gold account to trade more" rendered="#{!profileBean.canTrade()}" style="font-size: medium"/>
                                 City:
-                                <b:label text="#{profileBean.city}" style="font-size:150;"/>
+                                <b:label text="#{profileBean.city}"/>
                                 Country:
                                 <b:label text="#{profileBean.country}"/>
                                 Email:

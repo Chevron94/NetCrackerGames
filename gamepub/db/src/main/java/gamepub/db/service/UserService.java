@@ -63,6 +63,12 @@ public class UserService extends UserDaoImplementation {
     public User getUserBySteamInfo(String steamInfo) {
         return super.getUserBySteamInfo(steamInfo);
     }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public User getUserByGoogleInfo(String googleInfo) {
+        return super.getUserByGoogleInfo(googleInfo);
+    }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)

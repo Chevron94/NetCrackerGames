@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -35,6 +36,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -93,10 +95,17 @@ public class VKAuthorizationBean implements Serializable {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
         User user = userService.getUserByVkInfo(vKInfo);
-        session.setAttribute("userid", user.getId());
-        session.setAttribute("username", user.getLogin());
-        context.redirect("https://gamepub.tk/");
-        logged = true;
+        if(user.getBanned() != true)
+        {
+            session.setAttribute("userid", user.getId());
+            session.setAttribute("username", user.getLogin());
+            context.redirect("https://gamepub.tk/");
+            logged = true;
+        }
+        else
+        {
+            context.redirect("/gamepub/banned.xhtml");
+        }
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
