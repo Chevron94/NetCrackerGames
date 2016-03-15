@@ -109,6 +109,7 @@ public class GoogleAuthorizationBean implements Serializable {
         }
         else
         {
+            session.setAttribute("userid", user.getId());            
             context.redirect("/gamepub/banned.xhtml");
         }
     }

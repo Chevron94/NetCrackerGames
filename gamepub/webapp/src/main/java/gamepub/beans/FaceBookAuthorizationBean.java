@@ -102,6 +102,7 @@ public class FaceBookAuthorizationBean implements Serializable {
         }
         else
         {
+            session.setAttribute("userid", user.getId());
             context.redirect("/gamepub/banned.xhtml");
         }
     }

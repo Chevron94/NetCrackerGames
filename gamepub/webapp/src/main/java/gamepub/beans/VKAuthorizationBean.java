@@ -104,6 +104,7 @@ public class VKAuthorizationBean implements Serializable {
         }
         else
         {
+            session.setAttribute("userid", user.getId());
             context.redirect("/gamepub/banned.xhtml");
         }
     }
