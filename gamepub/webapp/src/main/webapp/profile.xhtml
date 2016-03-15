@@ -379,7 +379,7 @@
                                                     <h:outputText value="In progress" style="font-size: medium" rendered="#{profileBean.checkForInProgress(trade) and !trade.offeringUserPay}"/> 
                                                     <p:commandButton value="Pay"
                                                                  style="color: #991216" 
-                                                                 action="#{robokassaBean.tradeSubmit(trade.id)}" 
+                                                                 action="#{robokassaBean.tradeSubmit(trade.id,trade.deposit)}" 
                                                                  update=":tabView:currentOfferedTrade"
                                                                  rendered="#{profileBean.checkForInProgress(trade) and !trade.offeringUserPay}"/>
                                                     
@@ -463,6 +463,9 @@
                                                 <p:commandButton id="decline1" value="Decline" rendered="#{profileBean.checkForOpened(trade)}"
                                                                  style="color: #991216"  actionListener="#{profileBean.declineOffer(trade)}"
                                                                  update=":tabView:currentReceivedTrade" class="btn btn-warning"/>
+                                                <h:outputText value="necessary deposit:#{trade.deposit}" style="font-size: medium" 
+                                                                  rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay}"/>
+                                                
                                                 
                                                     <b:iconAwesome name="circle-o-notch" spin="true" size="3x"
                                                                    rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay }"/>
@@ -470,7 +473,7 @@
                                                                   rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay}"/>  
                                                     <p:commandButton id="confirmButton" value="Pay" 
                                                                      rendered="#{profileBean.checkForInProgress(trade) and !trade.receivingUserPay}" style="color: #4caf50" class="btn btn-warning"
-                                                                     action="#{robokassaBean.tradeSubmit(trade.id)}" update=":tabView:currentReceivedTrade"/>
+                                                                     action="#{robokassaBean.tradeSubmit(trade.id,trade.deposit)}" update=":tabView:currentReceivedTrade"/>
                                                     
                                                     <h:outputText value="Paid.Wait for another participant payment" style="font-size: medium"
                                                                   rendered="#{trade.receivingUserPay and !trade.offeringUserPay and profileBean.checkForInProgress(trade)}"/>

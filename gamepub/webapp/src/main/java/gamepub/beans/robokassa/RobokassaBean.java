@@ -106,8 +106,8 @@ public class RobokassaBean {
         isOutPay = true;
         return "robokassa";
     }
-    public String tradeSubmit(int tradeId){
-        outSumm="300";
+    public String tradeSubmit(int tradeId,int deposit){
+        outSumm=Integer.toString(deposit);
         UserTransaction userTransaction = new UserTransaction();
         userTransaction.setDate(new Date());
         userTransaction.setOutSumm(Integer.parseInt(outSumm));

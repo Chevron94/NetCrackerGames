@@ -61,7 +61,7 @@ and open the template in the editor.
             
             <h:panelGrid columns="4" cellpadding="5">
                 <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" style="margin-right: 10px"/>            
-                <p:inputText value="#{tradeOfferBean.deposit}"/>
+                <p:inputText value="#{tradeOfferBean.deposit}" placeholder="Deposit" />
                 <h:outputText value="Hand-to-hand:  " style="font-size: medium"/>
                 <p:inputSwitch value="#{tradeOfferBean.handtohand}">
                     <p:ajax listener="#{tradeOfferBean.addMsg}" update="msg"/>
