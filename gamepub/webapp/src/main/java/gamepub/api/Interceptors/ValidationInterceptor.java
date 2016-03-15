@@ -41,10 +41,7 @@ public class ValidationInterceptor implements PreProcessInterceptor, AcceptedByM
     public ServerResponse preProcess(HttpRequest request, ResourceMethodInvoker method) throws Failure, WebApplicationException {
         ServerResponse serverResponse = null;
         try {
-            String token = request.getUri().getQueryParameters().getFirst("token");
-            if (token == null || token.trim().length()==0){
-                token = request.getFormParameters().getFirst("token");
-            }
+            String token = request.getHttpHeaders().getHeaderString("token");
             if (token!=null){
                 Context context = new InitialContext();
                 userService = (UserService)context.lookup("java:app/gamepub/UserService");

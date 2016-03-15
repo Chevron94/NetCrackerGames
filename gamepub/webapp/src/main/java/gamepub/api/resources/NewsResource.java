@@ -37,7 +37,7 @@ public class NewsResource {
                                 @DefaultValue("") @QueryParam("game") String game,
                                 @DefaultValue("") @QueryParam("date") String date,
                                 @DefaultValue("0") @QueryParam("start") String startStr,
-                                @QueryParam("token") String token){
+                                @HeaderParam("token") String token){
         try {
             Integer start = Integer.valueOf(startStr);
             List<Map.Entry<String, Object>> params = new ArrayList<Map.Entry<String, Object>>();
@@ -60,7 +60,7 @@ public class NewsResource {
     @Path("{id}")
     @Produces("application/json")
     @Secure
-    public News getOne(@PathParam("id") Integer id, @QueryParam("token") String token){
+    public News getOne(@PathParam("id") Integer id, @HeaderParam("token") String token){
         return newsService.find(id);
     }
 
@@ -68,7 +68,7 @@ public class NewsResource {
     @Path("{id}/comments")
     @Produces("application/json")
     @Secure
-    public List<Comment> getComments(@PathParam("id") Integer id, @QueryParam("token") String token){
+    public List<Comment> getComments(@PathParam("id") Integer id, @HeaderParam("token") String token){
         return commentService.getCommentsByNewsId(id);
     }
 

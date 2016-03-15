@@ -32,9 +32,8 @@ public class CommentsResource {
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Secure
-    public String add(MultivaluedMap<String, String> form){
+    public String add(MultivaluedMap<String, String> form, @HeaderParam("token") String token){
         try {
-            String token = form.getFirst("token");
             Comment comment = new Comment();
             comment.setDate(new Date());
             comment.setUser(userService.getUserByApiToken(token));
@@ -54,9 +53,8 @@ public class CommentsResource {
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Secure
-    public String delete(MultivaluedMap<String, String> form){
+    public String delete(MultivaluedMap<String, String> form, @HeaderParam("token") String token){
         try {
-            String token = form.getFirst("token");
             Integer commentId = Integer.valueOf(form.getFirst("commentId"));
             Comment comment = commentService.getCommentById(commentId);
             User user = userService.getUserByApiToken(token);
