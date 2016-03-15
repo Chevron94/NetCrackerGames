@@ -71,6 +71,15 @@
                     <h3 align="center">Tournaments</h3>
                     <h:form id="formRight">
                         <p:tabView id="tournaments">
+                            <p:tab title="CS:GO matches">
+                                <p:dataList value="#{mainPageBean.getCsMatches()}" var="csmatch" type="ordered"
+                                            emptyMessage="No matches today" >
+                            
+                            <a href="#{csmatch.link}">#{csmatch.status} </a>: #{csmatch.tournament} - #{csmatch.team1} vs #{csmatch.team2} - #{csmatch.dataScore}                               
+                            
+                            
+                                </p:dataList>
+                            </p:tab> 
                             <p:tab title="Dota 2 matches">
                                 <p:dataList value="#{mainPageBean.getMatches()}" var="match" type="ordered"
                                     emptyMessage="No matches today">
@@ -78,13 +87,7 @@
                             #{match.status}: #{match.tournament} - #{match.team1} - #{match.dataScore} - #{match.team2}
                                 </p:dataList>
                             </p:tab>
-                            <p:tab title="CS:GO matches">
-                                <p:dataList value="#{mainPageBean.getCsMatches()}" var="csmatch" type="ordered"
-                                            emptyMessage="No matches today" >
                             
-                            #{csmatch.status}: #{csmatch.tournament} - #{csmatch.team1} vs #{csmatch.team2} - #{csmatch.dataScore} 
-                                </p:dataList>
-                            </p:tab> 
                         </p:tabView>    
                     </h:form>
                 </div><!-- .right-sidebar -->

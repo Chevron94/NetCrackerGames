@@ -90,7 +90,10 @@ public class RobokassaBean {
                 outSumm = Integer.toString(goldAcc);
                 descr = "gold";
                 break;
-            
+            case 4:
+                outSumm = "1000";
+                descr = "unban";
+                break;
         }
 
         UserTransaction userTransaction = new UserTransaction();
@@ -103,13 +106,26 @@ public class RobokassaBean {
         isOutPay = true;
         return "robokassa";
     }
-    public String tradeSubmit(int tradeId){
-        outSumm="300";
+    public String tradeSubmit(int tradeId,int deposit){
+        outSumm=Integer.toString(deposit);
         UserTransaction userTransaction = new UserTransaction();
         userTransaction.setDate(new Date());
         userTransaction.setOutSumm(Integer.parseInt(outSumm));
         userTransaction.setStatus(false);
         userTransaction.setDescription("trade"+tradeId);
+        userTransaction.setUser(userService.getUserById(SessionBean.getUserId()));
+        userTransactionService.create(userTransaction);
+        isOutPay = true;
+        return "robokassa";
+    }
+
+    public String blockSubmit(int idUser){
+        outSumm="500";
+        UserTransaction userTransaction = new UserTransaction();
+        userTransaction.setDate(new Date());
+        userTransaction.setOutSumm(Integer.parseInt(outSumm));
+        userTransaction.setStatus(false);
+        userTransaction.setDescription("unblock"+idUser);
         userTransaction.setUser(userService.getUserById(SessionBean.getUserId()));
         userTransactionService.create(userTransaction);
         isOutPay = true;

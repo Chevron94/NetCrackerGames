@@ -1,9 +1,11 @@
 package gamepub.beans.robokassa;
 
 import gamepub.beans.SessionBean;
+import gamepub.db.entity.Friend;
 import gamepub.db.entity.Trade;
 import gamepub.db.entity.User;
 import gamepub.db.entity.UserTransaction;
+import gamepub.db.service.FriendService;
 import gamepub.db.service.TradeService;
 import gamepub.db.service.UserService;
 import gamepub.db.service.UserTransactionService;
@@ -32,6 +34,8 @@ public class ResultBean {
     TradeService tradeService;
     @EJB
     UserTransactionService userTransactionService;
+    @EJB
+    FriendService friendService;
     private String mrhPass2 = "NetCracker1";
 
     //@ManagedProperty(value="#{param.OutSum}")
@@ -81,6 +85,16 @@ public class ResultBean {
            if(tr.getReceivingUser().getId()==userTransaction.getUser().getId()){
            tr.setReceivingUserPay(Boolean.TRUE);
            }
+        }
+        if(userTransaction.getDescription().equals("unblock")){
+            Integer userId = Integer.parseInt(userTransaction.getDescription().substring(7));
+            Friend friend = friendService.getFriendBySubIdToId(user.getId(),userId);
+            friend.setBlock(false);
+            friendService.update(friend);
+        }
+        if(userTransaction.getDescription().equals("unban")){
+            user.setBanned(false);
+            userService.update(user);
         }
         
 

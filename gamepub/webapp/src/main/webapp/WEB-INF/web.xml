@@ -37,7 +37,6 @@ metadata-complete="false">
 
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/profile.xhtml</url-pattern>
         <url-pattern>/allUsers.xhtml</url-pattern>
         <url-pattern>/allMessages.xhtml</url-pattern>
         <url-pattern>/tradingLounge.xhtml</url-pattern>
@@ -110,7 +109,7 @@ metadata-complete="false">
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-       
+
        <listener>
                <listener-class>
                gamepub.scheduler.BackgroundJob

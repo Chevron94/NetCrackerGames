@@ -136,12 +136,17 @@ public class AboutGameBean {
 
         FacesMessage errMes;
         if (review == null || review.isEmpty() || review.length() >= 501) {
-            errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "write a riview");
+            errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "write a review");
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
             return;
         }
         if (mrk == 0) {
             errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "rate this game");
+            RequestContext.getCurrentInstance().showMessageInDialog(errMes);
+            return;
+        }
+        if (userService.getUserById(SessionBean.getUserId()).getBanned() == true){
+            errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "you are banned");
             RequestContext.getCurrentInstance().showMessageInDialog(errMes);
             return;
         }
@@ -171,7 +176,7 @@ public class AboutGameBean {
     }
 
     public void deleteMarkAndReview(Mark mark) {
-        if (mark.getUser().getId() == SessionBean.getUserId()) {//��� ����� ������������ ���������
+        if ((mark.getUser().getId() == SessionBean.getUserId()) || (userService.getUserById(SessionBean.getUserId()).getUserRole().getId() == 2)) {//��� ����� ������������ ���������
             markService.delete(mark.getId());
         } else {
             FacesMessage errMes = new FacesMessage(FacesMessage.SEVERITY_WARN, "error", "no rights to delete");
@@ -359,6 +364,10 @@ public class AboutGameBean {
 
     public void setId(String id) {
         this.id = id;
+    }
+    
+    public boolean getIsBanned() {
+        return userService.getUserById(SessionBean.getUserId()).getBanned() == true;
     }
 
     private UserGame getUserGame() {

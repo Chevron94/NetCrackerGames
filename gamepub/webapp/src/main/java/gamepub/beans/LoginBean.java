@@ -72,11 +72,21 @@ private boolean logged;
     String hashPass = shaCode.code(shaCode.code(name)+password);
         HttpSession ses = SessionBean.getSession();
        
-        if(userService.getUserByLoginAndPassword(name,hashPass)!=null){
-        user = userService.getUserByLoginAndPassword(name, hashPass); 
-            setLogged(true);
-            ses.setAttribute("userid", user.getId());
-            ses.setAttribute("username", getName());                  
+        if(userService.getUserByLoginAndPassword(name,hashPass) != null){
+            if(userService.getUserByLoginAndPassword(name,hashPass).getBanned() != true)
+            {
+                user = userService.getUserByLoginAndPassword(name, hashPass); 
+                setLogged(true);
+                ses.setAttribute("userid", user.getId());
+                ses.setAttribute("username", getName());  
+            }
+            else
+            {
+                FacesMessage failMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "Error",
+                    "You are banned!");
+                RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+            }
          }        
        
         else{

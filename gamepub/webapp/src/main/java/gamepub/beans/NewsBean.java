@@ -68,6 +68,11 @@ public class NewsBean {
              RequestContext.getCurrentInstance().showMessageInDialog(errMes);
             return;
         }
+        if (userService.getUserById(SessionBean.getUserId()).getBanned() == true){
+            errMes = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "you are banned");
+            RequestContext.getCurrentInstance().showMessageInDialog(errMes);
+            return;
+        }
 
         Comment comm = new Comment();
         comm.setDate(new java.util.Date());
@@ -82,7 +87,7 @@ public class NewsBean {
     }
 
     public void deleteComment(Comment comment) {
-        if (comment.getUser().getId() == SessionBean.getUserId()) { //��� ������������ ��������� �����
+        if ((comment.getUser().getId() == SessionBean.getUserId()) || (userService.getUserById(SessionBean.getUserId()).getUserRole().getId() == 2)) { //��� ������������ ��������� �����
             commentService.delete(comment.getId());
         }
         else{

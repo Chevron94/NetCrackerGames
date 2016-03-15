@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -75,11 +77,11 @@ public class GoogleAuthorizationBean implements Serializable {
         User user = createUser();
         if (user != null) {
 
-            googleInfo = user.getSteamInfo();
+            googleInfo = user.getGoogleInfo();
 
             User userInBase = null;
             try {
-                userInBase = userService.getUserBySteamInfo(user.getSteamInfo());
+                userInBase = userService.getUserBySteamInfo(user.getGoogleInfo());
             } catch (Exception e) {
 
             }
@@ -97,11 +99,19 @@ public class GoogleAuthorizationBean implements Serializable {
     public void doLogin() throws IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
-        User user = userService.getUserBySteamInfo(googleInfo);
-        session.setAttribute("userid", user.getId());
-        session.setAttribute("username", user.getLogin());
-        context.redirect("https://gamepub.tk/");
-        logged = true;
+
+        User user = userService.getUserByGoogleInfo(googleInfo);
+        if(user.getBanned() != true)
+        {
+            session.setAttribute("userid", user.getId());
+            session.setAttribute("username", user.getLogin());
+            context.redirect("https://gamepub.tk/");
+            logged = true;
+        }
+        else
+        {
+            context.redirect("banned.xhtml");
+        }
     }
 
     public String getJsonValue(String json, String parameter) throws ParseException {
@@ -193,7 +203,7 @@ public class GoogleAuthorizationBean implements Serializable {
             User user;
             if (idLoggedUser != null) {
                 user = userService.getUserById(idLoggedUser);
-                user.setSteamInfo(id);
+                user.setGoogleInfo(id);
                 userService.update(user);
             } else {
 

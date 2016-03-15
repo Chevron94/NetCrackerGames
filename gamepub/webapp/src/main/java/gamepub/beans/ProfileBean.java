@@ -186,13 +186,21 @@ public class ProfileBean {
             user.setFbInfo(fbInfo);
             System.out.println(fbInfo);
         }
-        if (login != null && userService.getUserByLogin(login) == null) {
+        if (login != null && ((userService.getUserByLogin(login) == null) || (userService.getUserByLogin(login).getId() == SessionBean.getUserId()))) {
             user.setLogin(login);
         } else {
-            FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Error",
-                    "Failed to login!");
-            RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This login is already used!."));
+            context.getExternalContext().getSessionMap().remove("edit");
+            context.getExternalContext().getSessionMap().put("edit", true);
+            isEdit = true;
+        }
+        if (email != null && (userService.getUserByEmail(email) == null) || (userService.getUserByEmail(email).getId() == SessionBean.getUserId())) {
+            user.setEmail(email);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This email is already used!."));
+            context.getExternalContext().getSessionMap().remove("edit");
+            context.getExternalContext().getSessionMap().put("edit", true);
+            isEdit = true;
         }
 
         userService.update(user);
@@ -218,8 +226,24 @@ public class ProfileBean {
         friendService.delete(friend.getId());
     }
 
+    public void ban() {
+        User user = userService.getUserById(id);
+        user.setBanned(true);
+        userService.update(user);
+    }
+    
+    public void unban() {
+        User user = userService.getUserById(id);
+        user.setBanned(false);
+        userService.update(user);
+    }
+    
     public boolean getIsSubscribedTo() {
         return friendService.getFriendBySubIdToId(SessionBean.getUserId(), id) != null;
+    }
+    
+    public boolean getIsBanned() {
+        return userService.getUserById(id).getBanned() == true;
     }
 
     public boolean getHaveFbInfo() {
@@ -277,29 +301,21 @@ public class ProfileBean {
         }
 
     }
+    
+    public boolean getIsAdmin() {
+        return userService.getUserById(SessionBean.getUserId()).getUserRole().getId() == 2;
+    }
 
     public boolean isFacebook() {
-        if (userService.getUserById(SessionBean.getUserId()).getFbInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getFbInfo() != null;
     }
 
     public boolean isVk() {
-        if (userService.getUserById(SessionBean.getUserId()).getVkInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getVkInfo() != null;
     }
 
     public boolean isGoogle() {
-        if (userService.getUserById(SessionBean.getUserId()).getSteamInfo() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return userService.getUserById(SessionBean.getUserId()).getSteamInfo() != null;
     }
 
     public void upload(FileUploadEvent event) throws IOException {
@@ -413,6 +429,10 @@ public class ProfileBean {
 
         return friendService.getFriendBySubIdToId(id,SessionBean.getUserId()) != null &&
                 friendService.getFriendBySubIdToId(id, SessionBean.getUserId()).getBlock();
+    }
+
+    public int getBlockId(){
+        return id;
     }
     
 }
