@@ -30,3 +30,9 @@
 .ui-contentflow .globalCaption{
     color: #4f4f4f;
 }
+.ui-chkbox .ui-chkbox-box{
+    background: #fff;
+}
+.ui-widget-header .ui-icon{
+    background-image: url("/javax.faces.resource/images/ui-icons_616161_256x240.png.xhtml?ln=primefaces-aristo");
+}

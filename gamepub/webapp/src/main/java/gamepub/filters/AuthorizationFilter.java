@@ -25,18 +25,18 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        filterChain.doFilter(request, response);
-        /*try {
+        //filterChain.doFilter(request, response);
+        try {
             HttpSession session = request.getSession();
             if(session.getAttribute("userid") != null)
                 filterChain.doFilter(request, response);
             else
-                ((HttpServletResponse)response).sendRedirect("/gamepub/registr.xhtml");
+                ((HttpServletResponse)response).sendRedirect("registr.xhtml");
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            ((HttpServletResponse)response).sendRedirect("/gamepub/registr.xhtml");
-        }*/
+            ((HttpServletResponse)response).sendRedirect("registr.xhtml");
+        }
 
 
 

@@ -23,12 +23,14 @@
                             <p:growl id="commentsMessage" showDetail="true" life="1000"/>
 
                             <h:panelGrid columns="3" cellpadding="10">
-                                <h:panelGrid columns="1">
-                                    <p:graphicImage value="#{messageBean.user.avatarUrl}"
-                                                    style="width:50px; height: 50px;"/>
-                                    #{messageBean.user.login}
-                                </h:panelGrid>
-
+                                <h:link outcome="profile" includeViewParams="true">
+                                    <f:param value="#{messageBean.user.uid}" name="userId"/>
+                                    <h:panelGrid columns="1">
+                                        <p:graphicImage value="#{messageBean.user.avatarUrl}"
+                                                        style="width:50px; height: 50px;"/>
+                                        #{messageBean.user.login}
+                                    </h:panelGrid>
+                                </h:link>
                                 <p:inputTextarea id="inputMes" rows="2" cols="40"/>
                                 <h:panelGrid columns="1">
                                     <p:graphicImage value="#{messageBean.receiver.avatarUrl}"
@@ -39,8 +41,11 @@
                             </h:panelGrid>
                             <h:panelGrid columns="2" cellpadding="20">
                                 <p:commandButton class="btn btn-primary" value="Send" update="dialogForm messageForm"
-                                                 actionListener="#{messageBean.sendDialog}" rendered="#{!messageBean.isBlock}"/>
-                                <p:button styleClass="btn btn-danger" action="#{robokassaBean.blockSubmit(messageBean.receiver.id)}" value="This user has blocked you" rendered="#{messageBean.isBlock}"/>
+                                                 actionListener="#{messageBean.sendDialog}"
+                                                 rendered="#{!messageBean.isBlock}"/>
+                                <p:button styleClass="btn btn-danger"
+                                          action="#{robokassaBean.blockSubmit(messageBean.receiver.id)}"
+                                          value="This user has blocked you" rendered="#{messageBean.isBlock}"/>
                             </h:panelGrid>
                         </h:form>
 
@@ -51,15 +56,18 @@
 
                                 <h:panelGrid columns="2" styleClass="newsItem" cellpadding="10"
                                              columnClasses="percent_33, percent_33">
-                                    <h:panelGrid columns="1" styleClass="newsItem">
-                                        <p:graphicImage value="#{message.sender.avatarUrl}"
-                                                        style="width:30px; height: 30px;"/>
-                                        <b:label text="#{message.sender.login}" severity="primary"/>
-                                    </h:panelGrid>
+                                    <h:link outcome="profile" includeViewParams="true">
+                                        <f:param value="#{messageBean.user.uid}" name="userId"/>
+                                        <h:panelGrid columns="1" styleClass="newsItem">
+                                            <p:graphicImage value="#{message.sender.avatarUrl}"
+                                                            style="width:30px; height: 30px;"/>
+                                            <b:label text="#{message.sender.login}" severity="primary"/>
+                                        </h:panelGrid>
+                                    </h:link>
                                     #{message.text}
                                 </h:panelGrid>
                             </p:dataScroller>
-                            <p:poll interval="2"  update="dialog" />
+                            <p:poll interval="2" update="dialog"/>
                         </h:form>
 
 
