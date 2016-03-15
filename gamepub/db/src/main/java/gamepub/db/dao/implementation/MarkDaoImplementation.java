@@ -76,4 +76,11 @@ public class MarkDaoImplementation extends BaseDaoImplementation<Mark,Integer> i
         closeEntityManager();
         return result;
     }
+
+    public Double getAvgMarkByGameId(Integer gameId) {
+        String jpa = "SELECT AVG(m.mark) from Mark m where m.game.id = :id";
+        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("id",gameId);
+        return this.executeScalarQuery(jpa,parameters);
+    }
 }

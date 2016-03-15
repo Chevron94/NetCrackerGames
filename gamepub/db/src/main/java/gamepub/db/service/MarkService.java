@@ -1,8 +1,11 @@
 package gamepub.db.service;
 
 import gamepub.db.dao.implementation.MarkDaoImplementation;
+import gamepub.db.entity.Game;
+import gamepub.db.entity.GameScreenshot;
 import gamepub.db.entity.Mark;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,6 +20,9 @@ import java.util.List;
 public class MarkService extends MarkDaoImplementation {
     @PersistenceContext(unitName = "PERSISTENCE_WEB")
     protected EntityManager em;
+
+    @EJB
+    GameService gameService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -52,9 +58,20 @@ public class MarkService extends MarkDaoImplementation {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public Double getAvgMarkByGameId(Integer gameId) {
+        return super.getAvgMarkByGameId(gameId);
+    }
+
+    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Mark create(Mark mark) {
-        return super.create(mark);
+
+        Mark m = super.create(mark);
+        Game g = m.getGame();
+        g.setAvgMark(getAvgMarkByGameId(g.getId()));
+        gameService.update(g);
+        return m;
     }
 
     @Override
