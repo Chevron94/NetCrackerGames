@@ -7,4 +7,5 @@ import gamepub.db.entity.Country;
  */
 public interface CountryDao extends BaseDao<Country,Integer> {
     public Country getCountryById(Integer id);
+    Country getCountryByName(String name);
 }

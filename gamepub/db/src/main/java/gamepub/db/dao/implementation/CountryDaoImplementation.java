@@ -35,4 +35,21 @@ public class CountryDaoImplementation extends BaseDaoImplementation<Country, Int
         }
         return result;
     }
+
+    public Country getCountryByName(String name) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Country> root = cq.from(instance);
+        cq.select(root);
+        cq.where(cb.equal(root.<String>get("name"), name));
+        Country result;
+        try {
+            result = (Country)getEntityManager().createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            result = null;
+        }finally {
+            closeEntityManager();
+        }
+        return result;
+    }
 }

@@ -226,7 +226,7 @@ public class VKAuthorizationBean implements Serializable {
 
                 user = new User();
                 UserRole ur = userRoleService.getUserRoleById(1);
-                City city = cityService.getCityById(1);
+                City city = cityService.getCityById(2235395);
 
                 user.setAvatarUrl(photo);
                 String password= passwordGenerator.generatePassword(10);
@@ -237,6 +237,9 @@ public class VKAuthorizationBean implements Serializable {
                 user.setVkInfo(id);
                 user.setLogin(nickname);
                 user.setCity(city);
+                user.setFine(0);
+                user.setGold(false);
+                user.setReputation(0);
                 user.setUserRole(ur);
             }
             return user;

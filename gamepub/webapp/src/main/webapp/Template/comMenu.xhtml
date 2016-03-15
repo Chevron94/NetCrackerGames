@@ -15,7 +15,7 @@
     <ui:composition>
         <b:column span="1" style="margin-right:10px; height:100%; background-color:#2196f3;" rendered="#{sessionBean.isLogged}">
 
-            <h:panelGrid columns="1" style="padding:10px; background-color:#2196f3; " styleClass="hidden-xs" >
+            <h:panelGrid columns="1" style="padding:10px; background-color:#2196f3;  position:fixed;" styleClass="hidden-xs" >
 
                 <b:button styleClass="btn btn-primary" style="width:100%;" outcome="profile" value="MY PROFILE"
                            icon="ui-icon-star">
@@ -35,7 +35,7 @@
 
                 <b:button class="btn btn-primary" style="width:100%;" outcome="payments"
                           value="Payments"/>
-
+                <div style="background-color: #2196f3; padding-bottom: 500px;"></div>
             </h:panelGrid>
         </b:column>
 

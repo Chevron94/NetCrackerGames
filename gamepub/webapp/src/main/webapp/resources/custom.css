@@ -13,10 +13,17 @@
     border: 0px;
 }
 .water{
-    color:#fff;
+    color:#000;
     padding:5px;
 }
 .water::-webkit-input-placeholder{
-    color:#fff;
+    color:#000;
 
+}
+.ui-tabs .ui-tabs-nav{
+    background: #2196f3;
+}
+
+.ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    background: #fff;
 }

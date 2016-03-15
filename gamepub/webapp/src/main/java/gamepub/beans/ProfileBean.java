@@ -84,7 +84,8 @@ public class ProfileBean {
             context.getExternalContext().getSessionMap().put("edit", false);
         }
         User user;
-        if (!userId.equals("my")) {
+        if (userId != null && !userId.equals("my")) {
+
             user = userService.getUserByUid(userId);
             id = user.getId();
         } else {
@@ -147,7 +148,8 @@ public class ProfileBean {
     }
 
     public List<City> getCities() {
-        return cityService.findAll();
+        //return cityService.findAll();
+        return null;
     }
 
     public boolean getIsEdit() {
@@ -157,7 +159,8 @@ public class ProfileBean {
     }
 
     public boolean getIsMy() {
-        return userId.equals("my");
+        return !(userId != null && !userId.equals("my")) ||
+                (userId != null && userId.equals(userService.getUserById(SessionBean.getUserId()).getUid()));
     }
 
     public List<Game> getRecomendGames() {
@@ -213,6 +216,7 @@ public class ProfileBean {
         Friend friend = new Friend();
         friend.setSubscribedTo(userService.getUserById(id));
         friend.setSubscriber(userService.getUserById(SessionBean.getUserId()));
+        friend.setBlock(false);
         friendService.create(friend);
     }
 
@@ -245,6 +249,25 @@ public class ProfileBean {
     public boolean getHaveFbInfo() {
         return userService.getUserById(id).getFbInfo() != null && userService.getUserById(id).getFbInfo().length() > 1;
     }
+
+    public void block() {
+        Friend friend = friendService.getFriendBySubIdToId(SessionBean.getUserId(), id);
+        if(friend == null) {
+            friend = new Friend();
+            friend.setSubscribedTo(userService.getUserById(id));
+            friend.setSubscriber(userService.getUserById(SessionBean.getUserId()));
+        }
+
+        friend.setBlock(true);
+        friendService.update(friend);
+    }
+
+    public boolean getIsBlock(){
+
+        return friendService.getFriendBySubIdToId(SessionBean.getUserId(), id) != null &&
+                friendService.getFriendBySubIdToId(SessionBean.getUserId(), id).getBlock();
+    }
+
 
     //Games
     public List<UserGame> getSimpleAndFavouriteGames(){
@@ -405,6 +428,12 @@ public class ProfileBean {
 
     public boolean getIsGold(){
         return userService.getUserById(SessionBean.getUserId()).getGold();
+    }
+
+    public boolean getIsBlockYou(){
+
+        return friendService.getFriendBySubIdToId(id,SessionBean.getUserId()) != null &&
+                friendService.getFriendBySubIdToId(id, SessionBean.getUserId()).getBlock();
     }
     
 }

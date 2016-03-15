@@ -2,6 +2,7 @@ package gamepub.beans;
 
 import gamepub.db.entity.PrivateMessage;
 import gamepub.db.entity.User;
+import gamepub.db.service.FriendService;
 import gamepub.db.service.PrivateMessageService;
 import gamepub.db.service.UserService;
 import org.primefaces.component.inputtextarea.InputTextarea;
@@ -27,6 +28,8 @@ public class MessageBean {
     PrivateMessageService privateMessageService;
     @EJB
     UserService userService;
+    @EJB
+    FriendService friendService;
 
     String receiverId;
     String message;
@@ -110,5 +113,11 @@ public class MessageBean {
 
     public User getUser() {
         return userService.getUserById(SessionBean.getUserId());
+    }
+
+    public boolean getIsBlock(){
+
+        return friendService.getFriendBySubIdToId(receiver.getId(),SessionBean.getUserId()) != null &&
+                friendService.getFriendBySubIdToId(receiver.getId(),SessionBean.getUserId()).getBlock();
     }
 }

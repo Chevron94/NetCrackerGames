@@ -42,7 +42,7 @@ public class User {
     @Column(name = "BANNED")
     Boolean banned;
 
-    @Column(name = "FINE")
+    @Column(name = "FINE", columnDefinition = "int default 0")
     Integer fine;
 
     @Column(name = "REPUTATION",columnDefinition = "int default 0")

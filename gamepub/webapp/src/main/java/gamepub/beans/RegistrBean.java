@@ -2,20 +2,17 @@ package gamepub.beans;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import gamepub.db.entity.City;
-import gamepub.db.entity.User;
-import gamepub.db.entity.UserRole;
-import gamepub.db.entity.UserScreenshot;
-import gamepub.db.service.CityService;
-import gamepub.db.service.NewsService;
-import gamepub.db.service.UserRoleService;
-import gamepub.db.service.UserService;
+import gamepub.db.entity.*;
+import gamepub.db.service.*;
 import gamepub.encode.shaCode;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.RequestScoped;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
@@ -38,7 +36,7 @@ import org.primefaces.context.RequestContext;
 public class RegistrBean {
     private User user;
     private City city;
-    private String name, password, email;
+    private String name, password, email, countryName, cityName;
     private int cityId;
 
     @EJB
@@ -47,6 +45,8 @@ public class RegistrBean {
     CityService cityService;
     @EJB
     UserRoleService userRoleService;
+    @EJB
+    CountryService countryService;
 
     public String getName() {
         return name;
@@ -81,13 +81,16 @@ public class RegistrBean {
     }
 
 
-    public List<City> getCities() {
-        return cityService.findAll();
+    public List<City> getCities(String name) {
+        Country country = countryService.getCountryByName("Russia");
+        return cityService.getCitiesByNameAndCountryId(country.getId(), name);
     }
 
     public void save() throws NoSuchAlgorithmException, UnsupportedEncodingException {
         user = new User();
         UserRole ur = userRoleService.getUserRoleById(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        cityId = (Integer)facesContext.getExternalContext().getSessionMap().get("registrCity");
         city = cityService.getCityById(cityId);
 
 
@@ -101,13 +104,15 @@ public class RegistrBean {
             user.setUserRole(ur);
             user.setActive(true);
             user.setBanned(false);
+            user.setFine(0);
+            user.setGold(false);
+            user.setReputation(0);
             userService.create(user);
-
+            loginIn();
             FacesMessage regMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Success",
                     "Welcome " + name + "! Login now.");
             RequestContext.getCurrentInstance().showMessageInDialog(regMes);
-
         } else {
             FacesMessage failMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Error",
@@ -116,4 +121,35 @@ public class RegistrBean {
         }
 
     }
+
+    public void loginIn() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        String hashPass = shaCode.code(shaCode.code(name) + password);
+        HttpSession ses = SessionBean.getSession();
+
+        user = userService.getUserByLoginAndPassword(name, hashPass);
+        ses.setAttribute("userid", user.getId());
+        ses.setAttribute("username", getName());
+
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String name) {
+        cityName = name;
+    }
+
+    public void onItemSelect(String str) {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().getSessionMap().put("registrCity", cityService.getCityByName(cityName).getId());
+
+    }
+
 }

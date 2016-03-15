@@ -244,7 +244,7 @@ public class FaceBookAuthorizationBean implements Serializable {
 
                 user = new User();
                 UserRole ur = userRoleService.getUserRoleById(1);
-                City city = cityService.getCityById(1);
+                City city = cityService.getCityById(2235395);
 
                 user.setAvatarUrl(photo);
                 String password= passwordGenerator.generatePassword(10);
@@ -253,6 +253,9 @@ public class FaceBookAuthorizationBean implements Serializable {
                 user.setActive(true);
                 user.setBanned(false);
                 user.setFbInfo(id);
+                user.setFine(0);
+                user.setGold(false);
+                user.setReputation(0);
                 user.setLogin(nickname);
                 user.setCity(city);
                 user.setUserRole(ur);
