@@ -43,6 +43,8 @@ public class Trade {
     Boolean receivedByOfferingUser;
     @Column(name = "RECEIVED_BY_RECEIVING_USER",columnDefinition = "boolean default false")
     Boolean receivedByReceivingUser;
+    @Column(name = "DEPOSIT",columnDefinition = "int default 0")
+    Integer deposit;
     
     @PrePersist
     protected void onCreate() {
@@ -248,6 +250,20 @@ public class Trade {
      */
     public void setReceivedByReceivingUser(Boolean receivedByReceivingUser) {
         this.receivedByReceivingUser = receivedByReceivingUser;
+    }
+
+    /**
+     * @return the deposit
+     */
+    public Integer getDeposit() {
+        return deposit;
+    }
+
+    /**
+     * @param deposit the deposit to set
+     */
+    public void setDeposit(Integer deposit) {
+        this.deposit = deposit;
     }
 
   

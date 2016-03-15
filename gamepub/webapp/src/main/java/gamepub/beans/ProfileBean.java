@@ -370,17 +370,12 @@ public class ProfileBean {
     public boolean checkForFraud(Trade trade){
         return trade.getStatus().equals("fraud");
     }
-    public boolean canTrade(){
-        if(userService.getUserById(id).getGold()==true){
-            return userService.getUserById(id).getReputation()<11;
-        }else {
-        return userService.getUserById(id).getReputation()<4;}
+    public boolean canTrade(){        
+        return userService.getUserById(id).getTradesLeft()>0;                
     }
-    public Integer tradesLeft(){
-        if(userService.getUserById(id).getGold()==true){
-            return 10 - userService.getUserById(id).getReputation();
-        }else
-       return 3 - userService.getUserById(id).getReputation();        
+    
+    public Integer tradesLeft(){    
+        return userService.getUserById(id).getTradesLeft();                           
     }
     public void setFraud(Trade trade){
         trade.setStatus("fraud");
@@ -396,7 +391,7 @@ public class ProfileBean {
             trade.setReceivedByReceivingUser(Boolean.TRUE);
             tradeService.update(trade);
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours after trade confirming!"));
     }
     public void setBothReceived(Trade trade){        
             trade.setReceivedByOfferingUser(Boolean.TRUE);
@@ -405,7 +400,7 @@ public class ProfileBean {
             tradeService.update(trade);                
             
                    
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Gratz!You'll get +rep after 24 hours after trade confirming!"));
     }
     public void setInProgress(Trade trade){
         trade.setStatus("inProgress");

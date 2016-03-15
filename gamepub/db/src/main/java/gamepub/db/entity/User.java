@@ -47,7 +47,8 @@ public class User {
 
     @Column(name = "REPUTATION",columnDefinition = "int default 0")
     Integer reputation;
-    
+    @Column(name = "TRADES_LEFT",columnDefinition = "int default 3")
+    Integer tradesLeft;
 
     @Column(name = "GOLD",columnDefinition = "boolean default false")
     Boolean gold;
@@ -404,6 +405,22 @@ public class User {
     public void setGold(Boolean gold) {
         this.gold = gold;
     }
+
+    /**
+     * @return the tradesLeft
+     */
+    public Integer getTradesLeft() {
+        return tradesLeft;
+    }
+
+    /**
+     * @param tradesLeft the tradesLeft to set
+     */
+    public void setTradesLeft(Integer tradesLeft) {
+        this.tradesLeft = tradesLeft;
+    }
+
+   
 
 
     
