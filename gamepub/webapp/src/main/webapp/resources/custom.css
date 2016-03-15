@@ -29,6 +29,7 @@
 }
 .ui-contentflow .globalCaption{
     color: #4f4f4f;
+    display: none;
 }
 .ui-chkbox .ui-chkbox-box{
     background: #fff;

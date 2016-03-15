@@ -18,8 +18,8 @@
             <b:column span="9" offset="1">
                 <b:row>
                     <b:column span="3" offset="1">
-                        <h2 align="center" id="userName">#{profileBean.name}</h2>
-                        <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
+                        <h2 align="center" id="userName">#{profileBean.myUser.login}</h2>
+                        <p:graphicImage value="#{profileBean.myUser.avatarUrl}" styleClass="imgA"/>
 
                     </b:column>
                     <b:column span="3" style="margin-top:10%">
@@ -29,7 +29,7 @@
                                              ajax="false"
                                              value="Buy gold account "/><br/><br/>
 
-                            Your fine - <b>#{profileBean.fine}</b><br/>
+                            Your fine - <b>#{profileBean.myUser.fine}</b><br/>
                             <br/>
 
 

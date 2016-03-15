@@ -86,7 +86,7 @@ public class ResultBean {
            tr.setReceivingUserPay(Boolean.TRUE);
            }
         }
-        if(userTransaction.getDescription().equals("unblock")){
+        if(userTransaction.getDescription().contains("unblock")){
             Integer userId = Integer.parseInt(userTransaction.getDescription().substring(7));
             Friend friend = friendService.getFriendBySubIdToId(user.getId(),userId);
             friend.setBlock(false);
