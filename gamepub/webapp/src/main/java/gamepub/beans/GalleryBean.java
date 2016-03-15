@@ -86,8 +86,9 @@ public UploadedFile getFile() {
      * @return the images
      */
     public List<String> getImages() {
-        images = new ArrayList<String>();  
-        
+        images = new ArrayList<String>();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().getSessionMap().put("userId", userId);
         if(checkForMyGallery()){
         userScreens = userScreenshotService.getScreenshotsByUserId(SessionBean.getUserId());}
         if(!checkForMyGallery()){
@@ -143,8 +144,9 @@ public UploadedFile getFile() {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-    public Boolean checkForMyGallery(){        
-        return userId.equals("my");
+    public Boolean checkForMyGallery(){  
+        FacesContext fc = FacesContext.getCurrentInstance();
+        return fc.getExternalContext().getSessionMap().get("userId").toString().equals("my");
     }
     public String getGalleryOwner(){
         if (userId.equals("my")) {return "My gallery";}

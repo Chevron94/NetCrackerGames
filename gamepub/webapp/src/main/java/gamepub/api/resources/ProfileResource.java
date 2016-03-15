@@ -39,7 +39,7 @@ public class ProfileResource {
     @Path("/")
     @Produces("application/json")
     @Secure
-    public List<User> getAll(@QueryParam("token") String token){
+    public List<User> getAll(@HeaderParam("token") String token){
         return userService.findAll();
 
     }
@@ -48,7 +48,7 @@ public class ProfileResource {
     @Path("{userId}")
     @Produces("application/json")
     @Secure
-    public User getOne(@PathParam("userId") Integer userId, @QueryParam("token") String token){
+    public User getOne(@PathParam("userId") Integer userId, @HeaderParam("token") String token){
         return userService.getUserById(userId);
     }
 
@@ -56,7 +56,7 @@ public class ProfileResource {
     @Path("{userId}/comments")
     @Produces("application/json")
     @Secure
-    public List<Comment> getComments(@PathParam("userId") Integer userId, @QueryParam("token") String token){
+    public List<Comment> getComments(@PathParam("userId") Integer userId, @HeaderParam("token") String token){
         return commentService.getCommentsByUserId(userId);
     }
 
@@ -64,7 +64,7 @@ public class ProfileResource {
     @Path("{userId}/reviews")
     @Produces("application/json")
     @Secure
-    public List<Mark> getReviews(@PathParam("userId") Integer userId, @QueryParam("token") String token){
+    public List<Mark> getReviews(@PathParam("userId") Integer userId, @HeaderParam("token") String token){
         return markService.getMarksByUserId(userId);
     }
 
@@ -73,9 +73,8 @@ public class ProfileResource {
     @Consumes("application/x-www-form-urlencoded")
     @Secure
     public String updateProfile(@PathParam("userID") Integer userId,
-                                MultivaluedMap<String, String> form){
+                                MultivaluedMap<String, String> form, @HeaderParam("token") String token){
         try {
-            String token = form.getFirst("token");
             if (userService.getUserByApiToken(token).getId() == userId) {
                 User user = userService.getUserById(userId);
                 String password = form.getFirst("password");

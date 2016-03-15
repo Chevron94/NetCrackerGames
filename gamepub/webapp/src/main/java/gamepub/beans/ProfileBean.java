@@ -148,7 +148,8 @@ public class ProfileBean {
     }
 
     public List<City> getCities() {
-        return cityService.findAll();
+        //return cityService.findAll();
+        return null;
     }
 
     public boolean getIsEdit() {

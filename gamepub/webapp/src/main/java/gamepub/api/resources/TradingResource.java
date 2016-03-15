@@ -30,7 +30,7 @@ public class TradingResource {
     @Path("/")
     @Produces("application/json")
     @Secure
-    public List<UserGame> getAll(@QueryParam("token") String token){
+    public List<UserGame> getAll(@HeaderParam("token") String token){
         return userGameService.findAll();
     }
 
@@ -38,7 +38,7 @@ public class TradingResource {
     @Path("exchange/users/{gameId}")
     @Produces("application/json")
     @Secure
-    public List<UserGame> getExchangeByGame(@QueryParam("token") String token, @PathParam("gameId") Integer gameId){
+    public List<UserGame> getExchangeByGame(@HeaderParam("token") String token, @PathParam("gameId") Integer gameId){
         return userGameService.findAll();
     }
 
@@ -46,7 +46,7 @@ public class TradingResource {
     @Path("exchange/games/{userId}")
     @Produces("application/json")
     @Secure
-    public List<UserGame> getExchangeByUser(@QueryParam("token") String token, @PathParam("userId") Integer userId){
+    public List<UserGame> getExchangeByUser(@HeaderParam("token") String token, @PathParam("userId") Integer userId){
         return userGameService.findAll();
     }
 
@@ -54,7 +54,7 @@ public class TradingResource {
     @Path("wanted/users/{gameId}")
     @Produces("application/json")
     @Secure
-    public List<UserGame> getWantedByGame(@QueryParam("token") String token, @PathParam("gameId") Integer gameId){
+    public List<UserGame> getWantedByGame(@HeaderParam("token") String token, @PathParam("gameId") Integer gameId){
         return userGameService.findAll();
     }
 
@@ -62,7 +62,7 @@ public class TradingResource {
     @Path("wanted/games/{userId}")
     @Produces("application/json")
     @Secure
-    public List<UserGame> getWantedByUser(@QueryParam("token") String token, @PathParam("userId") Integer userId){
+    public List<UserGame> getWantedByUser(@HeaderParam("token") String token, @PathParam("userId") Integer userId){
         return userGameService.findAll();
     }
 }

@@ -42,7 +42,7 @@
 
                         <p:growl id="messages" showDetail="true"/>
                         <p:fileUpload fileUploadListener="#{galleryBean.upload}" mode="advanced" skinSimple="true" rendered ="#{galleryBean.checkForMyGallery()}"
-                                      oncomplete="window.location.reload();"/>
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"    oncomplete="window.location.reload();"/>
                     </h:form>
                 </div>
             </b:column>

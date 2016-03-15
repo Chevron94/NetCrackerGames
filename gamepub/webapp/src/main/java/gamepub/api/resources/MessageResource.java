@@ -36,7 +36,7 @@ public class MessageResource {
     @Path("/sentMessages")
     @Produces("application/json")
     @Secure
-    public List<PrivateMessage> getSentMessages(@QueryParam("token") String token) {
+    public List<PrivateMessage> getSentMessages(@HeaderParam("token") String token) {
         User user= userService.getUserByApiToken(token);
         return privateMessageService.getSendedPrivateMessagesBySenderId(user.getId());
     }
@@ -45,7 +45,7 @@ public class MessageResource {
     @Path("/receivedMessages")
     @Produces("application/json")
     @Secure
-    public List<PrivateMessage> getReceivedMessages(@QueryParam("token") String token) {
+    public List<PrivateMessage> getReceivedMessages(@HeaderParam("token") String token) {
         User user= userService.getUserByApiToken(token);
         return privateMessageService.getReceivedPrivateMessagesByReceiverId(user.getId());
     }
@@ -54,9 +54,8 @@ public class MessageResource {
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Secure
-    public String sendMessage(MultivaluedMap<String, String> form) {
+    public String sendMessage(MultivaluedMap<String, String> form,@HeaderParam("token") String token) {
         try {
-            String token = form.getFirst("token");
             PrivateMessage privateMessage = new PrivateMessage();
             privateMessage.setSender(userService.getUserByApiToken(token));
             privateMessage.setReceiver(userService.getUserByLogin(form.getFirst("receiverLogin")));

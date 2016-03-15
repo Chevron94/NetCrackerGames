@@ -38,7 +38,7 @@ public class GamesResource {
     @Path("/")
     @Produces("application/json")
     @Secure
-    public List<Game> getAllGames(@QueryParam("token") String token,
+    public List<Game> getAllGames(@HeaderParam("token") String token,
                                   @DefaultValue("0") @QueryParam("start") String startStr,
                                   @DefaultValue("") @QueryParam("name") String name,
                                   @DefaultValue("") @QueryParam("genre") String genre,
@@ -65,7 +65,7 @@ public class GamesResource {
     @Path("/{id}")
     @Produces("application/json")
     @Secure
-    public Game getOneGameById(@PathParam("id") Integer id, @QueryParam("token") String token){
+    public Game getOneGameById(@PathParam("id") Integer id, @HeaderParam("token") String token){
         return gameService.find(id);
     }
     
@@ -73,7 +73,7 @@ public class GamesResource {
     @Path("/{id}/reviews")
     @Produces("application/json")
     @Secure
-    public List<Mark> getReviews(@PathParam("id") Integer id, @QueryParam("token") String token){
+    public List<Mark> getReviews(@PathParam("id") Integer id, @HeaderParam("token") String token){
         return markService.getMarksByGameId(id);
     }
 }

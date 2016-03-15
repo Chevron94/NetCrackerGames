@@ -39,9 +39,8 @@ public class ReviewsResource {
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Secure
-    public String addMark(MultivaluedMap<String, String> form) {
+    public String addMark(MultivaluedMap<String, String> form, @HeaderParam("token") String token) {
         try {
-            String token = form.getFirst("token");
             Mark mark = new Mark();
             mark.setDate(new Date());
             mark.setUser(userService.getUserByApiToken(token));
@@ -69,9 +68,8 @@ public class ReviewsResource {
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Secure
-    public String deleteReview(MultivaluedMap<String, String> form) {
+    public String deleteReview(MultivaluedMap<String, String> form, @HeaderParam("token") String token) {
         try {
-            String token = form.getFirst("token");
             Mark mark = markService.getMarkById(Integer.parseInt(form.getFirst("reviewId")));
             User user = userService.getUserByApiToken(token);
             if (mark.getUser().equals(user)) {

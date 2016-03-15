@@ -85,7 +85,7 @@ public class VKAuthorizationBean implements Serializable {
                 userService.create(user);
             }
         } else {
-            context.redirect("http://193.124.180.79:8080/gamepub/registr.xhtml");
+            context.redirect("https://gamepub.tk/registr.xhtml");
         }
     }
 
@@ -95,7 +95,7 @@ public class VKAuthorizationBean implements Serializable {
         User user = userService.getUserByVkInfo(vKInfo);
         session.setAttribute("userid", user.getId());
         session.setAttribute("username", user.getLogin());
-        context.redirect("http://193.124.180.79:8080/gamepub/");
+        context.redirect("https://gamepub.tk/");
         logged = true;
     }
 
@@ -125,7 +125,7 @@ public class VKAuthorizationBean implements Serializable {
     public VKAuthorizationBean() {
         clientId = "5282358";
         clientSecret = "0zKP5VC4jAfbq7w7gYsI";
-        redirectUri = "http://193.124.180.79:8080/gamepub/vk.xhtml";
+        redirectUri = "https://gamepub.tk/vk.xhtml";
         userInfoUrl = "https://api.vk.com/method/users.get";
         isError = false;
     }
@@ -217,7 +217,7 @@ public class VKAuthorizationBean implements Serializable {
 
                 user = new User();
                 UserRole ur = userRoleService.getUserRoleById(1);
-                City city = cityService.getCityById(1);
+                City city = cityService.getCityById(2235395);
 
                 user.setAvatarUrl(photo);
                 String password= passwordGenerator.generatePassword(10);
