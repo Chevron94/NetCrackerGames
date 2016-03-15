@@ -32,11 +32,11 @@
                                             </h:link>
                                             <h:link outcome="profile" value="#{message.sender.login}"
                                                     includeViewParams="true">
-                                                <f:param value="#{message.sender.id}" name="userId"/>
+                                                <f:param value="#{message.sender.uid}" name="userId"/>
                                             </h:link>
                                         </h:panelGrid>
                                         <h:link outcome="mesDialog" value="#{message.text}" includeViewParams="true">
-                                            <f:param value="#{message.receiver.uid}" name="receiverId"/>
+                                            <f:param value="#{message.sender.uid}" name="receiverId"/>
                                         </h:link>
                                         <b:label text="#{message.date}"/>
                                     </h:panelGrid>
@@ -51,7 +51,7 @@
                                                  columnClasses="percent_33, percent_33, percent_33">
                                         <h:panelGrid columns="2">
                                             <h:link outcome="profile" includeViewParams="true">
-                                                <f:param value="#{message.receiver.id}" name="userId"/>
+                                                <f:param value="#{message.receiver.uid}" name="userId"/>
                                                 <p:graphicImage value="#{message.receiver.avatarUrl}"
                                                                 style="width:30px; height: 30px;"/>
                                             </h:link>
