@@ -435,5 +435,9 @@ public class ProfileBean {
         return friendService.getFriendBySubIdToId(id,SessionBean.getUserId()) != null &&
                 friendService.getFriendBySubIdToId(id, SessionBean.getUserId()).getBlock();
     }
+
+    public int getBlockId(){
+        return id;
+    }
     
 }
