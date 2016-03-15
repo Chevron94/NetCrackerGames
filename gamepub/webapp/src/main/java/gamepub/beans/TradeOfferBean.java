@@ -50,7 +50,7 @@ public class TradeOfferBean {
     @EJB
     UserGameService userGameService;
 
-
+private Integer deposit;
 private DualListModel<Game> myGames;
 private DualListModel<Game> tradeUserGames;
 private ArrayList<Game> myWantedGamesSource; 
@@ -102,6 +102,7 @@ private boolean handtohand=false;
        trade.setReceivingUserPay(false);
        trade.setReceivedByOfferingUser(false);
        trade.setReceivedByReceivingUser(false);
+       trade.setDeposit(deposit);
        tradeService.create(trade);
        Trade currentTrade = tradeService.getLastTradeByOfferingUserId(SessionBean.getUserId());
        for(Game g:myGames.getTarget()){
@@ -155,6 +156,20 @@ private boolean handtohand=false;
     public void addMsg(){
         String res = handtohand ? "Hand-to-hand offer has been chosen":"Remote exchange has been chosen";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(res));
+    }
+
+    /**
+     * @return the deposit
+     */
+    public Integer getDeposit() {
+        return deposit;
+    }
+
+    /**
+     * @param deposit the deposit to set
+     */
+    public void setDeposit(Integer deposit) {
+        this.deposit = deposit;
     }
        
         
