@@ -8,6 +8,7 @@ import com.sun.faces.util.Util;
 import gamepub.db.entity.User;
 import gamepub.db.service.UserService;
 import gamepub.encode.shaCode;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import javax.ejb.EJB;
@@ -15,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
@@ -67,25 +69,25 @@ private boolean logged;
         this.password = password;
     }
     
-    public void check() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void check() throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException{
         
-    String hashPass = shaCode.code(shaCode.code(name)+password);
+        String hashPass = shaCode.code(shaCode.code(name)+password);
         HttpSession ses = SessionBean.getSession();
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
        
         if(userService.getUserByLoginAndPassword(name,hashPass) != null){
-            if(userService.getUserByLoginAndPassword(name,hashPass).getBanned() != true)
+            user = userService.getUserByLoginAndPassword(name, hashPass);
+            if(user.getBanned() != true)
             {
-                user = userService.getUserByLoginAndPassword(name, hashPass); 
+                 
                 setLogged(true);
                 ses.setAttribute("userid", user.getId());
                 ses.setAttribute("username", getName());  
             }
             else
             {
-                FacesMessage failMes= new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Error",
-                    "You are banned!");
-                RequestContext.getCurrentInstance().showMessageInDialog(failMes);
+                ses.setAttribute("userid", user.getId());
+                context.redirect("/gamepub/banned.xhtml");
             }
          }        
        

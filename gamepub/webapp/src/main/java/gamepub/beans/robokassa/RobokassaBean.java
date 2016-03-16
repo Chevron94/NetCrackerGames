@@ -131,6 +131,4 @@ public class RobokassaBean {
         isOutPay = true;
         return "robokassa";
     }
-    
-    
 }
