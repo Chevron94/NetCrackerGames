@@ -164,7 +164,32 @@ public class ProfileBean {
     }
 
     public List<Game> getRecomendGames() {
-        return gameService.getGamesOrderByMarks(4);
+        List<Friend> friends = null;
+        List<Game> gamesRec = new ArrayList<Game>();
+        try {
+            friends = friendService.getSubscribedToByUserId(SessionBean.getUserId());
+        }
+        catch (Exception e){
+
+        }
+        if(friends != null){
+            for(int i = 0; i<friends.size(); i++){
+                int id = friends.get(i).getSubscribedTo().getId();
+                List<UserGame> lisy = null;
+                try {
+                     lisy = userGameService.getFavoriteUserGamesByUserId(id);
+                }
+                catch (Exception e){
+
+                }
+                if(lisy != null) {
+                    for (int j = 0; j < lisy.size();j++)
+                        gamesRec.add(lisy.get(i).getGame());
+                }
+            }
+        }
+        gamesRec.addAll(gameService.getGamesOrderByUserMarks(6));
+        return gamesRec;
     }
 
     public void edit() {
@@ -194,7 +219,7 @@ public class ProfileBean {
             context.getExternalContext().getSessionMap().put("edit", true);
             isEdit = true;
         }
-        if (email != null && (userService.getUserByEmail(email) == null) || (userService.getUserByEmail(email).getId() == SessionBean.getUserId())) {
+        if (email != null){ //&& (userService.getUserByEmail(email) == null) || (userService.getUserByEmail(email).getId() == SessionBean.getUserId())) {
             user.setEmail(email);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This email is already used!."));
