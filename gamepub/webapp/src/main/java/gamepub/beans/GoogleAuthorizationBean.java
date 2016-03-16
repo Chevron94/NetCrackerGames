@@ -77,11 +77,11 @@ public class GoogleAuthorizationBean implements Serializable {
         User user = createUser();
         if (user != null) {
 
-            googleInfo = user.getGoogleInfo();
+            googleInfo = user.getSteamInfo();
 
             User userInBase = null;
             try {
-                userInBase = userService.getUserBySteamInfo(user.getGoogleInfo());
+                userInBase = userService.getUserBySteamInfo(user.getSteamInfo());
             } catch (Exception e) {
 
             }
@@ -100,7 +100,7 @@ public class GoogleAuthorizationBean implements Serializable {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = SessionBean.getSession();
 
-        User user = userService.getUserByGoogleInfo(googleInfo);
+        User user = userService.getUserBySteamInfo(googleInfo);
         if(user.getBanned() != true)
         {
             session.setAttribute("userid", user.getId());
@@ -110,6 +110,8 @@ public class GoogleAuthorizationBean implements Serializable {
         }
         else
         {
+
+            session.setAttribute("userid", user.getId());            
             context.redirect("banned.xhtml");
         }
     }
@@ -203,7 +205,7 @@ public class GoogleAuthorizationBean implements Serializable {
             User user;
             if (idLoggedUser != null) {
                 user = userService.getUserById(idLoggedUser);
-                user.setGoogleInfo(id);
+                user.setSteamInfo(id);
                 userService.update(user);
             } else {
 
@@ -221,6 +223,7 @@ public class GoogleAuthorizationBean implements Serializable {
                 user.setGold(false);
                 user.setReputation(0);
                 user.setSteamInfo(id);
+                user.setTradesLeft(3);
                 user.setLogin(nickname);
                 user.setCity(city);
                 user.setUserRole(ur);

@@ -42,12 +42,13 @@ public class TradeJob extends TimerTask{
         try{
        List<Trade> trades = tdi.getTradesByStatus("inProgress");
        for (Trade trade:trades){
-           if (curDate.getTime() - trade.getCreateTime().getTime() > 220000){
+           if (curDate.getTime() - trade.getCreateTime().getTime() > 120000){
                
                if(trade.getOfferingUserPay()==false && trade.getReceivingUserPay()==true){
                    User offUser = trade.getOfferingUser();
                    offUser.setFine(200);
                    offUser.setReputation(udi.getUserById(offUser.getId()).getReputation()-1);
+                   udi.update(offUser);
                    tdi.delete(trade.getId());
                    /* money back to receivingUser*/
                }
@@ -55,6 +56,7 @@ public class TradeJob extends TimerTask{
                    User recUser = trade.getReceivingUser();
                    trade.getReceivingUser().setFine(200);
                    recUser.setReputation(udi.getUserById(recUser.getId()).getReputation()-1);
+                   udi.update(recUser);
                    tdi.delete(trade.getId());
                    /* money back to offeringUser*/
                }    

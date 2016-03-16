@@ -44,7 +44,7 @@ and open the template in the editor.
                     <b:column span="5" > 
                         <h3>His offer</h3>
                         <p:pickList id="userPickList" value="#{tradeOfferBean.tradeUserGames}" var="userGame" effect="slide" orientation="vertical"
-                                    itemValue="#{userGame}" itemLabel="#{userGame.name}"  responsive="true" converter="myConverter">
+                                    itemValue="#{userGame}" itemLabel="#{userGame.name}"  responsive="true" converter="myConverter" >
                  
                          <p:column style="width:60%">
                              <h:outputText value="#{userGame.name}" />
@@ -61,7 +61,7 @@ and open the template in the editor.
             
             <h:panelGrid columns="4" cellpadding="5">
                 <b:commandButton ajax="false" value="Send offer" actionListener="#{tradeOfferBean.sendOffer()}" style="margin-right: 10px"/>            
-                <p:inputText value="#{tradeOfferBean.deposit}" placeholder="Deposit" />
+                <p:inputText value="#{tradeOfferBean.deposit}" placeholder="Deposit" requiredMessage="Please enter trade deposit"/>
                 <h:outputText value="Hand-to-hand:  " style="font-size: medium"/>
                 <p:inputSwitch value="#{tradeOfferBean.handtohand}">
                     <p:ajax listener="#{tradeOfferBean.addMsg}" update="msg"/>

@@ -28,19 +28,24 @@
                         <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
                         <h:form>
 
+
                             <br/>
 
                             <p:commandButton styleClass="btn btn-warning"
                                              action="#{robokassaBean.submit(2)}"
                                              ajax="false"
                                              value="Buy gold account " rendered="#{profileBean.isMy}"/>
-
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(5)}"
+                                             ajax="false"
+                                             value="Buy 5 trades" rendered="#{profileBean.isMy}"/>
                             <br/>
                             <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
                                              actionListener="#{profileBean.edit()}"
                                              rendered="#{profileBean.isMy}"/>
                         </h:form>
                         <!-- Follow -->
+
                         <p:commandButton styleClass="btn btn-danger" value="This user has blocked you"
                                   action="#{robokassaBean.blockSubmit(profileBean.blockId)}" rendered="#{profileBean.isBlockYou}" />
                         <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBlockYou and !profileBean.isBanned}">
@@ -50,16 +55,15 @@
                                              rendered="#{!profileBean.isSubscribedTo}"/>
                             <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
                                              actionListener="#{profileBean.unfollow()}"
-                                             rendered="#{profileBean.isSubscribedTo and !profileBean.isBlock}"/>
+                                             rendered="#{profileBean.isSubscribedTo}"/>
                             <b:commandButton style="width:100%;" class="btn" value="Block" ajax="false"
-                                             actionListener="#{profileBean.block()}"
-                                             rendered="#{!profileBean.isBlock}"/>
-                            <b:commandButton style="width:100%;" class="btn" value="Un block" ajax="false"
-                                             actionListener="#{profileBean.unfollow()}"
-                                             rendered="#{profileBean.isBlock}"/>
+                                                                    actionListener="#{profileBean.block()}"
+                                                                        rendered="#{!profileBean.isBlock}"/>
                             <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
+
                                       ajax="false"
                                       >
+
                                 <f:param value="#{profileBean.userId}" name="receiverId"/>
                             </b:button>
                             <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >
@@ -334,7 +338,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{offeredGame.offeringGame.poster}"
                                                                  tooltip="#{offeredGame.offeringGame.name}"/>
                                                         <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
@@ -352,7 +356,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{receivedGame.receivingGame.poster}"
                                                                  tooltip="#{receivedGame.receivingGame.name}"/>
 
@@ -420,7 +424,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{offeredGame.offeringGame.poster}"
                                                                  tooltip="#{offeredGame.offeringGame.name}"/>
                                                         <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
@@ -437,7 +441,9 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />
+                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}"
+                                                                 tooltip="#{receivedGame.receivingGame.name}"
+                                                                 tooltipPosition="top"/>
 
                                                         <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
                                                     </h:link>

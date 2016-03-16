@@ -21,6 +21,7 @@ and open the template in the editor.
 
 <ui:composition template="/Template/template.xhtml">
     <ui:define name="content">
+        <h:outputStylesheet name="custom.css"/>
         <b:column span="9" offset="1">
             <h2 align="center"> Trading page </h2>
             <b:row>
@@ -41,7 +42,7 @@ and open the template in the editor.
                             <h:link outcome="aboutGame" includeViewParams="true">
                                 <f:param value="#{game.uid}" name="id"/>
                                 <b:image name="gameImage" tooltip="#{game.name}" value="#{game.poster}"
-                                         style="height: 172px"/>
+                                         style="height: 172px" styleClass="imgA"/>
                             </h:link>
 
                         </b:column>
@@ -51,9 +52,9 @@ and open the template in the editor.
                                         numVisible="5">
 
 
-                                <p:commandLink value="Trade Offer" id="exchange" rendered="#{profileBean.canTrade()}"
+                                <p:commandButton value="Trade Offer" id="exchange" rendered="#{profileBean.canTrade()}" styleClass="button-wrapper"
                                                actionListener="#{tradeOfferBean.openOfferDialog(user)}">
-                                </p:commandLink>
+                                </p:commandButton>
 
                                 <h:link outcome="profile" includeViewParams="true">
                                     <f:param value="#{user.uid}" name="userId"/>

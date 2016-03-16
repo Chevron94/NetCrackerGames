@@ -94,6 +94,10 @@ public class RobokassaBean {
                 outSumm = "1000";
                 descr = "unban";
                 break;
+            case 5:
+                outSumm = "290";
+                descr = "more";
+                break;
         }
 
         UserTransaction userTransaction = new UserTransaction();
@@ -131,6 +135,4 @@ public class RobokassaBean {
         isOutPay = true;
         return "robokassa";
     }
-    
-    
 }

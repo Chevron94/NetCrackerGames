@@ -21,7 +21,7 @@
                     <h:form id="galleryForm" enctype="multipart/form-data">
                         <h2>#{galleryBean.galleryOwner}</h2>
 
-                        <p:contentFlow id="contentF" value="#{galleryBean.images}" var="image">
+                        <p:contentFlow id="contentF" value="#{galleryBean.images}" var="image" >
                             <p:commandLink
                                     styleClass="gameIcon btn btn-danger"
                                     oncomplete="removePicture([{name:'selectedImage',

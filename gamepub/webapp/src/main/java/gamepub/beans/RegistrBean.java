@@ -107,6 +107,7 @@ public class RegistrBean {
             user.setFine(0);
             user.setGold(false);
             user.setReputation(0);
+            user.setTradesLeft(3);
             userService.create(user);
             loginIn();
             FacesMessage regMes = new FacesMessage(FacesMessage.SEVERITY_WARN,
