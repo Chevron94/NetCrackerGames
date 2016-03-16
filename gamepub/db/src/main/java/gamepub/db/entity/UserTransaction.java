@@ -17,7 +17,7 @@ public class UserTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @Column(name = "OUT_SUMM", nullable = true)
-    int outSumm;
+    Integer outSumm;
     @Column(name = "PAYMENT_STATUS", nullable = false)
     boolean status;
     @Column(name = "PAYMENT_DATE", nullable = false)

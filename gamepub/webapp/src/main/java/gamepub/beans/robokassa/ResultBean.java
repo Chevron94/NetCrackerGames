@@ -73,8 +73,11 @@ public class ResultBean {
         User user = userTransaction.getUser();
         if (userTransaction.getDescription().equals("fine")) {
             user.setFine(user.getFine() - userTransaction.getOutSumm());
-        } else if (userTransaction.getDescription().equals("gold"))
+        } else if (userTransaction.getDescription().equals("gold")) {
+            user.setTradesLeft(user.getTradesLeft()+10);
             user.setGold(true);
+            userService.update(user);
+        }
         
         if(userTransaction.getDescription().contains("trade")){
            Integer tradeId = Integer.parseInt(userTransaction.getDescription().substring(5));                      
@@ -96,7 +99,7 @@ public class ResultBean {
             user.setBanned(false);
             userService.update(user);
         }
-        if(userTransaction.getDescription().equals("moretrades")){
+        if(userTransaction.getDescription().equals("more")){
             user.setTradesLeft(user.getTradesLeft()+5);
             userService.update(user);
         }

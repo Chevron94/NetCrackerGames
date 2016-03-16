@@ -96,7 +96,7 @@ public class RobokassaBean {
                 break;
             case 5:
                 outSumm = "290";
-                descr = "moretrades";
+                descr = "more";
                 break;
         }
 

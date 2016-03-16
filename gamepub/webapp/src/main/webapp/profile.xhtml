@@ -56,6 +56,9 @@
                             <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
                                              actionListener="#{profileBean.unfollow()}"
                                              rendered="#{profileBean.isSubscribedTo}"/>
+                            <b:commandButton style="width:100%;" class="btn" value="Block" ajax="false"
+                                                                    actionListener="#{profileBean.block()}"
+                                                                        rendered="#{!profileBean.isBlock}"/>
                             <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
 
                                       ajax="false"
