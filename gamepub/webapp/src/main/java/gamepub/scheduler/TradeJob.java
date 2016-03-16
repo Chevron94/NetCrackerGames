@@ -42,7 +42,7 @@ public class TradeJob extends TimerTask{
         try{
        List<Trade> trades = tdi.getTradesByStatus("inProgress");
        for (Trade trade:trades){
-           if (curDate.getTime() - trade.getCreateTime().getTime() > 220000){
+           if (curDate.getTime() - trade.getCreateTime().getTime() > 120000){
                
                if(trade.getOfferingUserPay()==false && trade.getReceivingUserPay()==true){
                    User offUser = trade.getOfferingUser();

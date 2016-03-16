@@ -96,6 +96,10 @@ public class ResultBean {
             user.setBanned(false);
             userService.update(user);
         }
+        if(userTransaction.getDescription().equals("moretrades")){
+            user.setTradesLeft(user.getTradesLeft()+5);
+            userService.update(user);
+        }
         
 
     }

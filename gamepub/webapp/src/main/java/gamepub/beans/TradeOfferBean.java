@@ -81,10 +81,10 @@ private boolean handtohand=false;
     public void openOfferDialog(User u){
        SessionBean.getSession().setAttribute("tradeuser",u.getId());
        Map<String,Object> options = new HashMap<String, Object>();
-        options.put("resizable", true);
+        options.put("resizable", false);
         options.put("draggable", false);
-        options.put("contentWidth", 1300);
-        options.put("contentHeight", 700);
+        options.put("contentWidth", 1400);
+        options.put("contentHeight", 800);
         options.put("modal", true);         
         RequestContext.getCurrentInstance().openDialog("tradeOffer",options,null);
     }

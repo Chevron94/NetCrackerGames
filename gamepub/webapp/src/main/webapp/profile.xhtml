@@ -34,7 +34,10 @@
                                              action="#{robokassaBean.submit(2)}"
                                              ajax="false"
                                              value="Buy gold account " rendered="#{profileBean.isMy}"/>
-
+                            <p:commandButton styleClass="btn btn-warning"
+                                             action="#{robokassaBean.submit(5)}"
+                                             ajax="false"
+                                             value="Buy 5 trades" rendered="#{profileBean.isMy}"/>
                             <br/>
                             <p:commandButton class="btn btn-warning" value="Edit" ajax="false"
                                              actionListener="#{profileBean.edit()}"
@@ -334,7 +337,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{offeredGame.offeringGame.poster}"
                                                                  tooltip="#{offeredGame.offeringGame.name}"/>
                                                         <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
@@ -352,7 +355,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{receivedGame.receivingGame.poster}"
                                                                  tooltip="#{receivedGame.receivingGame.name}"/>
 
@@ -420,7 +423,7 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA"
+                                                        <b:image name="game" styleClass="imgA" tooltipPosition="top"
                                                                  value="#{offeredGame.offeringGame.poster}"
                                                                  tooltip="#{offeredGame.offeringGame.name}"/>
                                                         <f:param value="#{offeredGame.offeringGame.uid}" name="id"/>
@@ -437,7 +440,9 @@
                                                             responsive="true" itemStyle="height:150px">
 
                                                     <h:link outcome="aboutGame" includeViewParams="true">
-                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}" tooltip="#{receivedGame.receivingGame.name}" />
+                                                        <b:image name="game" styleClass="imgA" value="#{receivedGame.receivingGame.poster}"
+                                                                 tooltip="#{receivedGame.receivingGame.name}"
+                                                                 tooltipPosition="top"/>
 
                                                         <f:param value="#{receivedGame.receivingGame.uid}" name="id"/>
                                                     </h:link>
