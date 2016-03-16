@@ -28,6 +28,7 @@
                         <p:graphicImage value="#{profileBean.image}" styleClass="imgA"/>
                         <h:form>
 
+
                             <br/>
 
                             <p:commandButton styleClass="btn btn-warning"
@@ -44,6 +45,7 @@
                                              rendered="#{profileBean.isMy}"/>
                         </h:form>
                         <!-- Follow -->
+
                         <p:commandButton styleClass="btn btn-danger" value="This user has blocked you"
                                   action="#{robokassaBean.blockSubmit(profileBean.blockId)}" rendered="#{profileBean.isBlockYou}" />
                         <h:form id="follow" rendered="#{!profileBean.isMy and !profileBean.isBlockYou and !profileBean.isBanned}">
@@ -53,16 +55,12 @@
                                              rendered="#{!profileBean.isSubscribedTo}"/>
                             <b:commandButton style="width:100%;" class="btn btn-danger" value="UnFollow" ajax="false"
                                              actionListener="#{profileBean.unfollow()}"
-                                             rendered="#{profileBean.isSubscribedTo and !profileBean.isBlock}"/>
-                            <b:commandButton style="width:100%;" class="btn" value="Block" ajax="false"
-                                             actionListener="#{profileBean.block()}"
-                                             rendered="#{!profileBean.isBlock}"/>
-                            <b:commandButton style="width:100%;" class="btn" value="Un block" ajax="false"
-                                             actionListener="#{profileBean.unfollow()}"
-                                             rendered="#{profileBean.isBlock}"/>
+                                             rendered="#{profileBean.isSubscribedTo}"/>
                             <b:button style="width:100%;" outcome="mesDialog" class="btn btn-info" value="Dialog"
+
                                       ajax="false"
                                       >
+
                                 <f:param value="#{profileBean.userId}" name="receiverId"/>
                             </b:button>
                             <b:button style="width:100%;" outcome="gallery" class="btn btn-info" value="Gallery" >

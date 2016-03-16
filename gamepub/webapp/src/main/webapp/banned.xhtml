@@ -13,7 +13,20 @@
     <ui:composition template="/Template/template.xhtml">
 
         <ui:define name="content">
-            <p:graphicImage value="resources/banned.jpg" style="width:50%; height: 50%; align-content: center;"/>
+            <h:outputStylesheet name="theme.css"/>
+             <b:column span="10">
+            <h:form id="banned">
+                <div align="center">
+                    <h:panelGrid>   
+                        <p:graphicImage value="resources/banned.jpg" style="width:50%; height: 50%;" />
+                        <p:commandButton styleClass="btn btn-danger" 
+                            action="#{robokassaBean.submit(4)}" 
+                            ajax="false" 
+                            value="Buy unban"/>
+                    </h:panelGrid>
+                </div>
+            </h:form>
+             </b:column>
         </ui:define>
     </ui:composition>
 
